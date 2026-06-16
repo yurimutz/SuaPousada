@@ -1,17 +1,36 @@
 package br.ufes.inf.SuaPousada.domain;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
-public class Reserva {
+@Entity
+@Table(name = "tb_reserva")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Reserva
+{
 
-	private LocalDateTime dtCheckIn;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private LocalDateTime dtCheckOut;
+    private LocalDateTime dtCheckIn;
 
-	private int qtdNoites;
+    private LocalDateTime dtCheckOut;
 
-	private LocalDateTime dtReservaInicio;
+    @NotNull
+    private int qtdNoites;
 
-	private LocalDateTime dtReservaFim;
+    private LocalDateTime dtReservaInicio;
+
+    private LocalDateTime dtReservaFim;
 
 }

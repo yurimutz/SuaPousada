@@ -1,19 +1,32 @@
 package br.ufes.inf.SuaPousada.domain;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
-public abstract class Pessoa {
+@AllArgsConstructor
+@NoArgsConstructor
+public abstract class Pessoa
+{
+    @NotNull
+    private String nome;
 
-	private String nome;
+    @NotNull
+    @Column(unique = true)
+    private String cpf;
 
-	private String cpf;
+    @NotNull
+    private LocalDate dtNascimento;
 
-	private LocalDate dtNascimento;
+    private Genero genero;
 
-	private Genero genero;
+    @NotNull
+    @Column(unique = true)
+    private String email;
 
-	private String email;
-
-	private String telefone;
-
+    @NotNull
+    private String telefone;
 }
