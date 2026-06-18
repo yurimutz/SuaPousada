@@ -1,0 +1,14 @@
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/ServletInitializer.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/SuaPousadaApplication.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/Administrador.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/Cliente.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/FormaPagamento.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/Funcionario.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/Genero.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/Pagamento.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/Pessoa.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/Quarto.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/Reserva.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/StatusPagamento.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/StatusQuarto.java
+/home/yuri-mutz/Dev/SuaPousada/src/main/java/br/ufes/inf/SuaPousada/domain/TipoQuarto.java

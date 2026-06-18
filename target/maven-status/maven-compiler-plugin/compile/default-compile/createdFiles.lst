@@ -1,0 +1,14 @@
+br/ufes/inf/SuaPousada/domain/Administrador.class
+br/ufes/inf/SuaPousada/domain/Pagamento.class
+br/ufes/inf/SuaPousada/domain/StatusPagamento.class
+br/ufes/inf/SuaPousada/domain/Funcionario.class
+br/ufes/inf/SuaPousada/domain/Pessoa.class
+br/ufes/inf/SuaPousada/SuaPousadaApplication.class
+br/ufes/inf/SuaPousada/domain/FormaPagamento.class
+br/ufes/inf/SuaPousada/domain/StatusQuarto.class
+br/ufes/inf/SuaPousada/domain/TipoQuarto.class
+br/ufes/inf/SuaPousada/domain/Genero.class
+br/ufes/inf/SuaPousada/ServletInitializer.class
+br/ufes/inf/SuaPousada/domain/Cliente.class
+br/ufes/inf/SuaPousada/domain/Quarto.class
+br/ufes/inf/SuaPousada/domain/Reserva.class
