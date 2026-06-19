@@ -27,7 +27,6 @@ Feito por Bruno Vale, Rafael Rodrigues e Yuri Mutz.
 **Frontend**
 - Tailwind CSS
 - React
-- [colocar lib de componentes]
 
 ## Documentação do código (JavaDoc)
 
@@ -56,4 +55,4 @@ docker compose up -d
 
 ### Acesso
 
-Após a execução, basta acessar no navegador de sua preferência [http://localhost:8080](http://localhost:8080) 
+Após a execução, basta acessar no navegador de sua preferência [http://localhost:5173](http://localhost:5173) 
