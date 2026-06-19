@@ -1,0 +1,10 @@
+# REACT
+  frontend:
+    build: ./pasta-do-react # Caminho onde está o Dockerfile do Node
+    ports:
+      - "5173:5173"
+    # Faz o front-end recarregar automaticamente quando você alterar o código
+    volumes:
+      - ./pasta-do-react/src:/app/src
+    depends_on:
+      - backend # Sobe o front depois que a API estiver pronta

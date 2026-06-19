@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"br.ufes.inf.SuaPousada","l":"ServletInitializer"},{"p":"br.ufes.inf.SuaPousada","l":"SuaPousadaApplication"}];updateSearchResults();
