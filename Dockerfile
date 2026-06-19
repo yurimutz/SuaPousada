@@ -19,8 +19,6 @@ COPY src ./src
 # Vou deixar rodando os testes
 RUN mvn clean package -DskipTests
 
-
-
 #---------------------------------------------------------#
 #--------------------------JAVA---------------------------#
 # Usa uma imagem do Java 17 (ou 21, dependendo do seu projeto)
@@ -30,7 +28,7 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
 # Copia o seu código compilado (.jar) para dentro do container
-COPY --from=builder target/SuaPousada-0.0.1-SNAPSHOT.war app.war
+COPY --from=builder app/target/SuaPousada-0.0.1-SNAPSHOT.jar app.jar
 
 # Comando para rodar a aplicação
-ENTRYPOINT ["java", "-jar", "app.war"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

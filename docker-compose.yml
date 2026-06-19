@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: meu_usuario
       POSTGRES_PASSWORD: senha_secreta
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
 # JAVA
   backend:
