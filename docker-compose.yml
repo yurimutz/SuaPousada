@@ -11,7 +11,7 @@ services:
 
 # JAVA
   backend:
-    build: . # Caminho onde está o Dockerfile do Java
+    build: ./backend # Caminho onde está o Dockerfile do Java
     ports:
       - "8080:8080"
     environment:
@@ -24,3 +24,13 @@ services:
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
     depends_on:
       - postgres
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
