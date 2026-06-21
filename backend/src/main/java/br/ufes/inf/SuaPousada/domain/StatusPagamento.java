@@ -1,11 +1,14 @@
 package br.ufes.inf.SuaPousada.domain;
 
-public enum StatusPagamento {
+public enum StatusPagamento
+{
 
 	PAGO,
 
 	PROCESSANDO,
 
-	AUSENTE;
+	AUSENTE,
+
+	AGUARDANDO
 
 }

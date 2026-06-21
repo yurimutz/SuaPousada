@@ -1,13 +1,14 @@
 package br.ufes.inf.SuaPousada.domain;
 
-public enum FormaPagamento {
+public enum MetodoPagamento
+{
 
 	PIX,
 
 	DINHEIRO,
 
-	DÉBITO,
+	DEBITO,
 
-	CRÉDITO;
+	CREDITO
 
 }

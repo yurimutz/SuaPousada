@@ -4,8 +4,8 @@ public enum StatusQuarto {
 
 	OCUPADO,
 
-	DISPONÍVEL,
+	DISPONIVEL,
 
-	INDISPONÍVEL;
+	INDISPONIVEL
 
 }

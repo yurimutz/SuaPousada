@@ -6,6 +6,6 @@ public enum Genero {
 
 	FEMININO,
 
-	OUTRO;
+	OUTRO
 
 }

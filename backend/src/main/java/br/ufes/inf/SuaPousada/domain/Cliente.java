@@ -8,14 +8,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tb_cliente")
-@Getter
-@Setter
-@NoArgsConstructor
+@PrimaryKeyJoinColumn(name = "id_pessoa")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Cliente extends Pessoa
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
 }

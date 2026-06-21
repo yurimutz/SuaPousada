@@ -1,13 +1,29 @@
 package br.ufes.inf.SuaPousada.domain;
 
-public abstract class Quarto {
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-	private int numero;
+@Entity
+@Table(name = "tb_quarto")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Quarto
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private int andar;
+    @NotNull
+    @Column(nullable = false)
+    private Integer numero;
 
-	private boolean arCondicionado;
-
-	private StatusQuarto status;
-
+    @NotNull
+    @Column(nullable = false)
+    private Integer andar;
 }

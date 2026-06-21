@@ -1,11 +1,36 @@
 package br.ufes.inf.SuaPousada.domain;
 
-public class Pagamento {
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-	private FormaPagamento forma;
+@Entity
+@Table(name = "tb_pagamento")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Pagamento
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private int valor;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MetodoPagamento metodoPagamento;
 
-	private StatusPagamento Status;
+    @NotNull
+    @Column(nullable = false)
+    private Double valor;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusPagamento status = StatusPagamento.AGUARDANDO;
 
 }
