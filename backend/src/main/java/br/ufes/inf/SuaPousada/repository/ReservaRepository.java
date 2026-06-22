@@ -4,6 +4,7 @@ import br.ufes.inf.SuaPousada.domain.Reserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,4 +19,9 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>
     List<Reserva> findByClienteEmail(String emailCliente);
 
     List<Reserva> findByClienteCpf(String cpfCliente);
+
+    /* Acredito que retorne uma Lista, pois podem existir mais de uma reserva no mesmo Dia/Horário em quartos
+    diferentes */
+    List<Reserva> findBydtReservaInicio(Date dataInicio);
+
 }
