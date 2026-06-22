@@ -48,4 +48,9 @@ public class Reserva
     @JoinColumn(name = "id_pagamento")
     // Pode ser nulo pois na hora de reservar um quarto o pagamento nao precisa ser realizado
     private Pagamento pagamento;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Cliente cliente;
 }
