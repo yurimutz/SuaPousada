@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tb_administrador")
 @PrimaryKeyJoinColumn(name = "id_funcionario")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Administrador extends Funcionario
 {
 

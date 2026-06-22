@@ -22,7 +22,7 @@ public class Reserva
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //dtCheckIn e dtCheckOut podem ser nulos pois existe a possibilidade do cliente nao comparecer no dia
+    //dtCheckIn e dtCheckOut podem ser nulos pois sao realizados muito tempo depois da criacao de uma reserva
     private LocalDateTime dtCheckIn;
 
     private LocalDateTime dtCheckOut;
@@ -38,4 +38,14 @@ public class Reserva
     @NotNull
     @Column(nullable = false)
     private LocalDateTime dtReservaFim;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_quarto", nullable = false)
+    private Quarto quarto;
+
+    @OneToOne
+    @JoinColumn(name = "id_pagamento")
+    // Pode ser nulo pois na hora de reservar um quarto o pagamento nao precisa ser realizado
+    private Pagamento pagamento;
 }

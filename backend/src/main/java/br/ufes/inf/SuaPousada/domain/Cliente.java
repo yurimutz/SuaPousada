@@ -9,8 +9,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "tb_cliente")
 @PrimaryKeyJoinColumn(name = "id_pessoa")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Cliente extends Pessoa
 {
 

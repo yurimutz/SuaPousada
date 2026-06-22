@@ -26,4 +26,9 @@ public class Quarto
     @NotNull
     @Column(nullable = false)
     private Integer andar;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private TipoQuarto tipoQuarto;
 }
