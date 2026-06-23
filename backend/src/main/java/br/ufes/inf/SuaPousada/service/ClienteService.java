@@ -7,6 +7,10 @@ import br.ufes.inf.SuaPousada.exceptions.EntidadeConflitoException;
 import br.ufes.inf.SuaPousada.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Service
 public class ClienteService
 {
@@ -22,6 +26,11 @@ public class ClienteService
         if (repository.existsByCpfOrEmail(request.cpf(), request.email()))
         {
             throw new EntidadeConflitoException("Esse CPF ou Email já foram cadastrados no sistema.");
+        }
+
+        if(ChronoUnit.YEARS.between(request.dtNascimento(), LocalDate.now()) < 18)
+        {
+            throw new EntidadeConflitoException("Cliente não pode ser menor de idade");
         }
 
         Cliente cliente = toEntity(request);
