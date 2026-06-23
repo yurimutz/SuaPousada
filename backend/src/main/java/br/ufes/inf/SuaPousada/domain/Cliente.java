@@ -11,7 +11,8 @@ import java.time.LocalDate;
 @PrimaryKeyJoinColumn(name = "id_pessoa")
 public class Cliente extends Pessoa
 {
-    /*Por causa da herança o @Builder só funciona se for declarado no construtor com super, outra alternativa seria @SuperBuilder, optei pelo
+    /*Por causa da herança o @Builder só funciona se for declarado no construtor com super,
+    outra alternativa seria @SuperBuilder definido na classe pai e todas suas subclasses. Optei pelo
     construtor.*/
     @Builder
     public Cliente(Long id, String nome, String cpf, LocalDate dtNascimento, Genero genero, String email, String telefone) {
