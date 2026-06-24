@@ -18,4 +18,7 @@ public class Cliente extends Pessoa
     public Cliente(Long id, String nome, String cpf, LocalDate dtNascimento, Genero genero, String email, String telefone) {
         super(id, nome, cpf, dtNascimento, genero, email, telefone);
     }
+
+    public Cliente() {}
+
 }
