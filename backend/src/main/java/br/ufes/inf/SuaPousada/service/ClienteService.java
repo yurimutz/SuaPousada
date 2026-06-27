@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService
@@ -27,7 +29,7 @@ public class ClienteService
             throw new EntidadeConflitoException("Esse CPF ou Email já foi cadastrado no sistema.");
         }
 
-        if(ChronoUnit.YEARS.between(request.dtNascimento(), LocalDate.now()) < 18)
+        if (ChronoUnit.YEARS.between(request.dtNascimento(), LocalDate.now()) < 18)
         {
             throw new EntidadeConflitoException("Cliente não pode ser menor de idade");
         }
@@ -36,6 +38,14 @@ public class ClienteService
         repository.save(cliente);
 
         return toResponse(cliente);
+    }
+
+    public List<ClienteResponseDTO> findAll()
+    {
+        return repository.findAll()
+                .stream()
+                .map(ClienteService::toResponse)
+                .collect(Collectors.toList());
     }
 
     private static Cliente toEntity(ClienteCreateRequestDTO dto)
