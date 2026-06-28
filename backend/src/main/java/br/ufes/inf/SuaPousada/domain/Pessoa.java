@@ -30,7 +30,7 @@ public abstract class Pessoa
 
     @NotBlank
     @CPF
-    @Column(nullable = false, length = 12)
+    @Column(nullable = false, length = 11)
     private String cpf;
 
     @NotNull

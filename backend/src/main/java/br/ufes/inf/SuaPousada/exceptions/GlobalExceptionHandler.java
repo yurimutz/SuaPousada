@@ -12,8 +12,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler
 {
-    @ExceptionHandler(EntidadeConflitoException.class)
-    public ResponseEntity<Object> handleEntidadeConflito(EntidadeConflitoException ex)
+    @ExceptionHandler(DataViolationException.class)
+    public ResponseEntity<Object> handleEntidadeConflito(DataViolationException ex)
     {
         Map<String,Object> response = new LinkedHashMap<>();
 

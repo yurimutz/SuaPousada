@@ -18,7 +18,11 @@ public record FuncionarioResponseDTO(
 
         String email,
 
-        String telefone
+        String telefone,
+
+        Boolean ativo,
+
+        LocalDate dtDesligamento
 
 )
 {
