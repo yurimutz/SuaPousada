@@ -3,15 +3,7 @@ package br.ufes.inf.SuaPousada.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.ufes.inf.SuaPousada.dto.request.ClienteCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.ClienteUpdateRequestDTO;
@@ -19,6 +11,7 @@ import br.ufes.inf.SuaPousada.dto.response.ClienteResponseDTO;
 import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
 import br.ufes.inf.SuaPousada.service.ClienteService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/cliente")
@@ -36,18 +29,20 @@ public class ClienteController {
         try {
             return clienteService.create(dto);
         } catch (Exception e) {
-            //tem que ver isso aqui
-            return null;
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause());
+
         }
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ClienteResponseDTO update(@PathVariable long id, @RequestBody ClienteUpdateRequestDTO dto) throws EntityNotFoundException, DataViolationException {
         try {
             return clienteService.update(id, dto);
         } catch (Exception e) {
-            //tem que ver isso aqui
-            return null;
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e.getCause());
+
         }
     }
 
