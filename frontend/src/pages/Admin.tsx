@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 export function Admin() {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar role="admin" />
       <main className="flex-1 w-full overflow-y-auto bg-background text-foreground">
         <div className="p-4 md:p-8">
           <div className="mb-6 flex items-center">

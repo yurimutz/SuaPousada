@@ -1,4 +1,4 @@
-import { BedDouble, Calendar, Home, LogOut, Users } from "lucide-react"
+import { BedDouble, Calendar, CalendarDays, Home, LogOut, PlusCircle, Settings, User, Users } from "lucide-react"
 import { Link } from "react-router"
 
 import {
@@ -14,8 +14,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-// Menu items
-const items = [
+const adminItems = [
   {
     title: "Dashboard",
     url: "#",
@@ -38,7 +37,36 @@ const items = [
   },
 ]
 
-export function AppSidebar() {
+const clientItems = [
+  {
+    title: "Minha conta",
+    url: "#",
+    icon: User,
+  },
+  {
+    title: "Minhas reservas",
+    url: "#",
+    icon: CalendarDays,
+  },
+  {
+    title: "Fazer nova reserva",
+    url: "#",
+    icon: PlusCircle,
+  },
+  {
+    title: "Perfil",
+    url: "#",
+    icon: Settings,
+  },
+]
+
+interface AppSidebarProps {
+  role?: "admin" | "client"
+}
+
+export function AppSidebar({ role = "admin" }: AppSidebarProps) {
+  const items = (role === "admin") ? adminItems : clientItems;
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
