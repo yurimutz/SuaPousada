@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.ufes.inf.SuaPousada.dto.request.FuncionarioCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.FuncionarioUpdateRequestDTO;
@@ -17,6 +19,8 @@ import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
 import br.ufes.inf.SuaPousada.service.FuncionarioService;
 import jakarta.persistence.EntityNotFoundException;
 
+@RestController
+@RequestMapping("/funcionario")
 public class FuncionarioController {
     private final FuncionarioService funcionarioService;
 
