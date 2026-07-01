@@ -1,0 +1,82 @@
+package br.ufes.inf.SuaPousada.controllers;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.ufes.inf.SuaPousada.dto.request.ClienteCreateRequestDTO;
+import br.ufes.inf.SuaPousada.dto.request.ClienteUpdateRequestDTO;
+import br.ufes.inf.SuaPousada.dto.response.ClienteResponseDTO;
+import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
+import br.ufes.inf.SuaPousada.service.ClienteService;
+import jakarta.persistence.EntityNotFoundException;
+
+@RestController
+@RequestMapping("/cliente")
+public class ClienteController {
+    
+    private final ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService){
+        this.clienteService = clienteService;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClienteResponseDTO create(@RequestBody ClienteCreateRequestDTO dto) throws EntityNotFoundException, DataViolationException {
+        try {
+            return clienteService.create(dto);
+        } catch (Exception e) {
+            //tem que ver isso aqui
+            return null;
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ClienteResponseDTO update(@PathVariable long id, @RequestBody ClienteUpdateRequestDTO dto) throws EntityNotFoundException, DataViolationException {
+        try {
+            return clienteService.update(id, dto);
+        } catch (Exception e) {
+            //tem que ver isso aqui
+            return null;
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public void update(@PathVariable long id) throws EntityNotFoundException, DataViolationException {
+        try {
+            clienteService.delete(id);
+        } catch (Exception e) {
+            //tem que ver isso aqui
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ClienteResponseDTO findById(@PathVariable long id) throws EntityNotFoundException, DataViolationException{
+        try {
+            return clienteService.findById(id);
+        } catch (Exception e) {
+            //tem que ver isso aqui
+            return null;
+        }
+    }
+
+    @GetMapping
+    public List<ClienteResponseDTO> findALL() throws EntityNotFoundException, DataViolationException{
+        try {
+            return clienteService.findAll();
+        } catch (Exception e) {
+            //tem que ver isso aqui
+            return null;
+        }
+    }
+}
