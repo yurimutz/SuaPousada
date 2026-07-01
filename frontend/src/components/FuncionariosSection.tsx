@@ -9,15 +9,25 @@ import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 
 type Funcionario = {
-  id: number;
+  id?: number;
   nome: string;
-  cargo: string;
+  cpf: string;
   telefone: string;
+  dtNascimento: string;
+  genero: string;
+  email: string;
 };
 
 const initialFuncionarios: Funcionario[] = [
-  { id: 1, nome: "João Silva", cargo: "Recepcionista", telefone: "(11) 98765-4321" },
-  { id: 2, nome: "Maria Souza", cargo: "Camareira", telefone: "(11) 91234-5678" },
+  { 
+    id: 1,
+    nome: "Rafael Rodrigues",
+    cpf: "164.437.627-03",
+    telefone: "27-997550259", 
+    dtNascimento: "2004-09-13", 
+    genero: "Masculino", 
+    email: "rafael@gmail.com" 
+  },
 ];
 
 export function FuncionariosSection() {
@@ -25,18 +35,25 @@ export function FuncionariosSection() {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  const [formData, setFormData] = useState({ nome: "", cargo: "", telefone: "" });
+  const [formData, setFormData] = useState({ 
+    nome: "", 
+    cpf: "", 
+    telefone: "",
+    dtNascimento: "",
+    genero: "",
+    email: ""
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (!formData.nome || !formData.cargo) return;
+    if (!formData.nome || !formData.cpf) return;
     
     setFuncionarios([...funcionarios, { id: Date.now(), ...formData }]);
-    setFormData({ nome: "", cargo: "", telefone: "" });
+    setFormData({ nome: "", cpf: "", telefone: "", dtNascimento: "", genero: "", email: "" });
     setIsOpen(false);
   };
 
@@ -51,9 +68,9 @@ export function FuncionariosSection() {
         </Field>
         
         <Field>
-          <FieldLabel htmlFor="cargo">Cargo</FieldLabel>
+          <FieldLabel htmlFor="cpf">CPF</FieldLabel>
           <FieldContent>
-            <Input id="cargo" name="cargo" value={formData.cargo} onChange={handleChange} placeholder="Ex: Gerente" required />
+            <Input id="cpf" name="cpf" value={formData.cpf} onChange={handleChange} placeholder="000.000.000-00" required />
           </FieldContent>
         </Field>
         
@@ -61,6 +78,27 @@ export function FuncionariosSection() {
           <FieldLabel htmlFor="telefone">Telefone</FieldLabel>
           <FieldContent>
             <Input id="telefone" name="telefone" value={formData.telefone} onChange={handleChange} placeholder="(00) 00000-0000" />
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor="dtNascimento">Data de Nascimento</FieldLabel>
+          <FieldContent>
+            <Input id="dtNascimento" type="date" name="dtNascimento" value={formData.dtNascimento} onChange={handleChange} required />
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor="genero">Gênero</FieldLabel>
+          <FieldContent>
+            <Input id="genero" name="genero" value={formData.genero} onChange={handleChange} placeholder="Ex: Feminino" />
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor="email">E-mail</FieldLabel>
+          <FieldContent>
+            <Input id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="exemplo@email.com" />
           </FieldContent>
         </Field>
       </FieldSet>
@@ -118,8 +156,11 @@ export function FuncionariosSection() {
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
-              <TableHead>Cargo</TableHead>
+              <TableHead>CPF</TableHead>
               <TableHead>Telefone</TableHead>
+              <TableHead>Data de Nascimento</TableHead>
+              <TableHead>Gênero</TableHead>
+              <TableHead>E-mail</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -127,13 +168,16 @@ export function FuncionariosSection() {
               funcionarios.map((func) => (
                 <TableRow key={func.id}>
                   <TableCell className="font-medium">{func.nome}</TableCell>
-                  <TableCell>{func.cargo}</TableCell>
+                  <TableCell>{func.cpf}</TableCell>
                   <TableCell>{func.telefone}</TableCell>
+                  <TableCell>{func.dtNascimento}</TableCell>
+                  <TableCell>{func.genero}</TableCell>
+                  <TableCell>{func.email}</TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={3} className="text-center py-6 text-muted-foreground">
+                <TableCell colSpan={6} className="text-center py-6 text-muted-foreground">
                   Nenhum funcionário cadastrado.
                 </TableCell>
               </TableRow>

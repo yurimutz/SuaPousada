@@ -17,22 +17,22 @@ import {
 const adminItems = [
   {
     title: "Dashboard",
-    url: "#",
+    url: "/admin",
     icon: Home,
   },
   {
     title: "Quartos",
-    url: "#",
+    url: "/admin/quartos",
     icon: BedDouble,
   },
   {
     title: "Reservas",
-    url: "#",
+    url: "/admin/reservas",
     icon: Calendar,
   },
   {
     title: "Hóspedes",
-    url: "#",
+    url: "/admin/hospedes",
     icon: Users,
   },
 ]
@@ -40,22 +40,22 @@ const adminItems = [
 const clientItems = [
   {
     title: "Minha conta",
-    url: "#",
+    url: "/conta",
     icon: User,
   },
   {
     title: "Minhas reservas",
-    url: "#",
+    url: "/minhas-reservas",
     icon: CalendarDays,
   },
   {
     title: "Fazer nova reserva",
-    url: "#",
+    url: "/nova-reserva",
     icon: PlusCircle,
   },
   {
     title: "Perfil",
-    url: "#",
+    url: "/perfil",
     icon: Settings,
   },
 ]
@@ -92,10 +92,13 @@ export function AppSidebar({ role = "admin" }: AppSidebarProps) {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    {/* <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </a> */}
+                    <Link to={item.url}>
+                      <span>{item.title}</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
