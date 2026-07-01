@@ -1,36 +1,35 @@
-package br.ufes.inf.SuaPousada;
+package br.ufes.inf.SuaPousada.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
+import br.ufes.inf.SuaPousada.domain.Genero;
+import br.ufes.inf.SuaPousada.dto.request.ClienteCreateRequestDTO;
+import br.ufes.inf.SuaPousada.dto.response.ClienteResponseDTO;
+import br.ufes.inf.SuaPousada.service.ClienteService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
-import br.ufes.inf.SuaPousada.controllers.ClienteController;
-import br.ufes.inf.SuaPousada.domain.Genero;
-import br.ufes.inf.SuaPousada.dto.request.ClienteCreateRequestDTO;
-import br.ufes.inf.SuaPousada.dto.request.ClienteUpdateRequestDTO;
-import br.ufes.inf.SuaPousada.dto.response.ClienteResponseDTO;
-import br.ufes.inf.SuaPousada.service.ClienteService;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ClienteControllerTest {
- 
-       @Mock private ClienteService clienteService;
+class ClienteControllerTest
+{
+    @Mock
+    private ClienteService clienteService;
 
-       @InjectMocks
-       private ClienteController clienteController;
+    @InjectMocks
+    private ClienteController clienteController;
 
-       @Test
-       void deveCriarClienteComSucesso() {
+    @Test
+    void deveCriarClienteComSucesso()
+    {
 
         String dataStr = "2002-07-01";
         LocalDate data1 = LocalDate.parse(dataStr, DateTimeFormatter.ISO_LOCAL_DATE);
@@ -43,15 +42,14 @@ public class ClienteControllerTest {
         when(clienteService.create(any(ClienteCreateRequestDTO.class))).thenReturn(responseDTO);
 
         // Act
-        ClienteResponseDTO resultado = clienteController.create(cliente);
+        ResponseEntity<ClienteResponseDTO> resultado = clienteController.create(cliente);
 
         // Assert
-        assertNotNull(resultado);
-        assertEquals("yuri", resultado.nome());
-        assertEquals(1L, resultado.id());
+        assertNotNull(resultado.getBody());
+        assertEquals("yuri", resultado.getBody().nome());
+        assertEquals(1L, resultado.getBody().id());
 
-       }
-
+    }
 }
 
 
@@ -72,12 +70,12 @@ public class ClienteControllerTest {
 //     void deveCriarClienteComSucesso() throws Exception {
 //         /* STREAMING_CHUNK:Preparando os dados (Arrange)... */
 //         ClienteCreateRequestDTO request = new ClienteCreateRequestDTO(
-//                 "Yuri", 
-//                 "123.456.789-00", 
-//                 "yuri@email.com", 
+//                 "Yuri",
+//                 "123.456.789-00",
+//                 "yuri@email.com",
 //                 LocalDate.of(2000, 1, 1)
 //         );
-        
+
 //         ClienteResponseDTO response = new ClienteResponseDTO(1L, "Yuri", "yuri@email.com");
 
 //         /* STREAMING_CHUNK:Configurando o comportamento do Mock (Mockito)... */
