@@ -35,7 +35,7 @@ public class ClienteController {
         }
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/update/{id}")
     public ClienteResponseDTO update(@PathVariable long id, @RequestBody ClienteUpdateRequestDTO dto) throws EntityNotFoundException, DataViolationException {
         try {
             return clienteService.update(id, dto);
@@ -46,16 +46,7 @@ public class ClienteController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public void update(@PathVariable long id) throws EntityNotFoundException, DataViolationException {
-        try {
-            clienteService.delete(id);
-        } catch (Exception e) {
-            //tem que ver isso aqui
-        }
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ClienteResponseDTO findById(@PathVariable long id) throws EntityNotFoundException, DataViolationException{
         try {
             return clienteService.findById(id);
@@ -65,7 +56,7 @@ public class ClienteController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/findAllClientes")
     public List<ClienteResponseDTO> findALL() throws EntityNotFoundException, DataViolationException{
         try {
             return clienteService.findAll();

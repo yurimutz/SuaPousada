@@ -3,14 +3,7 @@ package br.ufes.inf.SuaPousada.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.ufes.inf.SuaPousada.dto.request.FuncionarioCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.FuncionarioUpdateRequestDTO;
@@ -39,7 +32,7 @@ public class FuncionarioController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public FuncionarioResponseDTO update(@PathVariable long id, @RequestBody FuncionarioUpdateRequestDTO dto) throws EntityNotFoundException, DataViolationException {
         try {
             return funcionarioService.update(id, dto);
@@ -49,7 +42,7 @@ public class FuncionarioController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/desliga/{id}")
     public void desligaFuncionario(@PathVariable long id) throws EntityNotFoundException, DataViolationException {
         try {
             funcionarioService.desligaFuncionario(id);
@@ -59,7 +52,7 @@ public class FuncionarioController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/ativa/{id}")
     public void activateFuncionario(@PathVariable long id) throws EntityNotFoundException, DataViolationException {
         try {
             funcionarioService.activateFuncionario(id);
@@ -69,7 +62,7 @@ public class FuncionarioController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getId/{id}")
     public FuncionarioResponseDTO findById(@PathVariable long id) throws EntityNotFoundException, DataViolationException{
         try {
             return funcionarioService.findById(id);
@@ -79,7 +72,7 @@ public class FuncionarioController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/findAllFuncionarios")
     public List<FuncionarioResponseDTO> findALL() throws EntityNotFoundException, DataViolationException{
         try {
             return funcionarioService.findAll();
@@ -89,7 +82,7 @@ public class FuncionarioController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/findAllAtivosFuncionario")
     public List<FuncionarioResponseDTO> findALLAtivos() throws EntityNotFoundException, DataViolationException{
         try {
             return funcionarioService.findAll();
