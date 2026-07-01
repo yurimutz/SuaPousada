@@ -3,92 +3,65 @@ package br.ufes.inf.SuaPousada.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.ufes.inf.SuaPousada.dto.request.FuncionarioCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.FuncionarioUpdateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.response.FuncionarioResponseDTO;
-import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
 import br.ufes.inf.SuaPousada.service.FuncionarioService;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/funcionario")
-public class FuncionarioController {
+public class FuncionarioController
+{
     private final FuncionarioService funcionarioService;
 
-    public FuncionarioController(FuncionarioService funcionarioService){
+    public FuncionarioController(FuncionarioService funcionarioService)
+    {
         this.funcionarioService = funcionarioService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public FuncionarioResponseDTO create(@RequestBody FuncionarioCreateRequestDTO dto) throws EntityNotFoundException, DataViolationException {
-        try {
-            return funcionarioService.create(dto);
-        } catch (Exception e) {
-            //tem que ver isso aqui
-            return null;
-        }
+    @PostMapping("/create")
+    public ResponseEntity<FuncionarioResponseDTO> create(@RequestBody FuncionarioCreateRequestDTO dto)
+    {
+        return new ResponseEntity<>(funcionarioService.create(dto), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{id}")
-    public FuncionarioResponseDTO update(@PathVariable long id, @RequestBody FuncionarioUpdateRequestDTO dto) throws EntityNotFoundException, DataViolationException {
-        try {
-            return funcionarioService.update(id, dto);
-        } catch (Exception e) {
-            //tem que ver isso aqui
-            return null;
-        }
+    @PatchMapping("/{id}/update")
+    public ResponseEntity<FuncionarioResponseDTO> update(@PathVariable Long id, @RequestBody FuncionarioUpdateRequestDTO dto)
+    {
+        return new ResponseEntity<>(funcionarioService.update(id, dto), HttpStatus.OK);
     }
 
-    @PatchMapping("/desliga/{id}")
-    public void desligaFuncionario(@PathVariable long id) throws EntityNotFoundException, DataViolationException {
-        try {
-            funcionarioService.desligaFuncionario(id);
-        } catch (Exception e) {
-            //tem que ver isso aqui
-            
-        }
+    @PatchMapping("/{id}/desliga")
+    public void desligaFuncionario(@PathVariable Long id)
+    {
+        funcionarioService.desligaFuncionario(id);
     }
 
-    @PutMapping("/ativa/{id}")
-    public void activateFuncionario(@PathVariable long id) throws EntityNotFoundException, DataViolationException {
-        try {
-            funcionarioService.activateFuncionario(id);
-        } catch (Exception e) {
-            //tem que ver isso aqui
-            
-        }
+    @PatchMapping("/{id}/ativa")
+    public void activateFuncionario(@PathVariable Long id)
+    {
+        funcionarioService.activateFuncionario(id);
     }
 
-    @GetMapping("/getId/{id}")
-    public FuncionarioResponseDTO findById(@PathVariable long id) throws EntityNotFoundException, DataViolationException{
-        try {
-            return funcionarioService.findById(id);
-        } catch (Exception e) {
-            //tem que ver isso aqui
-            return null;
-        }
+    @GetMapping("/{id}/get")
+    public ResponseEntity<FuncionarioResponseDTO> findById(@PathVariable Long id)
+    {
+        return new ResponseEntity<>(funcionarioService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/findAllFuncionarios")
-    public List<FuncionarioResponseDTO> findALL() throws EntityNotFoundException, DataViolationException{
-        try {
-            return funcionarioService.findAll();
-        } catch (Exception e) {
-            //tem que ver isso aqui
-            return null;
-        }
+    @GetMapping("/getAll")
+    public ResponseEntity<List<FuncionarioResponseDTO>> findAll()
+    {
+        return new ResponseEntity<>(funcionarioService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/findAllAtivosFuncionario")
-    public List<FuncionarioResponseDTO> findALLAtivos() throws EntityNotFoundException, DataViolationException{
-        try {
-            return funcionarioService.findAll();
-        } catch (Exception e) {
-            //tem que ver isso aqui
-            return null;
-        }
+    @GetMapping("/getAllAtivos")
+    public ResponseEntity<List<FuncionarioResponseDTO>> findAllAtivos()
+    {
+        return new ResponseEntity<>(funcionarioService.findAllAtivos(), HttpStatus.OK);
     }
 }

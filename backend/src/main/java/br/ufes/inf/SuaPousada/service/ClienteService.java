@@ -5,6 +5,7 @@ import br.ufes.inf.SuaPousada.dto.request.ClienteCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.ClienteUpdateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.response.ClienteResponseDTO;
 import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
+import br.ufes.inf.SuaPousada.exceptions.ResourceNotFoundException;
 import br.ufes.inf.SuaPousada.repository.ClienteRepository;
 import br.ufes.inf.SuaPousada.repository.PessoaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,7 +29,7 @@ public class ClienteService
         this.pessoaRepository = pessoaRepository;
     }
 
-    public ClienteResponseDTO create(ClienteCreateRequestDTO request_dto) throws DataViolationException
+    public ClienteResponseDTO create(ClienteCreateRequestDTO request_dto)
     {
         if (!isOfAge(request_dto.dtNascimento()))
         {
@@ -39,19 +40,13 @@ public class ClienteService
 
         Cliente cliente = toEntity(request_dto);
 
-        try
-        {
-            return toResponse(clienteRepository.save(cliente));
-        } catch (DataIntegrityViolationException e)
-        {
-            throw new DataViolationException(e, "Problema ao criar um cliente");
-        }
+        return toResponse(clienteRepository.save(cliente));
 
     }
 
-    public ClienteResponseDTO update(long id, ClienteUpdateRequestDTO request_dto) throws EntityNotFoundException, DataViolationException
+    public ClienteResponseDTO update(long id, ClienteUpdateRequestDTO request_dto)
     {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         Cliente cliente_atualizado = Cliente.builder()
                 .id(cliente.getId())
@@ -63,26 +58,13 @@ public class ClienteService
                 .telefone(request_dto.telefone() != null ? request_dto.telefone() : cliente.getTelefone())
                 .build();
 
-        try
-        {
-            return toResponse(clienteRepository.save(cliente_atualizado));
-        } catch (DataIntegrityViolationException e)
-        {
-            throw new DataViolationException(e, "Problema ao atualizar um cliente");
-        }
-    }
+        return toResponse(clienteRepository.save(cliente_atualizado));
 
-    // Verificar esse metodo, um cliente pode ser excluido do banco de dados?
-    public void delete(long id) throws EntityNotFoundException
-    {
-        var cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
-
-        clienteRepository.delete(cliente);
     }
 
     public ClienteResponseDTO findById(Long id)
     {
-        var cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
+        var cliente = clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         return toResponse(cliente);
     }
@@ -126,7 +108,7 @@ public class ClienteService
         return ChronoUnit.YEARS.between(birthDate, LocalDate.now()) >= 18;
     }
 
-    private void validateCpfAndEmailDuplication(String cpf, String email) throws DataViolationException
+    private void validateCpfAndEmailDuplication(String cpf, String email)
     {
         if (pessoaRepository.existsByCpfOrEmail(cpf, email))
         {

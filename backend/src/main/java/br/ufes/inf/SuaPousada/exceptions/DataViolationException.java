@@ -2,13 +2,8 @@ package br.ufes.inf.SuaPousada.exceptions;
 
 public class DataViolationException extends RuntimeException
 {
-    public DataViolationException(String mensagem)
+    public DataViolationException(String message)
     {
-        super(mensagem);
-    }
-
-    public DataViolationException(Throwable cause ,String mensagem)
-    {
-        super(mensagem);
+        super(message);
     }
 }

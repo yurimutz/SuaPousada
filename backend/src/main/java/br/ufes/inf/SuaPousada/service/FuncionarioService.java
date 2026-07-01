@@ -5,6 +5,7 @@ import br.ufes.inf.SuaPousada.dto.request.FuncionarioCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.FuncionarioUpdateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.response.FuncionarioResponseDTO;
 import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
+import br.ufes.inf.SuaPousada.exceptions.ResourceNotFoundException;
 import br.ufes.inf.SuaPousada.repository.FuncionarioRepository;
 import br.ufes.inf.SuaPousada.repository.PessoaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,30 +28,29 @@ public class FuncionarioService
         this.pessoaRepository = pessoaRepository;
     }
 
-    public FuncionarioResponseDTO create(FuncionarioCreateRequestDTO request_dto) throws DataViolationException
+    // VERIFICAR ESSE METODO TAMBEM
+    public FuncionarioResponseDTO create(FuncionarioCreateRequestDTO request_dto)
     {
         if (!isOfAge(request_dto.dtNascimento()))
         {
-            throw new DataViolationException("Funcionario deve ser maior de idade");
+            throw new DataViolationException("Funcionário deve ser maior de idade");
         }
 
         validateCpfAndEmailDuplication(request_dto.cpf(), request_dto.email());
 
         Funcionario funcionario = toEntity(request_dto);
 
-        try
-        {
-            return toResponse(funcionarioRepository.save(funcionario));
-        } catch (DataIntegrityViolationException e)
-        {
-            throw new DataViolationException(e, "Problema ao criar um funcionario");
-        }
+        funcionario.setAtivo(true);
+        funcionario.setDataDesligamento(null);
+
+        return toResponse(funcionarioRepository.save(funcionario));
 
     }
 
-    public FuncionarioResponseDTO update(long id, FuncionarioUpdateRequestDTO request_dto) throws EntityNotFoundException, DataViolationException
+    // ANALISAR ESSE METODO AQUI E O DTO DO FUNCIONARIO UPDATE REQUEST
+    public FuncionarioResponseDTO update(long id, FuncionarioUpdateRequestDTO request_dto)
     {
-        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Funcionario não encontrado"));
+        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
 
         Funcionario funcionario_atualizado = Funcionario.builder()
                 .id(funcionario.getId())
@@ -62,50 +62,37 @@ public class FuncionarioService
                 .telefone(request_dto.telefone() != null ? request_dto.telefone() : funcionario.getTelefone())
                 .build();
 
-        try
-        {
-            return toResponse(funcionarioRepository.save(funcionario_atualizado));
-        } catch (DataIntegrityViolationException e)
-        {
-            throw new DataViolationException(e, "Problema ao atualizar um funcionario");
-        }
+        return toResponse(funcionarioRepository.save(funcionario_atualizado));
+
     }
 
-    public void desligaFuncionario(long id) throws EntityNotFoundException
+    // ANALISAR ESSE METODO DEPOIS
+    public void desligaFuncionario(Long id)
     {
-        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Funcionario não encontrado"));
+        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
 
         funcionario.setDataDesligamento(LocalDate.now());
         funcionario.setAtivo(false);
 
-        try
-        {
-            funcionarioRepository.save(funcionario);
-        } catch (DataIntegrityViolationException e)
-        {
-            throw new DataViolationException(e, "Problema ao desligar um funcionario");
-        }
+        funcionarioRepository.save(funcionario);
+
     }
 
-    public void activateFuncionario(long id) throws EntityNotFoundException
+    // ANALISAR ESSE METODO DEPOIS
+    public void activateFuncionario(Long id)
     {
-        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Funcionario não encontrado"));
+        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
 
         funcionario.setDataDesligamento(null);
         funcionario.setAtivo(true);
 
-        try
-        {
-            funcionarioRepository.save(funcionario);
-        } catch (DataIntegrityViolationException e)
-        {
-            throw new DataViolationException(e, "Problema ao ativar um funcionario");
-        }
+        funcionarioRepository.save(funcionario);
+
     }
 
     public FuncionarioResponseDTO findById(Long id)
     {
-        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Funcionario não encontrado"));
+        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
 
         return toResponse(funcionario);
     }
@@ -165,11 +152,11 @@ public class FuncionarioService
         return f.getAtivo();
     }
 
-    private void validateCpfAndEmailDuplication(String cpf, String email) throws DataViolationException
+    private void validateCpfAndEmailDuplication(String cpf, String email)
     {
         if (pessoaRepository.existsByCpfOrEmail(cpf, email))
         {
-            throw new DataViolationException("Já existe um usuário com esse email ou CPF cadastrado");
+            throw new DataViolationException("Já existe um funcionário com esse email ou CPF cadastrado");
         }
     }
 }
