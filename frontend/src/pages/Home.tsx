@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { Button } from "@/components/ui/button";
 
 export function Home() {
   return (
@@ -11,12 +12,11 @@ export function Home() {
         Faça seu agendamento agora mesmo e garanta sua estadia!
       </p>
       <div className="flex gap-4">
-        <Link 
-          to="/login" 
-          className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-        >
-          Fazer Login / Agendar
-        </Link>
+        <Button asChild size="lg">
+          <Link to="/login">
+            Fazer Login / Agendar
+          </Link>
+        </Button>
       </div>
     </div>
   );

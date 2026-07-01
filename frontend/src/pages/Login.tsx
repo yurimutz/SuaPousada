@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router";
 
 export function Login() {
@@ -20,47 +23,46 @@ export function Login() {
           <p className="mt-2 text-sm text-muted-foreground">Para clientes e administradores</p>
         </div>
         
-        <form className="mt-8 space-y-6">
-          <div className="space-y-4 rounded-md shadow-sm">
-            <div>
-              <label htmlFor="email-address" className="sr-only">Endereço de Email</label>
-              <input 
+        <form className="mt-8 flex flex-col gap-6">
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="email-address">Endereço de Email</FieldLabel>
+              <Input 
                 id="email-address" 
                 name="email" 
                 type="email" 
                 autoComplete="email" 
                 required 
-                className="relative block w-full rounded-t-md border-0 py-2.5 px-3 text-foreground ring-1 ring-inset ring-border placeholder:text-muted-foreground focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 bg-background" 
-                placeholder="Endereço de Email" 
+                placeholder="Digite seu email" 
               />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Senha</label>
-              <input 
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="password">Senha</FieldLabel>
+              <Input 
                 id="password" 
                 name="password" 
                 type="password" 
                 autoComplete="current-password" 
                 required 
-                className="relative block w-full rounded-b-md border-0 py-2.5 px-3 text-foreground ring-1 ring-inset ring-border placeholder:text-muted-foreground focus:z-10 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 bg-background" 
-                placeholder="Senha" 
+                placeholder="Digite sua senha" 
               />
-            </div>
-          </div>
+            </Field>
+          </FieldGroup>
 
           <div className="flex flex-col gap-3">
-            <button 
+            <Button 
               onClick={(e) => handleLogin(e, 'cliente')}
-              className="group relative flex w-full justify-center rounded-md bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="w-full"
             >
               Entrar como Cliente
-            </button>
-            <button 
+            </Button>
+            <Button 
+              variant="secondary"
               onClick={(e) => handleLogin(e, 'admin')}
-              className="group relative flex w-full justify-center rounded-md bg-secondary px-3 py-2.5 text-sm font-semibold text-secondary-foreground hover:bg-secondary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+              className="w-full"
             >
               Entrar como Administrador
-            </button>
+            </Button>
           </div>
         </form>
         
