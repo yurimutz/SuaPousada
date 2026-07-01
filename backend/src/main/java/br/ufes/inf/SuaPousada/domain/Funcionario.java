@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "tb_funcionario")
 @PrimaryKeyJoinColumn(name = "id_pessoa")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Funcionario extends Pessoa
 {
     //dtAdmissao, desligamento, salario, etc?????
