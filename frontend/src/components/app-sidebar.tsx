@@ -97,6 +97,7 @@ export function AppSidebar({ role = "admin" }: AppSidebarProps) {
                       <span>{item.title}</span>
                     </a> */}
                     <Link to={item.url}>
+                      <item.icon />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
