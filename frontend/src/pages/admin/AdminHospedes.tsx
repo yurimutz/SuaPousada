@@ -7,6 +7,7 @@ import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { hospedesColumns, type Hospede } from "../../components/data-table/hospedes-columns";
+import { HospedeForm } from "@/components/forms/hospede-form";
 
 export function AdminHospedes() {
   
@@ -42,16 +43,19 @@ export function AdminHospedes() {
           <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger asChild>
               <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
+                <PlusCircle data-icon="inline-start" />
                 Adicionar
               </Button>
             </DrawerTrigger>
             <DrawerContent>
               <DrawerHeader>
-                <DrawerTitle>Novo Funcionário</DrawerTitle>
+                <DrawerTitle>Novo Hóspede</DrawerTitle>
               </DrawerHeader>
               <div className="p-4 pb-0">
-                {/* {FuncionarioForm} */}
+                <HospedeForm onSuccess={() => {
+                  setIsOpen(false);
+                  fetchHospedes();
+                }} />
               </div>
               <DrawerFooter className="pt-2">
                 <DrawerClose asChild>
@@ -64,7 +68,7 @@ export function AdminHospedes() {
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
+                <PlusCircle data-icon="inline-start" />
                 Adicionar Hóspede
               </Button>
             </DialogTrigger>
@@ -72,7 +76,10 @@ export function AdminHospedes() {
               <DialogHeader>
                 <DialogTitle>Novo Hóspede</DialogTitle>
               </DialogHeader>
-              {/* {FuncionarioForm} */}
+              <HospedeForm onSuccess={() => {
+                setIsOpen(false);
+                fetchHospedes();
+              }} />
             </DialogContent>
           </Dialog>
         )}
