@@ -3,10 +3,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { Field, FieldContent, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
+import { columns } from "./data-table/columns";
+import { DataTable } from "./data-table/data-table";
 
 type Funcionario = {
   id?: number;
@@ -19,14 +20,23 @@ type Funcionario = {
 };
 
 const initialFuncionarios: Funcionario[] = [
-  { 
+  {
     id: 1,
     nome: "Rafael Rodrigues",
-    cpf: "164.437.627-03",
-    telefone: "27-997550259", 
-    dtNascimento: "2004-09-13", 
-    genero: "Masculino", 
-    email: "rafael@gmail.com" 
+    cpf: "16443762703",
+    telefone: "27997550259",
+    dtNascimento: "2004-09-13",
+    genero: "Masculino",
+    email: "rafael@gmail.com"
+  },
+  {
+    id: 2,
+    nome: "Bruno Vale",
+    cpf: "16443762701",
+    telefone: "27997550259",
+    dtNascimento: "2004-09-13",
+    genero: "Masculino",
+    email: "bruno@gmail.com"
   },
 ];
 
@@ -35,9 +45,9 @@ export function FuncionariosSection() {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  const [formData, setFormData] = useState({ 
-    nome: "", 
-    cpf: "", 
+  const [formData, setFormData] = useState({
+    nome: "",
+    cpf: "",
     telefone: "",
     dtNascimento: "",
     genero: "",
@@ -51,7 +61,7 @@ export function FuncionariosSection() {
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!formData.nome || !formData.cpf) return;
-    
+
     setFuncionarios([...funcionarios, { id: Date.now(), ...formData }]);
     setFormData({ nome: "", cpf: "", telefone: "", dtNascimento: "", genero: "", email: "" });
     setIsOpen(false);
@@ -66,14 +76,14 @@ export function FuncionariosSection() {
             <Input id="nome" name="nome" value={formData.nome} onChange={handleChange} placeholder="Ex: Ana Clara" required />
           </FieldContent>
         </Field>
-        
+
         <Field>
           <FieldLabel htmlFor="cpf">CPF</FieldLabel>
           <FieldContent>
             <Input id="cpf" name="cpf" value={formData.cpf} onChange={handleChange} placeholder="000.000.000-00" required />
           </FieldContent>
         </Field>
-        
+
         <Field>
           <FieldLabel htmlFor="telefone">Telefone</FieldLabel>
           <FieldContent>
@@ -110,7 +120,7 @@ export function FuncionariosSection() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Gestão de Funcionários</h2>
-        
+
         {isMobile ? (
           <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger asChild>
@@ -151,8 +161,8 @@ export function FuncionariosSection() {
         )}
       </div>
 
-      <div className="border rounded-lg overflow-hidden bg-card text-card-foreground">
-        <Table>
+      <div className="rounded-lg overflow-hidden bg-card text-card-foreground">
+        {/* <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
@@ -183,8 +193,10 @@ export function FuncionariosSection() {
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </Table> */}
+
       </div>
+        <DataTable columns={columns} data={initialFuncionarios}/>
     </div>
   );
 }
