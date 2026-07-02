@@ -1,20 +1,31 @@
+import { Route, Routes } from "react-router";
+import { Layout } from "./Layout";
+import { Admin } from "./pages/admin/Admin";
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import { AdminHospedes } from "./pages/admin/AdminHospedes";
+import { AdminQuartos } from "./pages/admin/AdminQuartos";
+import { AdminReservas } from "./pages/admin/AdminReservas";
+import { Client } from "./pages/client/Client";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
 
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-bold">Essa página está em construção</h1>
-          {/* <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p> */}
-          {/* <Button className="mt-2">Button</Button> */}
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Porém, aperte <kbd>d</kbd> para mudar o tema 😏) 
-        </div>
-      </div>
-    </div>
-  )
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="login" element={<Login />} />
+      </Route>
+      <Route path="/admin" element={<Admin />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="quartos" element={<AdminQuartos />} />
+        <Route path="reservas" element={<AdminReservas />} />
+        <Route path="hospedes" element={<AdminHospedes />} />
+      </Route>
+      <Route path="/cliente" element={<Client />}>
+      </Route>
+    </Routes>
+  );
 }
 
 export default App
