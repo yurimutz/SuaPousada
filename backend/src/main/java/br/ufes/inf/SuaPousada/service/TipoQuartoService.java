@@ -8,6 +8,8 @@ import br.ufes.inf.SuaPousada.exceptions.ResourceNotFoundException;
 import br.ufes.inf.SuaPousada.repository.TipoQuartoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TipoQuartoService
 {
@@ -25,14 +27,44 @@ public class TipoQuartoService
         return toResponse(tipoQuartoRepository.save(tipoQuarto));
     }
 
-//    public TipoQuartoResponseDTO update(Long id, TipoQuartoUpdateRequestDTO request_dto)
-//    {
-//        TipoQuarto tipoQuarto = tipoQuartoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Tipo Quarto não encontrado"));
-//
-//
-//    }
+    public TipoQuartoResponseDTO update(Long id, TipoQuartoUpdateRequestDTO request_dto)
+    {
+        TipoQuarto tipoQuarto = tipoQuartoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Tipo Quarto não encontrado"));
 
-    public TipoQuarto toEntity(TipoQuartoCreateRequestDTO dto)
+        TipoQuarto tipoQuarto_atualizado = TipoQuarto.builder()
+                .id(tipoQuarto.getId())
+                .nome(request_dto.nome() != null ? request_dto.nome() : tipoQuarto.getNome())
+                .qtdCamasSolteiro(request_dto.qtdCamasSolteiro() != null ? request_dto.qtdCamasSolteiro() : tipoQuarto.getQtdCamasSolteiro())
+                .qtdCamasCasal(request_dto.qtdCamasCasal() != null ? request_dto.qtdCamasCasal() : tipoQuarto.getQtdCamasCasal())
+                .qtdBanheiros(request_dto.qtdBanheiros() != null ? request_dto.qtdBanheiros() : tipoQuarto.getQtdBanheiros())
+                .valor_diaria(request_dto.valor_diaria() != null ? request_dto.valor_diaria() : tipoQuarto.getValor_diaria())
+                .existe_ArCondicionado(request_dto.existe_ArCondicionado() != null ? request_dto.existe_ArCondicionado() : tipoQuarto.getExiste_ArCondicionado())
+                .build();
+
+        return toResponse(tipoQuartoRepository.save(tipoQuarto_atualizado));
+    }
+
+    public void delete(Long id)
+    {
+        TipoQuarto tipoQuarto = tipoQuartoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Esse TipoQuarto não foi encontrado"));
+
+        tipoQuartoRepository.deleteById(id);
+    }
+
+    public TipoQuartoResponseDTO findById(Long id)
+    {
+        return toResponse(tipoQuartoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Esse TipoQuarto não foi encontrado")));
+    }
+
+    public List<TipoQuartoResponseDTO> findAll()
+    {
+        return tipoQuartoRepository.findAll()
+                .stream()
+                .map(TipoQuartoService::toResponse)
+                .toList();
+    }
+
+    public static TipoQuarto toEntity(TipoQuartoCreateRequestDTO dto)
     {
         return TipoQuarto.builder()
                 .nome(dto.nome())
@@ -44,7 +76,7 @@ public class TipoQuartoService
                 .build();
     }
 
-    public TipoQuartoResponseDTO toResponse(TipoQuarto entity)
+    public static TipoQuartoResponseDTO toResponse(TipoQuarto entity)
     {
         return new TipoQuartoResponseDTO(
                 entity.getId(),
