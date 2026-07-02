@@ -1,13 +1,12 @@
 package br.ufes.inf.SuaPousada.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
@@ -30,7 +29,7 @@ public abstract class Pessoa
     private String nome;
 
     @NotBlank
-    @Size(max = 11)
+    @CPF
     @Column(nullable = false, length = 11)
     private String cpf;
 
@@ -43,6 +42,7 @@ public abstract class Pessoa
     private Genero genero;
 
     @NotBlank
+    @Email
     @Column(nullable = false)
     private String email;
 
