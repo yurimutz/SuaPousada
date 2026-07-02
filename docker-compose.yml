@@ -8,6 +8,8 @@ services:
       POSTGRES_PASSWORD: senha_secreta
     ports:
       - "5433:5432"
+    volumes:
+      - ./dados_banco:/var/lib/postgresql
 
 # JAVA
   backend:
