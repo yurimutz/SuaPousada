@@ -1,5 +1,5 @@
 import { BedDouble, Calendar, CalendarDays, Home, LogOut, PlusCircle, Settings, User, Users } from "lucide-react"
-import { Link } from "react-router"
+import { Link, useLocation } from "react-router"
 
 import {
   Sidebar,
@@ -20,6 +20,11 @@ const adminItems = [
     url: "/admin",
     icon: Home,
   },
+    {
+    title: "Hóspedes",
+    url: "/admin/hospedes",
+    icon: Users,
+  },
   {
     title: "Quartos",
     url: "/admin/quartos",
@@ -30,11 +35,7 @@ const adminItems = [
     url: "/admin/reservas",
     icon: Calendar,
   },
-  {
-    title: "Hóspedes",
-    url: "/admin/hospedes",
-    icon: Users,
-  },
+
 ]
 
 const clientItems = [
@@ -66,6 +67,7 @@ interface AppSidebarProps {
 
 export function AppSidebar({ role = "admin" }: AppSidebarProps) {
   const items = (role === "admin") ? adminItems : clientItems;
+  const location = useLocation();
 
   return (
     <Sidebar collapsible="icon">
@@ -91,7 +93,7 @@ export function AppSidebar({ role = "admin" }: AppSidebarProps) {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild isActive={location.pathname === item.url}>
                     {/* <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
