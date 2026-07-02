@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import axios from "axios";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { hospedesColumns, type Hospede } from "../../components/data-table/hospedes-columns";
 
 const initialHospedes: Hospede[] = [
@@ -33,6 +34,19 @@ export function AdminHospedes() {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
+  const [hospedes, setHospedes] = useState<Hospede[]>([]);
+
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/cliente")
+    .then( (resposta) => {
+      console.log(resposta.data);
+      setHospedes(resposta.data);
+    })
+    .catch( (error) => {
+      console.log(error);
+    })
+  }, []);
 
   return (
     <div>
@@ -83,7 +97,7 @@ export function AdminHospedes() {
         )}
       </header>
 
-      <DataTable columns={hospedesColumns} data={initialHospedes} />
+      <DataTable columns={hospedesColumns} data={hospedes} />
       
     </div>
   );

@@ -1,9 +1,9 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import type { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 // Baseado na classe Pessoa/Cliente
 export type Hospede = {
@@ -66,6 +66,11 @@ export const hospedesColumns: ColumnDef<Hospede>[] = [
     {
         accessorKey: "genero",
         header: "Gênero",
+        cell: ({ row }) => {
+            const genero: string = row.getValue("genero");
+            const lower = genero.toLowerCase();
+            return lower.replace(/^./, lower[0].toUpperCase());
+        }
     },
     {
         accessorKey: "email",
