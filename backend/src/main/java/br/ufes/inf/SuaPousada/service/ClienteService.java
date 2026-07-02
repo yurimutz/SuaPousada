@@ -44,7 +44,7 @@ public class ClienteService
 
     }
 
-    public ClienteResponseDTO update(long id, ClienteUpdateRequestDTO request_dto)
+    public ClienteResponseDTO update(Long id, ClienteUpdateRequestDTO request_dto)
     {
         Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
