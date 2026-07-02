@@ -1,7 +1,12 @@
 package br.ufes.inf.SuaPousada;
 
+import br.ufes.inf.SuaPousada.domain.Genero;
+import br.ufes.inf.SuaPousada.dto.request.FuncionarioCreateRequestDTO;
+import br.ufes.inf.SuaPousada.service.FuncionarioService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDate;
 
 
 /** 
