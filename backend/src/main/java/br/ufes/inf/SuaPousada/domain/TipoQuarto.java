@@ -42,5 +42,5 @@ public class TipoQuarto
 
     @NotNull
     @Column(nullable = false)
-    private boolean existe_ArCondicionado;
+    private Boolean existe_ArCondicionado;
 }
