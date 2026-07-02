@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
-import { columns } from "./data-table/columns";
 import { DataTable } from "./data-table/data-table";
+import { columns } from "./data-table/funcionario-columns";
 
 type Funcionario = {
   id?: number;
@@ -161,8 +161,8 @@ export function FuncionariosSection() {
         )}
       </div>
 
-      <div className="rounded-lg overflow-hidden bg-card text-card-foreground">
-        {/* <Table>
+      {/* <div className="rounded-lg overflow-hidden bg-card text-card-foreground">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
@@ -193,9 +193,9 @@ export function FuncionariosSection() {
               </TableRow>
             )}
           </TableBody>
-        </Table> */}
+        </Table>
 
-      </div>
+      </div> */}
         <DataTable columns={columns} data={initialFuncionarios}/>
     </div>
   );

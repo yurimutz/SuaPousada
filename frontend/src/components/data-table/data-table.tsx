@@ -3,7 +3,7 @@ import {
     flexRender,
     getCoreRowModel,
     useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
     Table,
@@ -12,7 +12,8 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import * as React from "react";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -23,9 +24,16 @@ export function DataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
+
+    const [rowSelection, setRowSelection] = React.useState({});
+
     const table = useReactTable({
         data,
         columns,
+        onRowSelectionChange: setRowSelection,
+        state: {
+            rowSelection,
+        },
         getCoreRowModel: getCoreRowModel(),
     })
 
