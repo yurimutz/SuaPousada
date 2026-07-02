@@ -48,7 +48,7 @@ public class FuncionarioService
     }
 
     // ANALISAR ESSE METODO AQUI E O DTO DO FUNCIONARIO UPDATE REQUEST
-    public FuncionarioResponseDTO update(long id, FuncionarioUpdateRequestDTO request_dto)
+    public FuncionarioResponseDTO update(Long id, FuncionarioUpdateRequestDTO request_dto)
     {
         Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
 
