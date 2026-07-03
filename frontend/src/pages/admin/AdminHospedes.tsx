@@ -3,36 +3,32 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import axios from "axios";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { hospedesColumns, type Hospede } from "../../components/data-table/hospedes-columns";
-
-const initialHospedes: Hospede[] = [
-  {
-    id: 1,
-    nome: "Maria Silva",
-    cpf: "12345678901",
-    telefone: "11987654321",
-    dtNascimento: "1990-05-20",
-    genero: "Feminino",
-    email: "maria.silva@email.com"
-  },
-  {
-    id: 2,
-    nome: "João Pereira",
-    cpf: "98765432100",
-    telefone: "21999998888",
-    dtNascimento: "1985-11-10",
-    genero: "Masculino",
-    email: "joao.pereira@email.com"
-  }
-];
+import { HospedeForm } from "@/components/forms/hospede-form";
 
 export function AdminHospedes() {
   
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
+  const [hospedes, setHospedes] = useState<Hospede[]>([]);
+  
+  const fetchHospedes = () => {
+    axios.get("http://localhost:8080/cliente")
+    .then( (resposta) => {
+      setHospedes(resposta.data);
+    })
+    .catch( (error) => {
+      console.log(error);
+    })
+  }
+
+  useEffect(() => {
+    fetchHospedes();
+  }, []);
 
   return (
     <div>
@@ -47,16 +43,19 @@ export function AdminHospedes() {
           <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <DrawerTrigger asChild>
               <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
+                <PlusCircle data-icon="inline-start" />
                 Adicionar
               </Button>
             </DrawerTrigger>
             <DrawerContent>
               <DrawerHeader>
-                <DrawerTitle>Novo Funcionário</DrawerTitle>
+                <DrawerTitle>Novo Hóspede</DrawerTitle>
               </DrawerHeader>
               <div className="p-4 pb-0">
-                {/* {FuncionarioForm} */}
+                <HospedeForm onSuccess={() => {
+                  setIsOpen(false);
+                  fetchHospedes();
+                }} />
               </div>
               <DrawerFooter className="pt-2">
                 <DrawerClose asChild>
@@ -69,7 +68,7 @@ export function AdminHospedes() {
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
+                <PlusCircle data-icon="inline-start" />
                 Adicionar Hóspede
               </Button>
             </DialogTrigger>
@@ -77,13 +76,16 @@ export function AdminHospedes() {
               <DialogHeader>
                 <DialogTitle>Novo Hóspede</DialogTitle>
               </DialogHeader>
-              {/* {FuncionarioForm} */}
+              <HospedeForm onSuccess={() => {
+                setIsOpen(false);
+                fetchHospedes();
+              }} />
             </DialogContent>
           </Dialog>
         )}
       </header>
 
-      <DataTable columns={hospedesColumns} data={initialHospedes} />
+      <DataTable columns={hospedesColumns} data={hospedes} meta={{ reloadData: fetchHospedes }} />
       
     </div>
   );

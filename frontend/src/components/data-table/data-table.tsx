@@ -18,11 +18,13 @@ import * as React from "react";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    meta?: any
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    meta,
 }: DataTableProps<TData, TValue>) {
 
     const [rowSelection, setRowSelection] = React.useState({});
@@ -30,6 +32,7 @@ export function DataTable<TData, TValue>({
     const table = useReactTable({
         data,
         columns,
+        meta,
         onRowSelectionChange: setRowSelection,
         state: {
             rowSelection,
