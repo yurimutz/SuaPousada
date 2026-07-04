@@ -4,6 +4,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { type Hospede } from "../data-table/hospedes-columns";
+import { DatePickerSimple } from "../date-picker-birthday";
 
 interface HospedeFormProps {
     hospede?: Hospede;
@@ -57,10 +58,12 @@ export function HospedeForm({ hospede, onSuccess }: HospedeFormProps) {
                     <FieldLabel htmlFor={`telefone-${idPrefix}`}>Telefone</FieldLabel>
                     <Input id={`telefone-${idPrefix}`} name="telefone" defaultValue={hospede?.telefone} required />
                 </Field>
-                <Field>
-                    <FieldLabel htmlFor={`nasc-${idPrefix}`}>Data de Nascimento</FieldLabel>
-                    <Input id={`nasc-${idPrefix}`} name="dtNascimento" type="date" defaultValue={hospede?.dtNascimento} required />
-                </Field>
+                <DatePickerSimple 
+                    id={`nasc-${idPrefix}`} 
+                    name="dtNascimento" 
+                    defaultValue={hospede?.dtNascimento} 
+                    required 
+                />
                 <Field>
                     <FieldLabel htmlFor={`genero-${idPrefix}`}>Gênero</FieldLabel>
                     <Input id={`genero-${idPrefix}`} name="genero" defaultValue={hospede?.genero} required />

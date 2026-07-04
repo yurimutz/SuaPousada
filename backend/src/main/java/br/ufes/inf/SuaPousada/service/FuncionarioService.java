@@ -36,7 +36,10 @@ public class FuncionarioService
             throw new DataViolationException("Funcionário deve ser maior de idade");
         }
 
-        validateCpfAndEmailDuplication(request_dto.cpf(), request_dto.email());
+        if (pessoaRepository.existsByCpfOrEmail(request_dto.cpf(), request_dto.email()))
+        {
+            throw new DataViolationException("Já existe um funcionário com esse email ou CPF cadastrado");
+        }
 
         Funcionario funcionario = toEntity(request_dto);
 
@@ -61,6 +64,16 @@ public class FuncionarioService
                 .email(request_dto.email() != null ? request_dto.email() : funcionario.getEmail())
                 .telefone(request_dto.telefone() != null ? request_dto.telefone() : funcionario.getTelefone())
                 .build();
+
+        if (!isOfAge(funcionario_atualizado.getDtNascimento()))
+        {
+            throw new DataViolationException("Funcionário deve ser maior de idade");
+        }
+
+        if (pessoaRepository.existsByCpfOrEmailAndIdNot(funcionario_atualizado.getCpf(), funcionario_atualizado.getEmail(), id))
+        {
+            throw new DataViolationException("Já existe um funcionário com esse email ou CPF cadastrado");
+        }
 
         return toResponse(funcionarioRepository.save(funcionario_atualizado));
 
@@ -152,11 +165,5 @@ public class FuncionarioService
         return f.getAtivo();
     }
 
-    private void validateCpfAndEmailDuplication(String cpf, String email)
-    {
-        if (pessoaRepository.existsByCpfOrEmail(cpf, email))
-        {
-            throw new DataViolationException("Já existe um funcionário com esse email ou CPF cadastrado");
-        }
-    }
+
 }
