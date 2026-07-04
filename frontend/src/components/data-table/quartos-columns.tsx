@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { FuncionarioForm } from "../forms/funcionario-form";
+import { QuartoForm } from "../forms/quarto-form";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -109,9 +109,9 @@ export const quartosColumns: ColumnDef<Quarto>[] = [
                 <BaseActionsCell
                     id={quarto.id}
                     table={table}
-                    entityName="Funcionário"
+                    entityName="Quarto"
                     renderEditForm={(onSuccess) => (
-                        <FuncionarioForm funcionario={quarto} onSuccess={onSuccess} />
+                        <QuartoForm quarto={quarto} onSuccess={onSuccess} />
                     )}
                 />
             );

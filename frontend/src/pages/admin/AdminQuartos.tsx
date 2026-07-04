@@ -1,6 +1,6 @@
 import { DataTable } from "@/components/data-table/data-table";
 import { quartosColumns } from "@/components/data-table/quartos-columns";
-import { HospedeForm } from "@/components/forms/hospede-form";
+import { QuartoForm } from "@/components/forms/quarto-form";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
@@ -54,7 +54,7 @@ export function AdminQuartos() {
                 <DrawerTitle>Novo Quarto</DrawerTitle>
               </DrawerHeader>
               <div className="p-4 pb-0">
-                <HospedeForm onSuccess={() => {
+                <QuartoForm onSuccess={() => {
                   setIsOpen(false);
                   fetchquartos();
                 }} />
@@ -78,7 +78,7 @@ export function AdminQuartos() {
               <DialogHeader>
                 <DialogTitle>Novo Quarto</DialogTitle>
               </DialogHeader>
-              <HospedeForm onSuccess={() => {
+              <QuartoForm onSuccess={() => {
                 setIsOpen(false);
                 fetchquartos();
               }} />
