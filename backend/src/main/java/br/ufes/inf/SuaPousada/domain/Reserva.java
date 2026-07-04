@@ -2,12 +2,10 @@ package br.ufes.inf.SuaPousada.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Reserva
 {
     @Id
@@ -27,17 +26,15 @@ public class Reserva
 
     private LocalDateTime dtCheckOut;
 
-    @NotNull
-    @Column(nullable = false)
     private Integer qtd_noites;
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime dtReservaInicio;
+    private LocalDate dtReservaInicio;
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime dtReservaFim;
+    private LocalDate dtReservaFim;
 
     @NotNull
     @ManyToOne
