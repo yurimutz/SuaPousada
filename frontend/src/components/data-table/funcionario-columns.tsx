@@ -1,11 +1,12 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { FuncionarioForm } from "../forms/funcionario-form";
 import { Button } from "../ui/button";
 import { ButtonGroup } from "../ui/button-group";
 import { Checkbox } from "../ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-
-
 export type Funcionario = {
     id: number;
     nome: string;
@@ -14,7 +15,60 @@ export type Funcionario = {
     dtNascimento: string;
     genero: string;
     email: string;
+    ativo: boolean;
+    dtDesligamento: string;
 };
+
+export function FuncionarioActionsCell({ funcionario, table }: { funcionario: Funcionario; table: any }) {
+    const [open, setOpen] = useState(false);
+
+    // Pega a função de recarregar do meta passado para a tabela
+    const reloadData = table.options.meta?.reloadData;
+
+    return (
+        <ButtonGroup>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                    <Button variant="outline" className="h-8 w-8 p-0 text-muted-foreground hover:text-primary" title="Editar">
+                        <Pencil className="h-4 w-4" />
+                        <span className="sr-only">Editar</span>
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Editar Funcionário</DialogTitle>
+                    </DialogHeader>
+                    <FuncionarioForm funcionario={funcionario} onSuccess={() => {
+                        setOpen(false); // Fecha o modal
+                        if (reloadData) reloadData(); // Recarrega a tabela
+                    }} />
+                </DialogContent>
+            </Dialog>
+            <Button variant="outline" className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive" title="Excluir">
+                <Trash2 className="h-4 w-4" />
+                <span className="sr-only">Excluir</span>
+            </Button>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="h-8 w-8 p-0">
+                        <span className="sr-only">Abrir menu</span>
+                        <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                    <DropdownMenuItem
+                        onClick={() => navigator.clipboard.writeText(funcionario.id.toString())}
+                    >
+                        Copiar ID do funcionário
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Ver detalhes do funcionário</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </ButtonGroup>
+    );
+}
 
 export const columns: ColumnDef<Funcionario>[] = [
 
@@ -41,7 +95,7 @@ export const columns: ColumnDef<Funcionario>[] = [
         enableHiding: false,
     },
 
-    
+
     {
         accessorKey: "nome",
         header: "Nome",
@@ -69,6 +123,11 @@ export const columns: ColumnDef<Funcionario>[] = [
     {
         accessorKey: "genero",
         header: "Gênero",
+        cell: ({ row }) => {
+            const genero: string = row.getValue("genero");
+            const lower = genero.toLowerCase();
+            return lower.replace(/^./, lower[0].toUpperCase());
+        }
     },
     {
         accessorKey: "email",
@@ -76,39 +135,9 @@ export const columns: ColumnDef<Funcionario>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const funcionario = row.original;
-
-            return (
-                <ButtonGroup>
-                    <Button variant="outline" className="h-8 w-8 p-0 text-muted-foreground hover:text-primary" title="Editar">
-                        <Pencil className="h-4 w-4" />
-                        <span className="sr-only">Editar</span>
-                    </Button>
-                    <Button variant="outline" className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive" title="Excluir">
-                        <Trash2 className="h-4 w-4" />
-                        <span className="sr-only">Excluir</span>
-                    </Button>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                                onClick={() => navigator.clipboard.writeText(funcionario.id.toString())}
-                            >
-                                Copiar ID do funcionário
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Ver detalhes do funcionário</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </ButtonGroup>
-            )
+            return <FuncionarioActionsCell funcionario={funcionario} table={table} />;
         }
     },
 ]
