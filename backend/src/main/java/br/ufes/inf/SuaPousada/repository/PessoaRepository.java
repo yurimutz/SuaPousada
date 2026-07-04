@@ -11,6 +11,5 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long>
      * DESVANTAGEM: a mensagem de erro fica genérica, pois pode ter sido o CPF ou EMAIL que lançaram a exceção */
     Boolean existsByCpfOrEmail(String cpf, String email);
 
-    @org.springframework.data.jpa.repository.Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Pessoa p WHERE (p.cpf = :cpf OR p.email = :email) AND p.id != :id")
-    Boolean existsByCpfOrEmailAndIdNot(@org.springframework.data.repository.query.Param("cpf") String cpf, @org.springframework.data.repository.query.Param("email") String email, @org.springframework.data.repository.query.Param("id") Long id);
+    boolean existsByCpfOrEmailAndIdNot(String cpf, String email, Long id);
 }

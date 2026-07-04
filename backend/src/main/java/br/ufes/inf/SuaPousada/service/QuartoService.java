@@ -49,7 +49,8 @@ public class QuartoService
 
         // Se um novo tipoQuartoId for fornecido, busca ele completo; senão, mantém o atual
         TipoQuarto tipoQuarto = quarto.getTipoQuarto();
-        if (request_dto.tipoQuartoId() != null) {
+        if (request_dto.tipoQuartoId() != null)
+        {
             tipoQuarto = tipoQuartoRepository.findById(request_dto.tipoQuartoId())
                     .orElseThrow(() -> new ResourceNotFoundException("Tipo de Quarto não encontrado"));
         }
@@ -61,7 +62,7 @@ public class QuartoService
                 .tipoQuarto(tipoQuarto)
                 .build();
 
-        if(quartoRepository.existsByNumeroAndIdNot(quarto_atualizado.getNumero(), id))
+        if (quartoRepository.existsByNumeroAndIdNot(quarto_atualizado.getNumero(), id))
         {
             throw new DataViolationException("Já existe um Quarto cadastrado com este numero");
         }
@@ -89,8 +90,6 @@ public class QuartoService
                 .toList();
     }
 
-
-
     public static QuartoResponseDTO toResponse(Quarto entity)
     {
         return new QuartoResponseDTO(
@@ -99,11 +98,5 @@ public class QuartoService
                 entity.getAndar(),
                 entity.getTipoQuarto()
         );
-    }
-
-    private void numeroQuartoValidation(Integer numeroQuarto)
-    {
-        if (quartoRepository.existsByNumero(numeroQuarto))
-            throw new DataViolationException("Já existe um Quarto cadastrado com este numero");
     }
 }
