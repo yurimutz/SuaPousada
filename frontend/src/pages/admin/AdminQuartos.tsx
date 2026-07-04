@@ -8,14 +8,14 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { type Hospede } from "../../components/data-table/hospedes-columns";
+import { type Quarto } from "../../components/data-table/quartos-columns";
 
 
 export function AdminQuartos() {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  const [quartos, setQuartos] = useState<Hospede[]>([]);
+  const [quartos, setQuartos] = useState<Quarto[]>([]);
 
   const fetchquartos = () => {
     axios.get("http://localhost:8080/quarto")
