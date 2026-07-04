@@ -63,10 +63,7 @@ public class ClienteService
             throw new DataViolationException("Cliente deve ser maior de idade");
         }
 
-        if (pessoaRepository.existsByCpfOrEmailAndIdNot(cliente_atualizado.getCpf(), cliente_atualizado.getEmail(), id))
-        {
-            throw new DataViolationException("Já existe um usuário com esse email ou CPF cadastrado");
-        }
+        validateCpfAndEmailDuplication(cliente_atualizado.getCpf(), cliente_atualizado.getEmail());
 
         return toResponse(clienteRepository.save(cliente_atualizado));
 
