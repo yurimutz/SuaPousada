@@ -36,7 +36,10 @@ public class ClienteService
             throw new DataViolationException("Cliente deve ser maior de idade");
         }
 
-        validateCpfAndEmailDuplication(request_dto.cpf(), request_dto.email());
+        if (pessoaRepository.existsByCpfOrEmail(request_dto.cpf(), request_dto.email()))
+        {
+            throw new DataViolationException("Já existe um usuário com esse email ou CPF cadastrado");
+        }
 
         Cliente cliente = toEntity(request_dto);
 
@@ -63,7 +66,10 @@ public class ClienteService
             throw new DataViolationException("Cliente deve ser maior de idade");
         }
 
-        validateCpfAndEmailDuplication(cliente_atualizado.getCpf(), cliente_atualizado.getEmail());
+        if (pessoaRepository.existsByCpfOrEmailAndIdNot(cliente_atualizado.getCpf(), cliente_atualizado.getEmail(), id))
+        {
+            throw new DataViolationException("Já existe um usuário com esse email ou CPF cadastrado");
+        }
 
         return toResponse(clienteRepository.save(cliente_atualizado));
 
@@ -115,11 +121,5 @@ public class ClienteService
         return ChronoUnit.YEARS.between(birthDate, LocalDate.now()) >= 18;
     }
 
-    private void validateCpfAndEmailDuplication(String cpf, String email)
-    {
-        if (pessoaRepository.existsByCpfOrEmail(cpf, email))
-        {
-            throw new DataViolationException("Já existe um usuário com esse email ou CPF cadastrado");
-        }
-    }
+
 }

@@ -26,8 +26,8 @@ export function DatePickerSimple({ id, name, label = "Data de Nascimento", defau
     const initialDate = defaultValue ? new Date(defaultValue + "T00:00:00") : undefined;
     const [date, setDate] = React.useState<Date | undefined>(initialDate)
 
-    // Formata de volta para YYYY-MM-DD para o FormData enviar ao banco corretamente
-    const formattedValue = date ? date.toISOString().split("T")[0] : "";
+    // Formata de volta para YYYY-MM-DD para o FormData enviar ao banco corretamente (seguro para qualquer fuso horário)
+    const formattedValue = date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : "";
 
     return (
         <Field>
