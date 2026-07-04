@@ -27,7 +27,8 @@ public class QuartoService
 
     public QuartoResponseDTO create(QuartoCreateRequestDTO request_dto)
     {
-        numeroQuartoValidation(request_dto.numero());
+        if (quartoRepository.existsByNumero(request_dto.numero()))
+            throw new DataViolationException("Já existe um Quarto cadastrado com este numero");
 
         // Busca o TipoQuarto completo no banco de dados a partir do ID fornecido
         TipoQuarto tipoQuarto = tipoQuartoRepository.findById(request_dto.tipoQuartoId())
@@ -59,6 +60,11 @@ public class QuartoService
                 .andar(request_dto.andar() != null ? request_dto.andar() : quarto.getAndar())
                 .tipoQuarto(tipoQuarto)
                 .build();
+
+        if(quartoRepository.existsByNumeroAndIdNot(quarto_atualizado.getNumero(), id))
+        {
+            throw new DataViolationException("Já existe um Quarto cadastrado com este numero");
+        }
 
         return toResponse(quartoRepository.save(quarto_atualizado));
     }

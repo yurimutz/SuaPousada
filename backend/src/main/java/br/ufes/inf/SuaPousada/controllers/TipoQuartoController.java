@@ -1,10 +1,8 @@
 package br.ufes.inf.SuaPousada.controllers;
 
-import br.ufes.inf.SuaPousada.domain.TipoQuarto;
 import br.ufes.inf.SuaPousada.dto.request.TipoQuartoCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.TipoQuartoUpdateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.response.TipoQuartoResponseDTO;
-import br.ufes.inf.SuaPousada.exceptions.ResourceNotFoundException;
 import br.ufes.inf.SuaPousada.service.TipoQuartoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

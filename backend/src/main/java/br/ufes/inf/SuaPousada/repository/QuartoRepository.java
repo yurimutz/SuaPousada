@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface QuartoRepository extends JpaRepository<Quarto, Long>
 {
     boolean existsByNumero(Integer numero);
+
+    boolean existsByNumeroAndIdNot(Integer numero, Long id);
 }
