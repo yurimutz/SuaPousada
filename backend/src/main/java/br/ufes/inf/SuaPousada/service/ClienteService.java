@@ -58,6 +58,16 @@ public class ClienteService
                 .telefone(request_dto.telefone() != null ? request_dto.telefone() : cliente.getTelefone())
                 .build();
 
+        if (!isOfAge(cliente_atualizado.getDtNascimento()))
+        {
+            throw new DataViolationException("Cliente deve ser maior de idade");
+        }
+
+        if (pessoaRepository.existsByCpfOrEmailAndIdNot(cliente_atualizado.getCpf(), cliente_atualizado.getEmail(), id))
+        {
+            throw new DataViolationException("Já existe um usuário com esse email ou CPF cadastrado");
+        }
+
         return toResponse(clienteRepository.save(cliente_atualizado));
 
     }
