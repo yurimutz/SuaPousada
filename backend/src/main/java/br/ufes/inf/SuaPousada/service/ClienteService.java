@@ -58,13 +58,6 @@ public class ClienteService
                 .telefone(request_dto.telefone() != null ? request_dto.telefone() : cliente.getTelefone())
                 .build();
 
-        if (!isOfAge(cliente_atualizado.getDtNascimento()))
-        {
-            throw new DataViolationException("Cliente deve ser maior de idade");
-        }
-
-        validateCpfAndEmailDuplication(cliente_atualizado.getCpf(), cliente_atualizado.getEmail());
-
         return toResponse(clienteRepository.save(cliente_atualizado));
 
     }
