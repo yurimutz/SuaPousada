@@ -1,6 +1,6 @@
 package br.ufes.inf.SuaPousada.dto.request;
 
-import br.ufes.inf.SuaPousada.domain.TipoQuarto;
+
 
 public record QuartoUpdateRequestDTO(
 
@@ -8,7 +8,7 @@ public record QuartoUpdateRequestDTO(
 
         Integer andar,
 
-        TipoQuarto tipoQuarto
+        Long tipoQuartoId
 
 )
 {
