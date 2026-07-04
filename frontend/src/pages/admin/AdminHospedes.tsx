@@ -1,4 +1,5 @@
 import { DataTable } from "@/components/data-table/data-table";
+import { HospedeForm } from "@/components/forms/hospede-form";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
@@ -7,7 +8,6 @@ import axios from "axios";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { hospedesColumns, type Hospede } from "../../components/data-table/hospedes-columns";
-import { HospedeForm } from "@/components/forms/hospede-form";
 
 export function AdminHospedes() {
   
