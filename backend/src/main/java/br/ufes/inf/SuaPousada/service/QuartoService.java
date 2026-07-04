@@ -7,6 +7,8 @@ import br.ufes.inf.SuaPousada.dto.response.QuartoResponseDTO;
 import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
 import br.ufes.inf.SuaPousada.exceptions.ResourceNotFoundException;
 import br.ufes.inf.SuaPousada.repository.QuartoRepository;
+import br.ufes.inf.SuaPousada.repository.TipoQuartoRepository;
+import br.ufes.inf.SuaPousada.domain.TipoQuarto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,33 +17,50 @@ import java.util.List;
 public class QuartoService
 {
     private final QuartoRepository quartoRepository;
+    private final TipoQuartoRepository tipoQuartoRepository;
 
-    public QuartoService(QuartoRepository quartoRepository)
+    public QuartoService(QuartoRepository quartoRepository, TipoQuartoRepository tipoQuartoRepository)
     {
         this.quartoRepository = quartoRepository;
+        this.tipoQuartoRepository = tipoQuartoRepository;
     }
 
     public QuartoResponseDTO create(QuartoCreateRequestDTO request_dto)
     {
         numeroQuartoValidation(request_dto.numero());
 
-        Quarto quarto = toEntity(request_dto);
+        // Busca o TipoQuarto completo no banco de dados a partir do ID fornecido
+        TipoQuarto tipoQuarto = tipoQuartoRepository.findById(request_dto.tipoQuartoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Tipo de Quarto não encontrado"));
+
+        Quarto quarto = Quarto.builder()
+                .numero(request_dto.numero())
+                .andar(request_dto.andar())
+                .tipoQuarto(tipoQuarto)
+                .build();
 
         return toResponse(quartoRepository.save(quarto));
     }
 
     public QuartoResponseDTO update(Long id, QuartoUpdateRequestDTO request_dto)
     {
-        Quarto quarto = quartoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Tipo Quarto não encontrado"));
+        Quarto quarto = quartoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Quarto não encontrado"));
+
+        // Se um novo tipoQuartoId for fornecido, busca ele completo; senão, mantém o atual
+        TipoQuarto tipoQuarto = quarto.getTipoQuarto();
+        if (request_dto.tipoQuartoId() != null) {
+            tipoQuarto = tipoQuartoRepository.findById(request_dto.tipoQuartoId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Tipo de Quarto não encontrado"));
+        }
 
         Quarto quarto_atualizado = Quarto.builder()
                 .id(quarto.getId())
                 .numero(request_dto.numero() != null ? request_dto.numero() : quarto.getNumero())
                 .andar(request_dto.andar() != null ? request_dto.andar() : quarto.getAndar())
-                .tipoQuarto(request_dto.tipoQuarto() != null ? request_dto.tipoQuarto() : quarto.getTipoQuarto())
+                .tipoQuarto(tipoQuarto)
                 .build();
 
-        return toResponse(quartoRepository.save(quarto));
+        return toResponse(quartoRepository.save(quarto_atualizado));
     }
 
     public void delete(Long id)
@@ -64,14 +83,7 @@ public class QuartoService
                 .toList();
     }
 
-    public static Quarto toEntity(QuartoCreateRequestDTO dto)
-    {
-        return Quarto.builder()
-                .numero(dto.numero())
-                .andar(dto.andar())
-                .tipoQuarto(dto.tipoQuarto())
-                .build();
-    }
+
 
     public static QuartoResponseDTO toResponse(Quarto entity)
     {
