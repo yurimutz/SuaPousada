@@ -41,6 +41,8 @@ public class QuartoService
                 .tipoQuarto(request_dto.tipoQuarto() != null ? request_dto.tipoQuarto() : quarto.getTipoQuarto())
                 .build();
 
+        numeroQuartoValidation(quarto_atualizado.getNumero());
+
         return toResponse(quartoRepository.save(quarto));
     }
 

@@ -4,6 +4,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { type Funcionario } from "../data-table/funcionario-columns";
+import { DatePickerSimple } from "../date-picker-birthday";
 
 interface FuncionarioFormProps {
     funcionario?: Funcionario;
@@ -57,10 +58,12 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                     <FieldLabel htmlFor={`telefone-${idPrefix}`}>Telefone</FieldLabel>
                     <Input id={`telefone-${idPrefix}`} name="telefone" defaultValue={funcionario?.telefone} required />
                 </Field>
-                <Field>
-                    <FieldLabel htmlFor={`nasc-${idPrefix}`}>Data de Nascimento</FieldLabel>
-                    <Input id={`nasc-${idPrefix}`} name="dtNascimento" type="date" defaultValue={funcionario?.dtNascimento} required />
-                </Field>
+                <DatePickerSimple 
+                    id={`nasc-${idPrefix}`} 
+                    name="dtNascimento" 
+                    defaultValue={funcionario?.dtNascimento} 
+                    required 
+                />
                 <Field>
                     <FieldLabel htmlFor={`genero-${idPrefix}`}>Gênero</FieldLabel>
                     <Input id={`genero-${idPrefix}`} name="genero" defaultValue={funcionario?.genero} required />

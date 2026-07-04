@@ -9,44 +9,25 @@ import { useEffect, useState } from "react";
 import { hospedesColumns, type Hospede } from "../../components/data-table/hospedes-columns";
 import { HospedeForm } from "@/components/forms/hospede-form";
 
-const initialHospedes: Hospede[] = [
-  {
-    id: 1,
-    nome: "Maria Silva",
-    cpf: "12345678901",
-    telefone: "11987654321",
-    dtNascimento: "1990-05-20",
-    genero: "Feminino",
-    email: "maria.silva@email.com"
-  },
-  {
-    id: 2,
-    nome: "João Pereira",
-    cpf: "98765432100",
-    telefone: "21999998888",
-    dtNascimento: "1985-11-10",
-    genero: "Masculino",
-    email: "joao.pereira@email.com"
-  }
-];
-
 export function AdminHospedes() {
   
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
   const [hospedes, setHospedes] = useState<Hospede[]>([]);
-
-
-  useEffect(() => {
+  
+  const fetchHospedes = () => {
     axios.get("http://localhost:8080/cliente")
     .then( (resposta) => {
-      console.log(resposta.data);
       setHospedes(resposta.data);
     })
     .catch( (error) => {
       console.log(error);
     })
+  }
+
+  useEffect(() => {
+    fetchHospedes();
   }, []);
 
   return (
@@ -104,7 +85,7 @@ export function AdminHospedes() {
         )}
       </header>
 
-      <DataTable columns={hospedesColumns} data={hospedes} />
+      <DataTable columns={hospedesColumns} data={hospedes} meta={{ reloadData: fetchHospedes }} />
       
     </div>
   );
