@@ -1,3 +1,5 @@
+import { ConstructionCard } from "@/components/construction-card";
+
 export function AdminReservas() {
   return (
     <div>
@@ -5,9 +7,10 @@ export function AdminReservas() {
         <h1 className="text-3xl font-bold text-foreground">Gestão de Reservas</h1>
         <p className="text-muted-foreground mt-1">Visualize e gerencie as reservas da pousada.</p>
       </header>
-      <div className="bg-card p-6 rounded-xl shadow-sm border border-border">
-        <p className="text-muted-foreground">Página de reservas em construção...</p>
-      </div>
+      <ConstructionCard
+        description="Esta página está sendo desenvolvida."
+        content="Em breve você poderá gerenciar as reservas da Pousada por aqui."
+      />
     </div>
   );
 }
