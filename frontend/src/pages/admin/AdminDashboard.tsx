@@ -1,5 +1,5 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FuncionariosSection } from "@/components/FuncionariosSection";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function AdminDashboard() {
   return (
@@ -9,7 +9,7 @@ export function AdminDashboard() {
         <p className="text-muted-foreground mt-1">Bem-vindo de volta, Administrador.</p>
       </header>
 
-      <Tabs defaultValue="dashboard" className="w-full">
+      <Tabs defaultValue="funcionarios" className="w-full">
         <TabsList className="mb-8">
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           <TabsTrigger value="funcionarios">Funcionários</TabsTrigger>

@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
-import { CardImage } from "@/components/ui/card-image";
 import quartoImg from "@/assets/sasha-kaunas-67-sOi7mVIk-unsplash.jpg";
+import { Button } from "@/components/ui/button";
+import { CardImage } from "@/components/ui/card-image";
+import { Link } from "react-router";
 
 export function Home() {
   const fakeQuartos = [
@@ -35,7 +35,7 @@ export function Home() {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[calc(100vh-80px)] px-4 py-16">
+    <div className="flex flex-col flex-1 items-center justify-start px-4 py-13">
       <div className="text-center mb-16">
         <h1 className="text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl mb-6">
           Bem-vindo à <span className="text-primary">SuaPousada</span>
