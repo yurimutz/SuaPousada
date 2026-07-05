@@ -35,6 +35,13 @@ public class ClienteController
         return new ResponseEntity<>(clienteService.update(id, dto), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> delete(@PathVariable Long id)
+    {
+        clienteService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/get")
     public ResponseEntity<ClienteResponseDTO> findById(@PathVariable Long id)
     {

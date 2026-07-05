@@ -75,6 +75,13 @@ public class ClienteService
 
     }
 
+    public void delete(Long id)
+    {
+        Cliente c = clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+
+        clienteRepository.deleteById(id);
+    }
+
     public ClienteResponseDTO findById(Long id)
     {
         var cliente = clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
