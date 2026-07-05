@@ -17,7 +17,7 @@ export function Login() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center px-4 bg-background">
+    <div className="flex flex-1 items-center justify-center px-4 w-full">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold tracking-tight">Acesse sua conta</CardTitle>

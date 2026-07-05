@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Link, Outlet } from "react-router";
+import { Footer } from "@/components/footer";
 
 export function Layout() {
   return (
@@ -31,9 +32,10 @@ export function Layout() {
         </div>
       </header>
 
-      <main className="flex-1 bg-background">
+      <main className="flex-1 flex flex-col bg-background">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }
