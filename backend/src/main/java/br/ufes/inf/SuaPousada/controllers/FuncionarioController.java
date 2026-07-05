@@ -35,16 +35,11 @@ public class FuncionarioController
         return new ResponseEntity<>(funcionarioService.update(id, dto), HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}/desliga")
-    public void desligaFuncionario(@PathVariable Long id)
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> delete(@PathVariable Long id)
     {
-        funcionarioService.desligaFuncionario(id);
-    }
-
-    @PatchMapping("/{id}/ativa")
-    public void activateFuncionario(@PathVariable Long id)
-    {
-        funcionarioService.activateFuncionario(id);
+        funcionarioService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{id}/get")
@@ -57,11 +52,5 @@ public class FuncionarioController
     public ResponseEntity<List<FuncionarioResponseDTO>> findAll()
     {
         return new ResponseEntity<>(funcionarioService.findAll(), HttpStatus.OK);
-    }
-
-    @GetMapping("/getAllAtivos")
-    public ResponseEntity<List<FuncionarioResponseDTO>> findAllAtivos()
-    {
-        return new ResponseEntity<>(funcionarioService.findAllAtivos(), HttpStatus.OK);
     }
 }

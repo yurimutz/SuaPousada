@@ -10,8 +10,6 @@ import br.ufes.inf.SuaPousada.dto.request.ClienteCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.ClienteUpdateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.response.ClienteResponseDTO;
 import br.ufes.inf.SuaPousada.service.ClienteService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/cliente")

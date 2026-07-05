@@ -43,9 +43,6 @@ public class FuncionarioService
 
         Funcionario funcionario = toEntity(request_dto);
 
-        funcionario.setAtivo(true);
-        funcionario.setDataDesligamento(null);
-
         return toResponse(funcionarioRepository.save(funcionario));
 
     }
@@ -79,28 +76,14 @@ public class FuncionarioService
 
     }
 
-    // ANALISAR ESSE METODO DEPOIS
-    public void desligaFuncionario(Long id)
+    public void delete(Long id)
     {
-        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
+        if(!funcionarioRepository.existsById(id))
+        {
+            throw new ResourceNotFoundException("Funcionário não encontrado");
+        }
 
-        funcionario.setDataDesligamento(LocalDate.now());
-        funcionario.setAtivo(false);
-
-        funcionarioRepository.save(funcionario);
-
-    }
-
-    // ANALISAR ESSE METODO DEPOIS
-    public void activateFuncionario(Long id)
-    {
-        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
-
-        funcionario.setDataDesligamento(null);
-        funcionario.setAtivo(true);
-
-        funcionarioRepository.save(funcionario);
-
+        funcionarioRepository.deleteById(id);
     }
 
     public FuncionarioResponseDTO findById(Long id)
@@ -114,15 +97,6 @@ public class FuncionarioService
     {
         return funcionarioRepository
                 .findAll()
-                .stream()
-                .map(FuncionarioService::toResponse)
-                .toList();
-    }
-
-    public List<FuncionarioResponseDTO> findAllAtivos()
-    {
-        return funcionarioRepository
-                .buscarTodosAtivos()
                 .stream()
                 .map(FuncionarioService::toResponse)
                 .toList();
@@ -149,9 +123,7 @@ public class FuncionarioService
                 funcionario.getDtNascimento(),
                 funcionario.getGenero(),
                 funcionario.getEmail(),
-                funcionario.getTelefone(),
-                funcionario.getAtivo(),
-                funcionario.getDataDesligamento()
+                funcionario.getTelefone()
         );
     }
 
@@ -159,11 +131,4 @@ public class FuncionarioService
     {
         return ChronoUnit.YEARS.between(birthDate, LocalDate.now()) >= 18;
     }
-
-    private static boolean isEmployed(Funcionario f)
-    {
-        return f.getAtivo();
-    }
-
-
 }
