@@ -4,6 +4,7 @@ import br.ufes.inf.SuaPousada.domain.TipoQuarto;
 import br.ufes.inf.SuaPousada.dto.request.TipoQuartoCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.TipoQuartoUpdateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.response.TipoQuartoResponseDTO;
+import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
 import br.ufes.inf.SuaPousada.exceptions.ResourceNotFoundException;
 import br.ufes.inf.SuaPousada.repository.TipoQuartoRepository;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class TipoQuartoService
 
     public TipoQuartoResponseDTO create(TipoQuartoCreateRequestDTO request_dto)
     {
+        if (tipoQuartoRepository.existsByNome(request_dto.nome()))
+            throw new DataViolationException("Já existe um tipo de quarto cadastrado com esse nome.");
+
         TipoQuarto tipoQuarto = toEntity(request_dto);
 
         return toResponse(tipoQuartoRepository.save(tipoQuarto));
@@ -30,6 +34,12 @@ public class TipoQuartoService
     public TipoQuartoResponseDTO update(Long id, TipoQuartoUpdateRequestDTO request_dto)
     {
         TipoQuarto tipoQuarto = tipoQuartoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Tipo Quarto não encontrado"));
+
+        if (request_dto.nome() != null)
+        {
+            if (tipoQuartoRepository.existsByNomeAndIdNot(request_dto.nome(), id))
+                throw new DataViolationException("Já existe um tipo de quarto cadastrado com esse nome.");
+        }
 
         TipoQuarto tipoQuarto_atualizado = TipoQuarto.builder()
                 .id(tipoQuarto.getId())

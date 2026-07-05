@@ -2,6 +2,7 @@ package br.ufes.inf.SuaPousada.controllers;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,13 @@ public class FuncionarioController
     }
 
     @PostMapping("/create")
-    public ResponseEntity<FuncionarioResponseDTO> create(@RequestBody FuncionarioCreateRequestDTO dto)
+    public ResponseEntity<FuncionarioResponseDTO> create(@RequestBody @Valid FuncionarioCreateRequestDTO dto)
     {
         return new ResponseEntity<>(funcionarioService.create(dto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}/update")
-    public ResponseEntity<FuncionarioResponseDTO> update(@PathVariable Long id, @RequestBody FuncionarioUpdateRequestDTO dto)
+    public ResponseEntity<FuncionarioResponseDTO> update(@PathVariable Long id, @RequestBody @Valid FuncionarioUpdateRequestDTO dto)
     {
         return new ResponseEntity<>(funcionarioService.update(id, dto), HttpStatus.OK);
     }

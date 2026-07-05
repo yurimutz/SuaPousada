@@ -2,6 +2,7 @@ package br.ufes.inf.SuaPousada.controllers;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +24,13 @@ public class ClienteController
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ClienteResponseDTO> create(@RequestBody ClienteCreateRequestDTO dto)
+    public ResponseEntity<ClienteResponseDTO> create(@RequestBody @Valid ClienteCreateRequestDTO dto)
     {
         return new ResponseEntity<>(clienteService.create(dto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}/update")
-    public ResponseEntity<ClienteResponseDTO> update(@PathVariable Long id, @RequestBody ClienteUpdateRequestDTO dto)
+    public ResponseEntity<ClienteResponseDTO> update(@PathVariable Long id, @RequestBody @Valid ClienteUpdateRequestDTO dto)
     {
         return new ResponseEntity<>(clienteService.update(id, dto), HttpStatus.OK);
     }
