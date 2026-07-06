@@ -1,3 +1,4 @@
+import { Footer } from "@/components/footer";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -5,10 +6,9 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { Link, Outlet } from "react-router";
-import { Footer } from "@/components/footer";
-import { useAuth } from "@/contexts/AuthContext";
 
 export function Layout() {
   const { user } = useAuth();
@@ -17,7 +17,10 @@ export function Layout() {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <header className="bg-card border-b border-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-          <span className="text-xl font-bold text-primary">SuaPousada</span>
+          <div className="flex items-center gap-2">
+            <img src="/logoipsum-custom-logo.svg" className="w-7" alt="Logo SuaPousada"/>
+            <span className="text-xl font-bold text-primary">SuaPousada</span>
+          </div>
           <NavigationMenu>
             <NavigationMenuList className="gap-2">
               <NavigationMenuItem>
