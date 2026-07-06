@@ -1,4 +1,5 @@
-import { BedDouble, Calendar, CalendarDays, Home, LogOut, PlusCircle, User, Users } from "lucide-react"
+import { useAuth } from "@/contexts/AuthContext"
+import { BedDouble, Calendar, CalendarDays, Home, LogOut, PlusCircle, Settings, User, Users } from "lucide-react"
 import { Link, useLocation } from "react-router"
 
 import {
@@ -54,11 +55,11 @@ const clientItems = [
     url: "/cliente/nova-reserva",
     icon: PlusCircle,
   },
-  // {
-  //   title: "Perfil",
-  //   url: "/cliente/perfil",
-  //   icon: Settings,
-  // },
+  {
+    title: "Perfil",
+    url: "/cliente/perfil",
+    icon: Settings,
+  },
 ]
 
 interface AppSidebarProps {
@@ -68,6 +69,7 @@ interface AppSidebarProps {
 export function AppSidebar({ role = "admin" }: AppSidebarProps) {
   const items = (role === "admin") ? adminItems : clientItems;
   const location = useLocation();
+  const { logout } = useAuth();
 
   return (
     <Sidebar collapsible="icon">
@@ -111,11 +113,12 @@ export function AppSidebar({ role = "admin" }: AppSidebarProps) {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="text-destructive hover:text-destructive hover:bg-destructive/10">
-              <Link to="/">
-                <LogOut />
-                <span>Sair</span>
-              </Link>
+            <SidebarMenuButton 
+              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              onClick={() => logout()}
+            >
+              <LogOut />
+              <span>Sair</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -8,8 +8,11 @@ import {
 import { cn } from "@/lib/utils";
 import { Link, Outlet } from "react-router";
 import { Footer } from "@/components/footer";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Layout() {
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <header className="bg-card border-b border-border sticky top-0 z-50">
@@ -24,7 +27,11 @@ export function Layout() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild className={cn(navigationMenuTriggerStyle(), "bg-transparent text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground")}>
-                  <Link to="/login">Login</Link>
+                  {user ? (
+                    <Link to={user.role === "admin" ? "/admin" : "/cliente"}>Painel</Link>
+                  ) : (
+                    <Link to="/login">Login</Link>
+                  )}
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>

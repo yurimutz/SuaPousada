@@ -1,0 +1,63 @@
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+
+type Role = "admin" | "cliente" | null;
+
+interface User {
+  email: string;
+  role: Role;
+}
+
+interface AuthContextType {
+  user: User | null;
+  login: (user: User) => void;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Ao carregar a aplicação, checa se tem usuário salvo no localStorage
+    const savedUser = localStorage.getItem("suapousada_user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
+
+  const login = (newUser: User) => {
+    setUser(newUser);
+    localStorage.setItem("suapousada_user", JSON.stringify(newUser));
+    
+    // Redireciona com base no papel
+    if (newUser.role === "admin") {
+      navigate("/admin");
+    } else if (newUser.role === "cliente") {
+      navigate("/cliente");
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("suapousada_user");
+    navigate("/login");
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+// Hook customizado para facilitar o uso do contexto
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+  }
+  return context;
+}
