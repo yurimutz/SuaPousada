@@ -46,9 +46,9 @@ class ClienteControllerTest{
     @Test
     void deveCriarClienteComSucesso() throws Exception{
 
-        ClienteCreateRequestDTO cliente = new ClienteCreateRequestDTO("yuri", "19089723", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873");
+        ClienteCreateRequestDTO cliente = new ClienteCreateRequestDTO("yuri", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873");
 
-        ClienteResponseDTO responseDTO = new ClienteResponseDTO(1L, "yuri", "19089723", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873");
+        ClienteResponseDTO responseDTO = new ClienteResponseDTO(1L, "yuri", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873");
 
         // Define o comportamento do mock
         when(clienteService.create(any(ClienteCreateRequestDTO.class))).thenReturn(responseDTO);
@@ -68,7 +68,7 @@ class ClienteControllerTest{
     @Test
     void deveRetornarErro409QuandoCriarMenorDeIdade() throws Exception {
         
-        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("yuri", "123", LocalDate.of(2015, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999");
+        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("yuri", "18871809742", LocalDate.of(2015, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999");
 
         // Prepara o mock pra receber coisa errada
         when(clienteService.create(any(ClienteCreateRequestDTO.class)))
@@ -103,9 +103,9 @@ class ClienteControllerTest{
     @Test
     void deveRetornarOkAoAtualizarCliente() throws Exception{
 
-        ClienteUpdateRequestDTO request = new ClienteUpdateRequestDTO("yuri doido", "123", LocalDate.of(2002, 1, 1), Genero.MASCULINO, "oi2@gmail.com", "999");
+        ClienteUpdateRequestDTO request = new ClienteUpdateRequestDTO("yuri doido", "18871809742", LocalDate.of(2002, 1, 1), Genero.MASCULINO, "oi2@gmail.com", "999");
 
-        ClienteResponseDTO responseDTO = new ClienteResponseDTO(1L, "yuri doido", "19089723", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi2@gmail.com", "990892873");
+        ClienteResponseDTO responseDTO = new ClienteResponseDTO(1L, "yuri doido", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi2@gmail.com", "990892873");
 
         when(clienteService.update(eq(1L), any(ClienteUpdateRequestDTO.class)))
                 .thenReturn(responseDTO);
@@ -124,7 +124,7 @@ class ClienteControllerTest{
     @Test
     void deveRetornarErro404QuandoAtualizarClienteNaoCadastrado() throws Exception{
 
-        ClienteUpdateRequestDTO request = new ClienteUpdateRequestDTO("yuri doido", "123", LocalDate.of(2002, 1, 1), Genero.MASCULINO, "oi2@gmail.com", "999");
+        ClienteUpdateRequestDTO request = new ClienteUpdateRequestDTO("yuri doido", "18871809742", LocalDate.of(2002, 1, 1), Genero.MASCULINO, "oi2@gmail.com", "999");
 
         when(clienteService.update(eq(1L), any(ClienteUpdateRequestDTO.class)))
                 .thenThrow(new ResourceNotFoundException("Cliente não encontrado"));
@@ -143,7 +143,7 @@ class ClienteControllerTest{
 
         Long id = 1L;
 
-        ClienteResponseDTO responseDTO = new ClienteResponseDTO(1L, "yuri doido", "19089723", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi2@gmail.com", "990892873");
+        ClienteResponseDTO responseDTO = new ClienteResponseDTO(1L, "yuri doido", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi2@gmail.com", "990892873");
 
         when(clienteService.findById(eq(id)))
                 .thenReturn(responseDTO);

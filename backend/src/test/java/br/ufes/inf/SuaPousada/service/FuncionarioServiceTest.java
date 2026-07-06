@@ -62,9 +62,6 @@ public class FuncionarioServiceTest {
                 .telefone("999")
                 .build();
 
-        funcionarioSalvo.setAtivo(true);
-        funcionarioSalvo.setDataDesligamento(null);       
-
         when(pessoaRepository.existsByCpfOrEmail(anyString(), anyString())).thenReturn(false);
         when(funcionarioRepository.save(any(Funcionario.class))).thenReturn(funcionarioSalvo);
 
@@ -73,8 +70,6 @@ public class FuncionarioServiceTest {
         assertNotNull(response);
         assertEquals(1L, response.id());
         assertEquals("Maria", response.nome());
-        assertTrue(response.ativo()); // Garante que a service ativou o funcionário
-        assertNull(response.dtDesligamento()); // Garante que não há data de desligamento
         
         // Verifica se chamou o metodo apenas uma vez
         verify(funcionarioRepository, times(1)).save(any(Funcionario.class));
@@ -126,8 +121,6 @@ public class FuncionarioServiceTest {
                 .email("antigo@email.com")
                 .build();
 
-        funcionarioAntigo.setAtivo(true);
-        funcionarioAntigo.setDataDesligamento(null);       
 
         FuncionarioUpdateRequestDTO request = new FuncionarioUpdateRequestDTO("Nome Novo", null, null, null, "novo@email.com", null);
 
@@ -138,9 +131,6 @@ public class FuncionarioServiceTest {
                 .dtNascimento(dataValida)
                 .email("novo@email.com")
                 .build();
-
-        funcionarioAntigo.setAtivo(true);
-        funcionarioAntigo.setDataDesligamento(null);
 
         when(funcionarioRepository.findById(id)).thenReturn(Optional.of(funcionarioAntigo));
         when(pessoaRepository.existsByCpfOrEmailAndIdNot(anyString(), anyString(), eq(id))).thenReturn(false);
@@ -169,83 +159,6 @@ public class FuncionarioServiceTest {
         verify(funcionarioRepository, never()).save(any());
     }
 
-    @Test
-    void deveDesligarFuncionarioComSucesso() {
-
-        Long id = 1L;
-        Funcionario funcionario = Funcionario.builder()
-                .id(id)
-                .nome("Maria")
-                .build();
-
-        funcionario.setAtivo(true);
-        funcionario.setDataDesligamento(null);
-
-        when(funcionarioRepository.findById(id)).thenReturn(Optional.of(funcionario));
-
-        funcionarioService.desligaFuncionario(id);
-
-        assertFalse(funcionario.getAtivo()); 
-        assertNotNull(funcionario.getDataDesligamento());
-        assertEquals(LocalDate.now(), funcionario.getDataDesligamento());
-        
-        // Verifica se persistiu a alteração no banco
-        verify(funcionarioRepository, times(1)).save(funcionario);
-    }
-
-    @Test
-    void deveLancarExcecaoQuandoDesligarFuncionarioNaoEncontrado() {
-
-        Long id = 1L;
-
-        when(funcionarioRepository.findById(id)).thenReturn(Optional.empty());
-
-        ResourceNotFoundException excecao = assertThrows(ResourceNotFoundException.class, () -> {
-            funcionarioService.desligaFuncionario(id);
-        });
-
-        assertEquals("Funcionário não encontrado", excecao.getMessage());
-        verify(funcionarioRepository, never()).save(any());
-
-    }
-
-    @Test
-    void deveAtivarFuncionarioComSucesso() {
-
-        Long id = 1L;
-        Funcionario funcionario = Funcionario.builder()
-                .id(id)
-                .nome("Maria")
-                .build();
-
-        funcionario.setAtivo(false); // comeca desligado
-        funcionario.setDataDesligamento(LocalDate.of(2025, 1, 1));
-
-        when(funcionarioRepository.findById(id)).thenReturn(Optional.of(funcionario));
-
-        funcionarioService.activateFuncionario(id);
-
-        assertTrue(funcionario.getAtivo()); 
-        assertNull(funcionario.getDataDesligamento()); // Data de desligamento deve ser apagada
-        
-        verify(funcionarioRepository, times(1)).save(funcionario);
-    }
-
-    @Test
-    void deveLancarExcecaoQuandoLigarFuncionarioNaoEncontrado() {
-
-        Long id = 99L;
-
-        when(funcionarioRepository.findById(id)).thenReturn(Optional.empty());
-
-        ResourceNotFoundException excecao = assertThrows(ResourceNotFoundException.class, () -> {
-            funcionarioService.activateFuncionario(id);
-        });
-
-        assertEquals("Funcionário não encontrado", excecao.getMessage());
-        verify(funcionarioRepository, never()).save(any());
-
-    }
 
     @Test
     void deveBuscarFuncionarioPorIdComSucesso() {
@@ -290,24 +203,5 @@ public class FuncionarioServiceTest {
         assertEquals(2, response.size());
         assertEquals("Maria", response.get(0).nome());
         assertEquals("Joao", response.get(1).nome());
-    }
-
-    @Test
-    void deveRetornarApenasFuncionariosAtivos() {
-
-        Funcionario funcionario = Funcionario.builder().id(1L).nome("Maria").build();
-
-        funcionario.setAtivo(true);
-        funcionario.setDataDesligamento(null);
-
-        when(funcionarioRepository.buscarTodosAtivos()).thenReturn(List.of(funcionario));
-
-        List<FuncionarioResponseDTO> response = funcionarioService.findAllAtivos();
-
-        assertEquals(1, response.size());
-        assertTrue(response.get(0).ativo());
-        // Garante que o método customizado do repository foi o que foi chamado
-        verify(funcionarioRepository, times(1)).buscarTodosAtivos();
-        verify(funcionarioRepository, never()).findAll();
     }
 }

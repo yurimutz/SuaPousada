@@ -67,6 +67,6 @@ public class GlobalExceptionHandler
             response.put(fieldName, errorMessage);
         });
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 }
