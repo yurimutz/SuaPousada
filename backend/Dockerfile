@@ -17,7 +17,7 @@ COPY src ./src
 #RUN mvn clean package -DskipTests
 
 # Vou deixar rodando os testes
-RUN mvn clean package -DskipTests
+RUN mvn clean package 
 
 #---------------------------------------------------------#
 #--------------------------JAVA---------------------------#

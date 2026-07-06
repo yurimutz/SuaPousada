@@ -2,17 +2,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function Login() {
-  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent, role: 'admin' | 'cliente') => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (role === 'admin') {
-      navigate('/admin');
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (email === "admin" && password === "admin") {
+      login({ email, role: "admin" });
+    } else if (email === "cliente" && password === "cliente") {
+      login({ email, role: "cliente" });
     } else {
-      navigate('/cliente');
+      setError("Credenciais inválidas. Tente admin:admin ou cliente:cliente.");
     }
   };
 
@@ -25,17 +36,17 @@ export function Login() {
         </CardHeader>
         
         <CardContent>
-          <form className="flex flex-col gap-6">
+          <form className="flex flex-col gap-6" onSubmit={handleLogin}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email-address">Endereço de Email</FieldLabel>
+                <FieldLabel htmlFor="email-address">Email ou Usuário</FieldLabel>
                 <Input 
                   id="email-address" 
                   name="email" 
-                  type="email" 
+                  type="text" 
                   autoComplete="email" 
                   required 
-                  placeholder="Digite seu email" 
+                  placeholder="Digite admin ou cliente" 
                 />
               </Field>
               <Field>
@@ -51,21 +62,15 @@ export function Login() {
               </Field>
             </FieldGroup>
 
+            {error && <p className="text-destructive text-sm text-center font-medium">{error}</p>}
+
             <div className="flex flex-col gap-3">
               <Button 
                 size="lg"
-                onClick={(e) => handleLogin(e, 'cliente')}
+                type="submit"
                 className="w-full"
               >
-                Entrar como Cliente
-              </Button>
-              <Button 
-                size="lg"
-                variant="secondary"
-                onClick={(e) => handleLogin(e, 'admin')}
-                className="w-full"
-              >
-                Entrar como Administrador
+                Entrar
               </Button>
             </div>
           </form>

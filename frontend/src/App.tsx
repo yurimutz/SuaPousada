@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router";
+import { ProtectedRoute } from "./components/protected-route";
+import { AuthProvider } from "./contexts/AuthContext";
 import { Layout } from "./Layout";
 import { Admin } from "./pages/admin/Admin";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
@@ -15,25 +17,35 @@ import { Login } from "./pages/Login";
 
 export function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-      </Route>
-      <Route path="/admin" element={<Admin />}>
-        <Route index element={<AdminDashboard />} />
-        <Route path="quartos" element={<AdminQuartos />} />
-        <Route path="reservas" element={<AdminReservas />} />
-        <Route path="hospedes" element={<AdminHospedes />} />
-      </Route>
-      <Route path="/cliente" element={<Client />}>
-        <Route index element={<ClientDashboard />} />
-        <Route path="conta" element={<ClientAccount />} />
-        <Route path="minhas-reservas" element={<ClientBooking />} />
-        <Route path="nova-reserva" element={<ClientNewBooking />} />
-        <Route path="perfil" element={<ClientAccount />} />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+        </Route>
+        
+        {/* Rotas Protegidas - Admin */}
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+          <Route path="/admin" element={<Admin />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="quartos" element={<AdminQuartos />} />
+            <Route path="reservas" element={<AdminReservas />} />
+            <Route path="hospedes" element={<AdminHospedes />} />
+          </Route>
+        </Route>
+
+        {/* Rotas Protegidas - Cliente */}
+        <Route element={<ProtectedRoute allowedRoles={["cliente"]} />}>
+          <Route path="/cliente" element={<Client />}>
+            <Route index element={<ClientDashboard />} />
+            <Route path="conta" element={<ClientAccount />} />
+            <Route path="minhas-reservas" element={<ClientBooking />} />
+            <Route path="nova-reserva" element={<ClientNewBooking />} />
+            <Route path="perfil" element={<ClientAccount />} />
+          </Route>
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 
