@@ -183,7 +183,7 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                             <Select 
                             onValueChange={field.onChange}
-                            value={field.value || undefined}>
+                            value={field.value || ''}>
                                 <SelectTrigger id={`genero-${idPrefix}`} aria-invalid={fieldState.invalid} className="min-w-30">
                                     <SelectValue placeholder="Selecione..." />
                                 </SelectTrigger>
