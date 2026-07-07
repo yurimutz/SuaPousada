@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
+
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -213,9 +213,11 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                     )}
                 />
             </FieldGroup>
-            <DialogFooter className="mt-6">
-                <Button type="submit">{isEditing ? "Salvar alterações" : "Adicionar Funcionário"}</Button>
-            </DialogFooter>
+            <div className="mt-6 flex flex-col sm:flex-row sm:justify-end">
+                <Button type="submit" className="w-full sm:w-auto">
+                    {isEditing ? "Salvar alterações" : "Adicionar Funcionário"}
+                </Button>
+            </div>
         </form>
     );
 }
