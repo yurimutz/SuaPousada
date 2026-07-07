@@ -21,7 +21,7 @@ export function Login() {
     if (email === "admin" && password === "admin") {
       login({ email, role: "admin" });
     } else if (email === "cliente" && password === "cliente") {
-      login({ email, role: "cliente" });
+      login({ email, role: "cliente", clienteId: 1 });
     } else {
       setError("Credenciais inválidas. Tente admin:admin ou cliente:cliente.");
     }
