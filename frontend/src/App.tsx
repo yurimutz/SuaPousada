@@ -15,12 +15,15 @@ import { ClientNewBooking } from "./pages/client/ClientNewBooking";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 
+import { Sobre } from "./pages/Sobre";
+
 export function App() {
   return (
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="sobre" element={<Sobre />} />
           <Route path="login" element={<Login />} />
         </Route>
         
