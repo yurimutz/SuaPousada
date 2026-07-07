@@ -1,7 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
@@ -76,7 +83,7 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                     render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor={`nome-${idPrefix}`}>Nome</FieldLabel>
-                            <Input  
+                            <Input
                                 {...field}
                                 id={`nome-${idPrefix}`}
                                 type="text"
@@ -98,25 +105,26 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                             .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 
                         return (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor={`cpf-${idPrefix}`}>CPF</FieldLabel>
-                            <Input  
-                                {...rest}
-                                value={displayValue}
-                                onChange={(e) => {
-                                    // Salva apenas os números no estado interno
-                                    onChange(e.target.value.replace(/\D/g, ''));
-                                }}
-                                id={`cpf-${idPrefix}`}
-                                type="text"
-                                maxLength={14}
-                                aria-invalid={fieldState.invalid}
-                            />
-                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                        </Field>
-                    )}}
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`cpf-${idPrefix}`}>CPF</FieldLabel>
+                                <Input
+                                    {...rest}
+                                    value={displayValue}
+                                    onChange={(e) => {
+                                        // Salva apenas os números no estado interno
+                                        onChange(e.target.value.replace(/\D/g, ''));
+                                    }}
+                                    id={`cpf-${idPrefix}`}
+                                    type="text"
+                                    maxLength={14}
+                                    aria-invalid={fieldState.invalid}
+                                />
+                                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            </Field>
+                        )
+                    }}
                 />
-                
+
                 <Controller
                     name="telefone"
                     control={form.control}
@@ -128,23 +136,24 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                             .replace(/(\d{5})(\d{1,4})$/, '$1-$2');
 
                         return (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor={`telefone-${idPrefix}`}>Telefone</FieldLabel>
-                            <Input  
-                                {...rest}
-                                value={displayValue}
-                                onChange={(e) => {
-                                    // Salva apenas os números no estado interno
-                                    onChange(e.target.value.replace(/\D/g, ''));
-                                }}
-                                id={`telefone-${idPrefix}`}
-                                type="text"
-                                maxLength={15}
-                                aria-invalid={fieldState.invalid}
-                            />
-                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                        </Field>
-                    )}}
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`telefone-${idPrefix}`}>Telefone</FieldLabel>
+                                <Input
+                                    {...rest}
+                                    value={displayValue}
+                                    onChange={(e) => {
+                                        // Salva apenas os números no estado interno
+                                        onChange(e.target.value.replace(/\D/g, ''));
+                                    }}
+                                    id={`telefone-${idPrefix}`}
+                                    type="text"
+                                    maxLength={15}
+                                    aria-invalid={fieldState.invalid}
+                                />
+                                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            </Field>
+                        )
+                    }}
                 />
 
                 <Controller
@@ -166,26 +175,25 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                 <Controller
                     name="genero"
                     control={form.control}
-                    render={({ field: { onChange, value, ...rest }, fieldState }) => {
-                        return (
-                        <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor={`genero-${idPrefix}`}>Gênero</FieldLabel>
-                            <Input  
-                                {...rest}
-                                value={value}
-                                onChange={(e) => {
-                                    // Capitaliza apenas a primeira letra para ficar amigável
-                                    const val = e.target.value;
-                                    const formatted = val ? val.charAt(0).toUpperCase() + val.slice(1).toLowerCase() : "";
-                                    onChange(formatted);
-                                }}
-                                id={`genero-${idPrefix}`}
-                                type="text"
-                                aria-invalid={fieldState.invalid}
-                            />
+                    render={({ field, fieldState }) => (
+                        <Field orientation="responsive" data-invalid={fieldState.invalid}>
+                            <FieldContent>
+                                <FieldLabel htmlFor={`genero-${idPrefix}`}>Gênero</FieldLabel>
+                            </FieldContent>
                             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            <Select 
+                            onValueChange={field.onChange}
+                            value={field.value || undefined}>
+                                <SelectTrigger id={`genero-${idPrefix}`} aria-invalid={fieldState.invalid} className="min-w-30">
+                                    <SelectValue placeholder="Selecione..." />
+                                </SelectTrigger>
+                                <SelectContent position="item-aligned">
+                                    <SelectItem value="MASCULINO">Masculino</SelectItem>
+                                    <SelectItem value="FEMININO">Feminino</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </Field>
-                    )}}
+                    )}
                 />
 
                 <Controller
@@ -194,7 +202,7 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                     render={({ field, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor={`email-${idPrefix}`}>E-mail</FieldLabel>
-                            <Input  
+                            <Input
                                 {...field}
                                 id={`email-${idPrefix}`}
                                 type="email"
