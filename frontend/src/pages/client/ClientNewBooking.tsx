@@ -156,6 +156,7 @@ export function ClientNewBooking() {
                         date={field.value as DateRange} 
                         setDate={field.onChange} 
                         className="w-full sm:w-[350px]"
+                        disabled={{ before: new Date() }}
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                     </Field>
