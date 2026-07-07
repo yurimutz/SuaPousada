@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router";
-import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
+import { Link } from "react-router";
 
 export function Login() {
   const { login } = useAuth();
@@ -21,7 +21,7 @@ export function Login() {
     if (email === "admin" && password === "admin") {
       login({ email, role: "admin" });
     } else if (email === "cliente" && password === "cliente") {
-      login({ email, role: "cliente", clienteId: 1 });
+      login({ email, role: "cliente", clienteId: 3 });
     } else {
       setError("Credenciais inválidas. Tente admin:admin ou cliente:cliente.");
     }
