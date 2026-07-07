@@ -13,18 +13,28 @@ import { cn } from "@/lib/utils"
 
 export interface DatePickerSimpleProps {
     id: string;
-    name: string;
+    name?: string;
     label?: string;
     defaultValue?: string;
+    value?: string;
+    onChange?: (value: string) => void;
     required?: boolean;
 }
 
-export function DatePickerSimple({ id, name, label = "Data de Nascimento", defaultValue, required }: DatePickerSimpleProps) {
+export function DatePickerSimple({ id, name, label = "Data de Nascimento", defaultValue, value, onChange, required }: DatePickerSimpleProps) {
     const [open, setOpen] = React.useState(false)
     
-    // Converte defaultValue (ex: "1990-01-01") para Date local para evitar problemas de fuso
-    const initialDate = defaultValue ? new Date(defaultValue + "T00:00:00") : undefined;
+    // Converte defaultValue ou value
+    const initialDateStr = value || defaultValue;
+    const initialDate = initialDateStr ? new Date(initialDateStr + "T00:00:00") : undefined;
     const [date, setDate] = React.useState<Date | undefined>(initialDate)
+
+    // Se receber value externo, atualiza o estado interno
+    React.useEffect(() => {
+        if (value !== undefined) {
+            setDate(value ? new Date(value + "T00:00:00") : undefined);
+        }
+    }, [value])
 
     // Formata de volta para YYYY-MM-DD para o FormData enviar ao banco corretamente (seguro para qualquer fuso horário)
     const formattedValue = date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : "";
@@ -56,6 +66,14 @@ export function DatePickerSimple({ id, name, label = "Data de Nascimento", defau
                         onSelect={(newDate) => {
                             setDate(newDate)
                             setOpen(false)
+                            if (onChange) {
+                                if (newDate) {
+                                    const formatted = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
+                                    onChange(formatted);
+                                } else {
+                                    onChange("");
+                                }
+                            }
                         }}
                     />
                 </PopoverContent>
