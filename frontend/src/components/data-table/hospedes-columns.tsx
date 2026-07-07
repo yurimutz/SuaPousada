@@ -18,6 +18,7 @@ export const hospedesColumns: ColumnDef<Hospede>[] = [
                     id={hospede.id}
                     table={table}
                     entityName="Hóspede"
+                    deleteEndpoint={`http://localhost:8080/cliente/${hospede.id}/delete`}
                     renderEditForm={(onSuccess) => (
                         <HospedeForm hospede={hospede} onSuccess={onSuccess} />
                     )}
