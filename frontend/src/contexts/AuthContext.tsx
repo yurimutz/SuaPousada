@@ -6,6 +6,7 @@ type Role = "admin" | "cliente" | null;
 interface User {
   email: string;
   role: Role;
+  clienteId?: number; // Adicionado para simular um cliente real do banco
 }
 
 interface AuthContextType {

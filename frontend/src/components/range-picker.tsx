@@ -1,10 +1,9 @@
-import * as React from "react"
 import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import type { DateRange } from "react-day-picker"
 import { ptBR } from "date-fns/locale"
+import { CalendarIcon } from "lucide-react"
+import * as React from "react"
+import type { DateRange } from "react-day-picker"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -12,16 +11,21 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+
+import type { Matcher } from "react-day-picker"
 
 interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
   date: DateRange | undefined;
   setDate: (date: DateRange | undefined) => void;
+  disabled?: Matcher | Matcher[];
 }
 
 export function DatePickerWithRange({
   className,
   date,
   setDate,
+  disabled,
 }: DatePickerWithRangeProps) {
 
   return (
@@ -59,6 +63,7 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={setDate}
             numberOfMonths={2}
+            disabled={disabled}
           />
         </PopoverContent>
       </Popover>
