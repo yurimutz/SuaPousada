@@ -2,6 +2,8 @@ package br.ufes.inf.SuaPousada.repository;
 
 import br.ufes.inf.SuaPousada.domain.Pessoa;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -11,5 +13,8 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long>
      * DESVANTAGEM: a mensagem de erro fica genérica, pois pode ter sido o CPF ou EMAIL que lançaram a exceção */
     Boolean existsByCpfOrEmail(String cpf, String email);
 
-    boolean existsByCpfOrEmailAndIdNot(String cpf, String email, Long id);
+   // boolean existsByCpfOrEmailAndIdNot(String cpf, String email, Long id);
+
+    @Query("SELECT COUNT(p) > 0 FROM Pessoa p WHERE (p.cpf = :cpf OR p.email = :email) AND p.id != :id")
+    boolean existsByCpfOrEmailAndIdNot(@Param("cpf") String cpf, @Param("email") String email, @Param("id") Long id);
 }
