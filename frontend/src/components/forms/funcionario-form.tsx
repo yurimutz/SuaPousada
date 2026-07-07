@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -20,7 +20,7 @@ const createFuncionarioFormSchema = z.object({
     telefone: z.string().min(10, "Telefone inválido").max(15, "Telefone muito grande"),
     dtNascimento: z.string().min(1, "Data de nascimento é obrigatória"),
     genero: z.string().min(1, "Gênero é obrigatório"),
-    email: z.string().email("E-mail inválido").min(1, "E-mail é obrigatório"),
+    email: z.email("E-mail inválido"),
 })
 
 type FuncionarioFormValues = z.infer<typeof createFuncionarioFormSchema>;
@@ -67,46 +67,106 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
     return (
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-                <Field>
-                    <FieldLabel htmlFor={`nome-${idPrefix}`}>Nome</FieldLabel>
-                    <Input id={`nome-${idPrefix}`} {...form.register("nome")} />
-                    {form.formState.errors.nome && <span className="text-sm text-destructive">{form.formState.errors.nome.message}</span>}
-                </Field>
-                <Field>
-                    <FieldLabel htmlFor={`cpf-${idPrefix}`}>CPF</FieldLabel>
-                    <Input id={`cpf-${idPrefix}`} {...form.register("cpf")} />
-                    {form.formState.errors.cpf && <span className="text-sm text-destructive">{form.formState.errors.cpf.message}</span>}
-                </Field>
-                <Field>
-                    <FieldLabel htmlFor={`telefone-${idPrefix}`}>Telefone</FieldLabel>
-                    <Input id={`telefone-${idPrefix}`} {...form.register("telefone")} />
-                    {form.formState.errors.telefone && <span className="text-sm text-destructive">{form.formState.errors.telefone.message}</span>}
-                </Field>
 
-                <Controller 
-                    name="dtNascimento"
+                <Controller
+                    name="nome"
                     control={form.control}
-                    render={({ field }) => (
-                        <DatePickerSimple
-                            id={`nasc-${idPrefix}`}
-                            name={field.name}
-                            value={field.value}
-                            onChange={field.onChange}
-                        />
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={`nome-${idPrefix}`}>Nome</FieldLabel>
+                            <Input  
+                                {...field}
+                                id={`nome-${idPrefix}`}
+                                type="text"
+                                aria-invalid={fieldState.invalid}
+                            />
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
                     )}
                 />
-                {form.formState.errors.dtNascimento && <span className="text-sm text-destructive mt-[-10px] block">{form.formState.errors.dtNascimento.message}</span>}
+                <Controller
+                    name="cpf"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={`cpf-${idPrefix}`}>CPF</FieldLabel>
+                            <Input  
+                                {...field}
+                                id={`cpf-${idPrefix}`}
+                                type="text"
+                                aria-invalid={fieldState.invalid}
+                            />
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
+                
+                <Controller
+                    name="telefone"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={`telefone-${idPrefix}`}>Telefone</FieldLabel>
+                            <Input  
+                                {...field}
+                                id={`telefone-${idPrefix}`}
+                                type="text"
+                                aria-invalid={fieldState.invalid}
+                            />
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
 
-                <Field>
-                    <FieldLabel htmlFor={`genero-${idPrefix}`}>Gênero</FieldLabel>
-                    <Input id={`genero-${idPrefix}`} {...form.register("genero")} />
-                    {form.formState.errors.genero && <span className="text-sm text-destructive">{form.formState.errors.genero.message}</span>}
-                </Field>
-                <Field>
-                    <FieldLabel htmlFor={`email-${idPrefix}`}>E-mail</FieldLabel>
-                    <Input id={`email-${idPrefix}`} type="email" {...form.register("email")} />
-                    {form.formState.errors.email && <span className="text-sm text-destructive">{form.formState.errors.email.message}</span>}
-                </Field>
+                <Controller
+                    name="dtNascimento"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <DatePickerSimple
+                                id={`nasc-${idPrefix}`}
+                                name={field.name}
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
+
+                <Controller
+                    name="genero"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={`genero-${idPrefix}`}>Gênero</FieldLabel>
+                            <Input  
+                                {...field}
+                                id={`genero-${idPrefix}`}
+                                type="text"
+                                aria-invalid={fieldState.invalid}
+                            />
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
+
+                <Controller
+                    name="email"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={`email-${idPrefix}`}>E-mail</FieldLabel>
+                            <Input  
+                                {...field}
+                                id={`email-${idPrefix}`}
+                                type="email"
+                                aria-invalid={fieldState.invalid}
+                            />
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
             </FieldGroup>
             <DialogFooter className="mt-6">
                 <Button type="submit">{isEditing ? "Salvar alterações" : "Adicionar Funcionário"}</Button>
