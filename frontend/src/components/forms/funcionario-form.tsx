@@ -15,10 +15,10 @@ interface FuncionarioFormProps {
 }
 
 const createFuncionarioFormSchema = z.object({
-    nome: z.string().min(1, "O nome é obrigatório").max(80, "Máximo de 80 caracteres"),
+    nome: z.string().nonempty("O nome é obrigatório").max(80, "Máximo de 80 caracteres"),
     cpf: z.string().min(11, "CPF deve ter no mínimo 11 números").max(14, "CPF inválido"),
-    telefone: z.string().min(10, "Telefone inválido").max(15, "Telefone muito grande"),
-    dtNascimento: z.string().min(1, "Data de nascimento é obrigatória"),
+    telefone: z.string().min(10, "Telefone inválido").max(11, "Telefone muito grande"),
+    dtNascimento: z.string().nonempty("Data de nascimento é obrigatória"),
     genero: z.string().min(1, "Gênero é obrigatório"),
     email: z.email("E-mail inválido"),
 })
@@ -41,23 +41,25 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
     })
 
     const onSubmit = (data: FuncionarioFormValues) => {
+        console.log("🚀 Payload sendo enviado para a API:", data);
+
         if (isEditing) {
             axios.patch(`http://localhost:8080/funcionario/${funcionario.id}/update`, data)
                 .then((response) => {
-                    console.log("Update feito com sucesso!", response.data);
+                    console.log("✅ Update feito com sucesso!", response.data);
                     onSuccess();
                 })
                 .catch((error) => {
-                    console.log("Erro ao atualizar", error);
+                    console.error("❌ Erro ao atualizar. Detalhes:", error.response?.data || error);
                 });
         } else {
             axios.post(`http://localhost:8080/funcionario/create`, data)
                 .then((response) => {
-                    console.log("Criado com sucesso!", response.data);
+                    console.log("✅ Criado com sucesso!", response.data);
                     onSuccess();
                 })
                 .catch((error) => {
-                    console.log("Erro ao criar", error);
+                    console.error("❌ Erro ao criar. Detalhes:", error.response?.data || error);
                 });
         }
     };
@@ -87,35 +89,62 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                 <Controller
                     name="cpf"
                     control={form.control}
-                    render={({ field, fieldState }) => (
+                    render={({ field: { onChange, value, ...rest }, fieldState }) => {
+                        // Máscara de CPF visual (ex: 111.222.333-44)
+                        const displayValue = value
+                            .replace(/\D/g, '')
+                            .replace(/(\d{3})(\d)/, '$1.$2')
+                            .replace(/(\d{3})(\d)/, '$1.$2')
+                            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+                        return (
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor={`cpf-${idPrefix}`}>CPF</FieldLabel>
                             <Input  
-                                {...field}
+                                {...rest}
+                                value={displayValue}
+                                onChange={(e) => {
+                                    // Salva apenas os números no estado interno
+                                    onChange(e.target.value.replace(/\D/g, ''));
+                                }}
                                 id={`cpf-${idPrefix}`}
                                 type="text"
+                                maxLength={14}
                                 aria-invalid={fieldState.invalid}
                             />
                             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                         </Field>
-                    )}
+                    )}}
                 />
                 
                 <Controller
                     name="telefone"
                     control={form.control}
-                    render={({ field, fieldState }) => (
+                    render={({ field: { onChange, value, ...rest }, fieldState }) => {
+                        // Máscara de Telefone visual (ex: (11) 99999-8888)
+                        const displayValue = value
+                            .replace(/\D/g, '')
+                            .replace(/(\d{2})(\d)/, '($1) $2')
+                            .replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+
+                        return (
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor={`telefone-${idPrefix}`}>Telefone</FieldLabel>
                             <Input  
-                                {...field}
+                                {...rest}
+                                value={displayValue}
+                                onChange={(e) => {
+                                    // Salva apenas os números no estado interno
+                                    onChange(e.target.value.replace(/\D/g, ''));
+                                }}
                                 id={`telefone-${idPrefix}`}
                                 type="text"
+                                maxLength={15}
                                 aria-invalid={fieldState.invalid}
                             />
                             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                         </Field>
-                    )}
+                    )}}
                 />
 
                 <Controller
@@ -137,18 +166,26 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                 <Controller
                     name="genero"
                     control={form.control}
-                    render={({ field, fieldState }) => (
+                    render={({ field: { onChange, value, ...rest }, fieldState }) => {
+                        return (
                         <Field data-invalid={fieldState.invalid}>
                             <FieldLabel htmlFor={`genero-${idPrefix}`}>Gênero</FieldLabel>
                             <Input  
-                                {...field}
+                                {...rest}
+                                value={value}
+                                onChange={(e) => {
+                                    // Capitaliza apenas a primeira letra para ficar amigável
+                                    const val = e.target.value;
+                                    const formatted = val ? val.charAt(0).toUpperCase() + val.slice(1).toLowerCase() : "";
+                                    onChange(formatted);
+                                }}
                                 id={`genero-${idPrefix}`}
                                 type="text"
                                 aria-invalid={fieldState.invalid}
                             />
                             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                         </Field>
-                    )}
+                    )}}
                 />
 
                 <Controller
