@@ -1,7 +1,9 @@
 package br.ufes.inf.SuaPousada.controllers;
 
+import br.ufes.inf.SuaPousada.domain.Reserva;
 import br.ufes.inf.SuaPousada.dto.request.ReservaCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.ReservaUpdateRequestDTO;
+import br.ufes.inf.SuaPousada.dto.response.QuartoResponseDTO;
 import br.ufes.inf.SuaPousada.dto.response.ReservaResponseDTO;
 import br.ufes.inf.SuaPousada.service.ReservaService;
 import jakarta.validation.Valid;
@@ -16,7 +18,6 @@ import java.util.List;
 @RequestMapping("/reservas")
 public class ReservaController
 {
-
     private final ReservaService reservaService;
 
     public ReservaController(ReservaService reservaService)
@@ -64,5 +65,20 @@ public class ReservaController
     {
         List<ReservaResponseDTO> responses = reservaService.findAllReservasFromPeriodo(inicio, fim);
         return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/findQuartosDisponiveis")
+    public ResponseEntity<List<QuartoResponseDTO>> findAllQuartosDisponiveis(@RequestParam LocalDate inicio, @RequestParam LocalDate fim)
+    {
+        List<QuartoResponseDTO> responses = reservaService.findQuartosDisponiveis(inicio, fim);
+        return ResponseEntity.ok(responses);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<?> delete(@PathVariable Long id)
+    {
+        reservaService.delete(id);
+        
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

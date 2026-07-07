@@ -6,6 +6,7 @@ import br.ufes.inf.SuaPousada.domain.Reserva;
 import br.ufes.inf.SuaPousada.domain.Pagamento;
 import br.ufes.inf.SuaPousada.dto.request.ReservaCreateRequestDTO;
 import br.ufes.inf.SuaPousada.dto.request.ReservaUpdateRequestDTO;
+import br.ufes.inf.SuaPousada.dto.response.QuartoResponseDTO;
 import br.ufes.inf.SuaPousada.dto.response.ReservaResponseDTO;
 import br.ufes.inf.SuaPousada.exceptions.DataViolationException;
 import br.ufes.inf.SuaPousada.exceptions.ResourceNotFoundException;
@@ -135,6 +136,14 @@ public class ReservaService
         return toResponse(reserva);
     }
 
+    public void delete(Long id)
+    {
+        Reserva r = reservaRepository.findById(id)
+                .orElseThrow(() -> new DataViolationException("Reserva não encontrada."));
+
+        reservaRepository.deleteById(id);
+    }
+
     private static ReservaResponseDTO toResponse(Reserva entity)
     {
         return new ReservaResponseDTO(
@@ -177,6 +186,19 @@ public class ReservaService
         return reservaRepository.findReservasByPeriodo(inicio, fim)
                 .stream()
                 .map(ReservaService::toResponse)
+                .toList();
+    }
+
+    public List<QuartoResponseDTO> findQuartosDisponiveis(LocalDate inicio, LocalDate fim)
+    {
+        if (inicio.isAfter(fim))
+        {
+            throw new DataViolationException("A data de início deve ser anterior à data de fim.");
+        }
+
+        return quartoRepository.findQuartosDisponiveisNoPeriodo(inicio, fim)
+                .stream()
+                .map(QuartoService::toResponse)
                 .toList();
     }
 }
