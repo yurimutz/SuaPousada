@@ -1,38 +1,26 @@
-import quartoImg from "@/assets/sasha-kaunas-67-sOi7mVIk-unsplash.jpg";
+import quartoImg1 from "@/assets/sasha-kaunas-67-sOi7mVIk-unsplash.jpg";
+import quartoImg2 from "@/assets/point3d-commercial-imaging-ltd-oxeCZrodz78-unsplash.jpg";
+import quartoImg3 from "@/assets/vojtech-bruzek-Yrxr3bsPdS0-unsplash.jpg";
 import { Button } from "@/components/ui/button";
 import { CardImage } from "@/components/ui/card-image";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 export function Home() {
-  const fakeQuartos = [
-    {
-      numero: 101,
-      tipo: "Suíte Presidencial",
-      diaria: 350.50,
-      camasCasal: 1,
-      camasSolteiro: 0,
-      banheiros: 1,
-      arCondicionado: true
-    },
-    {
-      numero: 102,
-      tipo: "Quarto Duplo",
-      diaria: 180.00,
-      camasCasal: 0,
-      camasSolteiro: 2,
-      banheiros: 1,
-      arCondicionado: true
-    },
-    {
-      numero: 103,
-      tipo: "Quarto Família",
-      diaria: 450.00,
-      camasCasal: 2,
-      camasSolteiro: 2,
-      banheiros: 2,
-      arCondicionado: true
-    }
-  ];
+  const [tiposQuarto, setTiposQuarto] = useState<any[]>([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/tipoQuarto")
+      .then((resposta) => {
+        setTiposQuarto(resposta.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar tipos de quarto:", error);
+      });
+  }, []);
+
+  const quartoImgs = [quartoImg1, quartoImg2, quartoImg3];
 
   return (
     <div className="flex flex-col flex-1 items-center justify-start px-4 py-13">
@@ -56,12 +44,20 @@ export function Home() {
       <div className="w-full max-w-6xl">
         <h2 className="text-3xl font-bold mb-8 text-left">Nossas Acomodações</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {fakeQuartos.map((quarto) => (
+          {tiposQuarto.map((tipo, index) => (
             <CardImage
-              key={quarto.numero}
-              imageSrc={quartoImg}
-              imageAlt={`Foto do Quarto ${quarto.numero}`}
-              quarto={quarto}
+              key={tipo.id}
+              imageSrc={quartoImgs[index % quartoImgs.length]}
+              imageAlt={`Foto do Quarto ${tipo.nome}`}
+              quarto={{
+                numero: tipo.id,
+                tipo: tipo.nome,
+                diaria: tipo.valor_diaria,
+                camasCasal: tipo.qtdCamasCasal,
+                camasSolteiro: tipo.qtdCamasSolteiro,
+                banheiros: tipo.qtdBanheiros,
+                arCondicionado: tipo.existe_ArCondicionado
+              }}
             />
           ))}
         </div>
