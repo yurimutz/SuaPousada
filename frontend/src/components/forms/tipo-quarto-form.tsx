@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DialogFooter } from "@/components/ui/dialog";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 import { type TipoQuarto } from "../data-table/quartos-columns";
 
 interface TipoQuartoFormProps {
@@ -11,44 +14,56 @@ interface TipoQuartoFormProps {
     onSuccess: () => void;
 }
 
+const requiredNumber = (min: number, errorMsg: string) => 
+    z.union([z.string(), z.number()])
+    .refine(v => v !== "" && v !== null && v !== undefined && !Number.isNaN(Number(v)), "Campo obrigatório")
+    .transform(Number)
+    .pipe(z.number().min(min, errorMsg));
+
+const createTipoQuartoFormSchema = z.object({
+    nome: z.string().nonempty("O nome é obrigatório"),
+    qtdCamasSolteiro: requiredNumber(0, "Não pode ser negativo"),
+    qtdCamasCasal: requiredNumber(0, "Não pode ser negativo"),
+    qtdBanheiros: requiredNumber(0, "Não pode ser negativo"),
+    valor_diaria: requiredNumber(0.01, "A diária deve ser maior que zero"),
+    existe_ArCondicionado: z.boolean(),
+});
+
+type TipoQuartoFormValues = z.infer<typeof createTipoQuartoFormSchema>;
+
 export function TipoQuartoForm({ tipoQuarto, onSuccess }: TipoQuartoFormProps) {
     const isEditing = !!tipoQuarto;
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        
-        const formData = new FormData(e.currentTarget);
-        const data = Object.fromEntries(formData.entries());
+    const form = useForm<TipoQuartoFormValues>({
+        resolver: zodResolver(createTipoQuartoFormSchema),
+        defaultValues: {
+            nome: tipoQuarto?.nome || "",
+            qtdCamasSolteiro: tipoQuarto?.qtdCamasSolteiro ?? ("" as unknown as number),
+            qtdCamasCasal: tipoQuarto?.qtdCamasCasal ?? ("" as unknown as number),
+            qtdBanheiros: tipoQuarto?.qtdBanheiros ?? ("" as unknown as number),
+            valor_diaria: tipoQuarto?.valor_diaria ?? ("" as unknown as number),
+            existe_ArCondicionado: tipoQuarto?.existe_ArCondicionado ?? false,
+        }
+    });
 
-        const payload = {
-            nome: data.nome as string,
-            qtdCamasSolteiro: data.qtdCamasSolteiro ? parseInt(data.qtdCamasSolteiro as string, 10) : 0,
-            qtdCamasCasal: data.qtdCamasCasal ? parseInt(data.qtdCamasCasal as string, 10) : 0,
-            qtdBanheiros: data.qtdBanheiros ? parseInt(data.qtdBanheiros as string, 10) : 0,
-            valor_diaria: data.valor_diaria ? parseFloat(data.valor_diaria as string) : 0,
-            // Checkbox HTML sends "on" se tem name attribute e checked. Mas Radix Checkbox pode funcionar diferente se não usar name.
-            // Para garantir que o FormData receba o valor com Radix Checkbox precisamos de um hidden input ou value.
-            // O Shadcn Checkbox aceita `name` e `value` no form, então deve funcionar.
-            existe_ArCondicionado: data.existe_ArCondicionado === "on",
-        };
-
+    const onSubmit = (data: TipoQuartoFormValues) => {
         if (isEditing) {
-            axios.patch(`http://localhost:8080/tipoQuarto/${tipoQuarto.id}/update`, payload)
+            axios.patch(`http://localhost:8080/tipoQuarto/${tipoQuarto.id}/update`, data)
                 .then((response) => {
                     console.log("Update feito com sucesso!", response.data);
                     onSuccess();
                 })
                 .catch((error) => {
-                    console.log("Erro ao atualizar", error);
+                    console.error("Erro ao atualizar", error);
                 });
         } else {
-            axios.post(`http://localhost:8080/tipoQuarto/create`, payload)
+            axios.post(`http://localhost:8080/tipoQuarto/create`, data)
                 .then((response) => {
                     console.log("Criado com sucesso!", response.data);
                     onSuccess();
                 })
                 .catch((error) => {
-                    console.log("Erro ao criar", error);
+                    console.error("Erro ao criar", error);
                 });
         }
     };
@@ -56,41 +71,125 @@ export function TipoQuartoForm({ tipoQuarto, onSuccess }: TipoQuartoFormProps) {
     const idPrefix = isEditing ? tipoQuarto.id : "new";
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
-                <Field>
-                    <FieldLabel htmlFor={`nome-${idPrefix}`}>Nome do Tipo</FieldLabel>
-                    <Input id={`nome-${idPrefix}`} name="nome" defaultValue={tipoQuarto?.nome} required />
-                </Field>
+                <Controller
+                    name="nome"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={`nome-${idPrefix}`}>Nome do Tipo</FieldLabel>
+                            <Input
+                                {...field}
+                                id={`nome-${idPrefix}`}
+                                type="text"
+                                aria-invalid={fieldState.invalid}
+                            />
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
+                
                 <div className="grid grid-cols-2 gap-4">
-                    <Field>
-                        <FieldLabel htmlFor={`solteiro-${idPrefix}`}>Camas de Solteiro</FieldLabel>
-                        <Input id={`solteiro-${idPrefix}`} name="qtdCamasSolteiro" type="number" min="0" defaultValue={tipoQuarto?.qtdCamasSolteiro} required />
-                    </Field>
-                    <Field>
-                        <FieldLabel htmlFor={`casal-${idPrefix}`}>Camas de Casal</FieldLabel>
-                        <Input id={`casal-${idPrefix}`} name="qtdCamasCasal" type="number" min="0" defaultValue={tipoQuarto?.qtdCamasCasal} required />
-                    </Field>
+                    <Controller
+                        name="qtdCamasSolteiro"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`solteiro-${idPrefix}`}>Camas de Solteiro</FieldLabel>
+                                <Input
+                                    {...field}
+                                    id={`solteiro-${idPrefix}`}
+                                    type="number"
+                                    min="0"
+                                    aria-invalid={fieldState.invalid}
+                                />
+                                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            </Field>
+                        )}
+                    />
+                    
+                    <Controller
+                        name="qtdCamasCasal"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`casal-${idPrefix}`}>Camas de Casal</FieldLabel>
+                                <Input
+                                    {...field}
+                                    id={`casal-${idPrefix}`}
+                                    type="number"
+                                    min="0"
+                                    aria-invalid={fieldState.invalid}
+                                />
+                                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            </Field>
+                        )}
+                    />
                 </div>
+                
                 <div className="grid grid-cols-2 gap-4">
-                    <Field>
-                        <FieldLabel htmlFor={`banheiros-${idPrefix}`}>Banheiros</FieldLabel>
-                        <Input id={`banheiros-${idPrefix}`} name="qtdBanheiros" type="number" min="0" defaultValue={tipoQuarto?.qtdBanheiros} required />
-                    </Field>
-                    <Field>
-                        <FieldLabel htmlFor={`diaria-${idPrefix}`}>Valor Diária (R$)</FieldLabel>
-                        <Input id={`diaria-${idPrefix}`} name="valor_diaria" type="number" step="0.01" min="0.01" defaultValue={tipoQuarto?.valor_diaria} required />
-                    </Field>
+                    <Controller
+                        name="qtdBanheiros"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`banheiros-${idPrefix}`}>Banheiros</FieldLabel>
+                                <Input
+                                    {...field}
+                                    id={`banheiros-${idPrefix}`}
+                                    type="number"
+                                    min="0"
+                                    aria-invalid={fieldState.invalid}
+                                />
+                                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            </Field>
+                        )}
+                    />
+
+                    <Controller
+                        name="valor_diaria"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`diaria-${idPrefix}`}>Valor Diária (R$)</FieldLabel>
+                                <Input
+                                    {...field}
+                                    id={`diaria-${idPrefix}`}
+                                    type="number"
+                                    step="0.01"
+                                    min="0.01"
+                                    aria-invalid={fieldState.invalid}
+                                />
+                                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            </Field>
+                        )}
+                    />
                 </div>
-                <div className="flex items-center space-x-2 mt-2">
-                    <Checkbox id={`ar-${idPrefix}`} name="existe_ArCondicionado" defaultChecked={tipoQuarto?.existe_ArCondicionado} />
-                    <label
-                        htmlFor={`ar-${idPrefix}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                        Possui Ar-Condicionado
-                    </label>
-                </div>
+                
+                <Controller
+                    name="existe_ArCondicionado"
+                    control={form.control}
+                    render={({ field: { value, onChange, ...rest }, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid} className="mt-2 flex flex-col space-y-2">
+                            <div className="flex items-center space-x-2">
+                                <Checkbox 
+                                    id={`ar-${idPrefix}`} 
+                                    checked={value} 
+                                    onCheckedChange={onChange} 
+                                    {...rest}
+                                />
+                                <label
+                                    htmlFor={`ar-${idPrefix}`}
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Possui Ar-Condicionado
+                                </label>
+                            </div>
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        </Field>
+                    )}
+                />
             </FieldGroup>
             <DialogFooter className="mt-6">
                 <Button type="submit">{isEditing ? "Salvar alterações" : "Adicionar Tipo"}</Button>

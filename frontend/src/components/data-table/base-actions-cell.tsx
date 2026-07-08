@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
+import axios from "axios";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
@@ -12,9 +13,10 @@ interface BaseActionsCellProps {
     table: any;
     entityName: string;
     renderEditForm: (onSuccess: () => void) => React.ReactNode;
+    deleteEndpoint: string;
 }
 
-export function BaseActionsCell({ id, table, entityName, renderEditForm }: BaseActionsCellProps) {
+export function BaseActionsCell({ id, table, entityName, renderEditForm, deleteEndpoint }: BaseActionsCellProps) {
     const [open, setOpen] = useState(false);
     const isMobile = useIsMobile();
     
@@ -24,6 +26,20 @@ export function BaseActionsCell({ id, table, entityName, renderEditForm }: BaseA
     const handleSuccess = () => {
         setOpen(false);
         if (reloadData) reloadData();
+    };
+
+    const handleDelete = () => {
+        if (window.confirm(`Tem certeza que deseja excluir este ${entityName}?`)) {
+            axios.delete(deleteEndpoint)
+                .then(() => {
+                    console.log(`${entityName} excluído com sucesso!`);
+                    if (reloadData) reloadData();
+                })
+                .catch((error) => {
+                    console.error("❌ Erro ao excluir. Detalhes:", error.response?.data || error);
+                    alert("Ocorreu um erro ao excluir o registro.");
+                });
+        }
     };
 
     return (
@@ -66,7 +82,7 @@ export function BaseActionsCell({ id, table, entityName, renderEditForm }: BaseA
                     </DialogContent>
                 </Dialog>
             )}
-            <Button variant="outline" className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive" title="Excluir">
+            <Button variant="outline" className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive" title="Excluir" onClick={handleDelete}>
                 <Trash2 className="h-4 w-4" />
                 <span className="sr-only">Excluir</span>
             </Button>
