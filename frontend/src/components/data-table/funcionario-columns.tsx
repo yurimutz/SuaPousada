@@ -13,6 +13,7 @@ export const columns: ColumnDef<Funcionario>[] = [
     ...getBasePersonColumns<Funcionario>(),
     {
         id: "actions",
+        header: "Ações",
         cell: ({ row, table }) => {
             const funcionario = row.original;
             return (

@@ -89,6 +89,7 @@ export const columns: ColumnDef<Reserva>[] = [
     },
     {
         id: "actions",
+        header: "Ações",
         cell: ({ row, table }) => {
             const reserva = row.original;
             return (

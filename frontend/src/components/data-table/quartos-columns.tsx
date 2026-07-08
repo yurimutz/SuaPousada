@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { BaseActionsCell } from "./base-actions-cell";
+import { DataTableColumnHeader } from "./data-table-header";
 
 export interface TipoQuarto {
     id: number;
@@ -47,11 +48,15 @@ export const quartosColumns: ColumnDef<Quarto>[] = [
     },
     {
         accessorKey: "numero",
-        header: "Numero",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Numero" />
+        )
     },
     {
         accessorKey: "andar",
-        header: "Andar",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Andar" />
+        )
     },
     {
         accessorKey: "tipoQuarto",
@@ -59,7 +64,7 @@ export const quartosColumns: ColumnDef<Quarto>[] = [
         cell: ({ row }) => {
             const tipo = row.getValue("tipoQuarto") as TipoQuarto;
             if (!tipo) return null;
-            
+
             return (
                 <Popover>
                     <PopoverTrigger asChild>
@@ -103,6 +108,7 @@ export const quartosColumns: ColumnDef<Quarto>[] = [
     },
     {
         id: "actions",
+        header: "Ações",
         cell: ({ row, table }) => {
             const quarto = row.original;
             return (

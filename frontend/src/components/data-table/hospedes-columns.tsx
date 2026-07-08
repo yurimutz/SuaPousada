@@ -11,6 +11,7 @@ export const hospedesColumns: ColumnDef<Hospede>[] = [
     ...getBasePersonColumns<Hospede>(),
     {
         id: "actions",
+        header: "Ações",
         cell: ({ row, table }) => {
             const hospede = row.original;
             return (

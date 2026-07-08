@@ -1,5 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "./data-table-header";
 
 export interface BasePersonData {
     nome: string;
@@ -36,7 +37,9 @@ export function getBasePersonColumns<T extends BasePersonData>(): ColumnDef<T>[]
         },
         {
             accessorKey: "nome",
-            header: "Nome",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Nome" />
+            ),
         },
         {
             accessorKey: "cpf",
@@ -56,7 +59,9 @@ export function getBasePersonColumns<T extends BasePersonData>(): ColumnDef<T>[]
         },
         {
             accessorKey: "dtNascimento",
-            header: "Data de Nascimento",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="Data de Nascimento" />
+            ),
         },
         {
             accessorKey: "genero",

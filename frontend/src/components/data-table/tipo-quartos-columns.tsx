@@ -3,6 +3,7 @@ import { TipoQuartoForm } from "../forms/tipo-quarto-form";
 import { Checkbox } from "../ui/checkbox";
 import { BaseActionsCell } from "./base-actions-cell";
 import { type TipoQuarto } from "./quartos-columns";
+import { DataTableColumnHeader } from "./data-table-header";
 
 export const tipoQuartosColumns: ColumnDef<TipoQuarto>[] = [
     {
@@ -45,7 +46,9 @@ export const tipoQuartosColumns: ColumnDef<TipoQuarto>[] = [
     },
     {
         accessorKey: "valor_diaria",
-        header: "Diária (R$)",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Diária (R$)" />
+        ),
         cell: ({ row }) => {
             const valor = parseFloat(row.getValue("valor_diaria"));
             return new Intl.NumberFormat("pt-BR", {
