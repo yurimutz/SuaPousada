@@ -21,9 +21,9 @@ export function Sobre() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              O <strong>SuaPousada.com</strong> foi concebido e desenvolvido no âmbito da disciplina de <strong>Projeto Integrado</strong> 
+              O <strong>SuaPousada.com</strong> foi desenvolvido durante a disciplina de <strong>Projeto Integrado </strong> 
               do curso de <strong>Ciência da Computação</strong> da <strong>Universidade Federal do Espírito Santo (UFES)</strong>.
-              Nosso objetivo foi projetar e implementar um sistema completo ponta-a-ponta capaz de gerenciar com eficiência as operações do dia-a-dia de uma pousada.
+              Nosso objetivo foi projetar e implementar um sistema completo capaz de gerenciar com eficiência as operações do dia-a-dia de uma pousada.
             </p>
           </CardContent>
         </Card>
@@ -70,19 +70,19 @@ export function Sobre() {
           <Item className="flex-1 p-6 bg-accent rounded-lg border flex-col items-center shadow-sm hover:shadow-md transition-shadow">
             <ItemContent className="items-center">
               <ItemTitle className="text-lg text-primary mb-2">Frontend</ItemTitle>
-              <ItemDescription className="text-center">React, Tailwind CSS e Shadcn UI para uma interface dinâmica e moderna.</ItemDescription>
+              <ItemDescription className="text-center">React, Tailwind CSS e Shadcn UI</ItemDescription>
             </ItemContent>
           </Item>
           <Item className="flex-1 p-6 bg-accent rounded-lg border flex-col items-center shadow-sm hover:shadow-md transition-shadow">
             <ItemContent className="items-center">
               <ItemTitle className="text-lg text-primary mb-2">Backend</ItemTitle>
-              <ItemDescription className="text-center">Java com Spring Boot, Spring Web MVC e Spring Data JPA para a lógica de negócio.</ItemDescription>
+              <ItemDescription className="text-center">Java com Spring Boot, Spring Web MVC e Spring Data JPA</ItemDescription>
             </ItemContent>
           </Item>
           <Item className="flex-1 p-6 bg-accent rounded-lg border flex-col items-center shadow-sm hover:shadow-md transition-shadow">
             <ItemContent className="items-center">
               <ItemTitle className="text-lg text-primary mb-2">Infraestrutura</ItemTitle>
-              <ItemDescription className="text-center">Banco de dados PostgreSQL, tudo orquestrado e containerizado via Docker.</ItemDescription>
+              <ItemDescription className="text-center">Banco de dados PostgreSQL, containerizado via Docker.</ItemDescription>
             </ItemContent>
           </Item>
         </ItemGroup>
