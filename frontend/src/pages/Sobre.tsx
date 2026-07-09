@@ -33,32 +33,33 @@ export function Sobre() {
         <h2 className="text-3xl font-bold mb-8 text-center">Autores</h2>
         <ItemGroup className="flex-col sm:flex-row justify-center gap-6">
           <Item className="flex-1 max-w-xs mx-auto p-4 bg-card shadow-sm hover:shadow-md transition-shadow">
-            <ItemMedia variant="image" className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-muted overflow-hidden shrink-0">
+            <ItemMedia variant="image" className="w-24 h-24 sm:w-24 sm:h-24 rounded-full border-2 border-muted overflow-hidden shrink-0">
               <img src="/bruno.png" alt="Bruno Vale" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle className="text-lg">Bruno Vale</ItemTitle>
-              <ItemDescription>Desenvolvedor</ItemDescription>
+              <ItemDescription>@_brvale_</ItemDescription>
             </ItemContent>
           </Item>
           
           <Item className="flex-1 max-w-xs mx-auto p-4 bg-card shadow-sm hover:shadow-md transition-shadow">
-            <ItemMedia variant="image" className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-muted overflow-hidden shrink-0">
+            <ItemMedia variant="image" className="w-24 h-24 sm:w-24 sm:h-24 rounded-full border-2 border-muted overflow-hidden shrink-0">
               <img src="/rafael.jpeg" alt="Rafael Rodrigues" />
             </ItemMedia>
             <ItemContent>
-              <ItemTitle className="text-lg">Rafael Rodrigues</ItemTitle>
-              <ItemDescription>Desenvolvedor</ItemDescription>
+              <ItemTitle className="text-lg">Rafael Matos</ItemTitle>
+              {/* <ItemDescription>Desenvolvedor</ItemDescription> */}
+              <ItemDescription>@rafa_rmatos</ItemDescription>
             </ItemContent>
           </Item>
 
           <Item className="flex-1 max-w-xs mx-auto p-4 bg-card shadow-sm hover:shadow-md transition-shadow">
-            <ItemMedia variant="image" className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-muted overflow-hidden shrink-0">
+            <ItemMedia variant="image" className="w-24 h-24 sm:w-24 sm:h-24 rounded-full border-2 border-muted overflow-hidden shrink-0">
               <img src="/yuri.png" alt="Yuri Mutz" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle className="text-lg">Yuri Mutz</ItemTitle>
-              <ItemDescription>Desenvolvedor</ItemDescription>
+              <ItemDescription>@yuri.tress</ItemDescription>
             </ItemContent>
           </Item>
         </ItemGroup>
