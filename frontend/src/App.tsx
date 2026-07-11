@@ -15,16 +15,21 @@ import { ClientNewBooking } from "./pages/client/ClientNewBooking";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 
+import { Register } from "./pages/Register";
 import { Sobre } from "./pages/Sobre";
+
+import { Toaster } from "@/components/ui/sonner";
 
 export function App() {
   return (
     <AuthProvider>
+      <Toaster richColors position="top-right" />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="sobre" element={<Sobre />} />
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
         
         {/* Rotas Protegidas - Admin */}

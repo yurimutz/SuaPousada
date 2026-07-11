@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { type Quarto } from "../data-table/quartos-columns";
+import { toast } from "sonner";
 
 interface QuartoFormProps {
     quarto?: Quarto;
@@ -55,19 +56,21 @@ export function QuartoForm({ quarto, onSuccess }: QuartoFormProps) {
         if (isEditing) {
             axios.patch(`http://localhost:8080/quarto/${quarto.id}/update`, data)
                 .then((response) => {
-                    console.log("Update feito com sucesso!", response.data);
+                    toast.success("Quarto atualizado com sucesso!");
                     onSuccess();
                 })
                 .catch((error) => {
+                    toast.error("Erro ao atualizar quarto. Tente novamente.");
                     console.error("Erro ao atualizar", error);
                 });
         } else {
             axios.post(`http://localhost:8080/quarto/create`, data)
                 .then((response) => {
-                    console.log("Criado com sucesso!", response.data);
+                    toast.success("Quarto cadastrado com sucesso!");
                     onSuccess();
                 })
                 .catch((error) => {
+                    toast.error("Erro ao cadastrar quarto. Tente novamente.");
                     console.error("Erro ao criar", error);
                 });
         }

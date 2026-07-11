@@ -14,9 +14,11 @@ import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { type Hospede } from "../data-table/hospedes-columns";
 import { DatePickerSimple } from "../date-picker-birthday";
+import { toast } from "sonner";
 
 interface HospedeFormProps {
     hospede?: Hospede;
+    submitLabel?: string;
     onSuccess: () => void;
 }
 
@@ -31,7 +33,7 @@ const createHospedeFormSchema = z.object({
 
 type HospedeFormValues = z.infer<typeof createHospedeFormSchema>;
 
-export function HospedeForm({ hospede, onSuccess }: HospedeFormProps) {
+export function HospedeForm({ hospede, submitLabel, onSuccess }: HospedeFormProps) {
     const isEditing = !!hospede;
 
     const form = useForm<HospedeFormValues>({
@@ -47,24 +49,24 @@ export function HospedeForm({ hospede, onSuccess }: HospedeFormProps) {
     });
 
     const onSubmit = (data: HospedeFormValues) => {
-        console.log("🚀 Payload sendo enviado para a API:", data);
-
         if (isEditing) {
             axios.patch(`http://localhost:8080/cliente/${hospede.id}/update`, data)
                 .then((response) => {
-                    console.log("✅ Update feito com sucesso!", response.data);
+                    toast.success("Hóspede atualizado com sucesso!");
                     onSuccess();
                 })
                 .catch((error) => {
+                    toast.error("Erro ao atualizar hóspede. Tente novamente.");
                     console.error("❌ Erro ao atualizar. Detalhes:", error.response?.data || error);
                 });
         } else {
             axios.post(`http://localhost:8080/cliente/create`, data)
                 .then((response) => {
-                    console.log("✅ Criado com sucesso!", response.data);
+                    toast.success("Hóspede cadastrado com sucesso!");
                     onSuccess();
                 })
                 .catch((error) => {
+                    toast.error("Erro ao cadastrar hóspede. Tente novamente.");
                     console.error("❌ Erro ao criar. Detalhes:", error.response?.data || error);
                 });
         }
@@ -212,7 +214,7 @@ export function HospedeForm({ hospede, onSuccess }: HospedeFormProps) {
             
             <div className="mt-6 flex flex-col sm:flex-row sm:justify-end">
                 <Button type="submit" className="w-full sm:w-auto">
-                    {isEditing ? "Salvar alterações" : "Adicionar Hóspede"}
+                    {isEditing ? "Salvar alterações" : (submitLabel || "Adicionar Hóspede")}
                 </Button>
             </div>
         </form>
