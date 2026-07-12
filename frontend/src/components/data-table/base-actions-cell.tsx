@@ -3,10 +3,22 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import axios from "axios";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface BaseActionsCellProps {
     id: string | number;
@@ -29,17 +41,15 @@ export function BaseActionsCell({ id, table, entityName, renderEditForm, deleteE
     };
 
     const handleDelete = () => {
-        if (window.confirm(`Tem certeza que deseja excluir este ${entityName}?`)) {
-            axios.delete(deleteEndpoint)
-                .then(() => {
-                    console.log(`${entityName} excluído com sucesso!`);
-                    if (reloadData) reloadData();
-                })
-                .catch((error) => {
-                    console.error("❌ Erro ao excluir. Detalhes:", error.response?.data || error);
-                    alert("Ocorreu um erro ao excluir o registro.");
-                });
-        }
+        axios.delete(deleteEndpoint)
+            .then(() => {
+                toast.success(`${entityName} excluído com sucesso!`);
+                if (reloadData) reloadData();
+            })
+            .catch((error) => {
+                console.error("❌ Erro ao excluir. Detalhes:", error.response?.data || error);
+                toast.error("Erro ao excluir");
+            });
     };
 
     return (
@@ -82,10 +92,28 @@ export function BaseActionsCell({ id, table, entityName, renderEditForm, deleteE
                     </DialogContent>
                 </Dialog>
             )}
-            <Button variant="outline" className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive" title="Excluir" onClick={handleDelete}>
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Excluir</span>
-            </Button>
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button variant="outline" className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive" title="Excluir">
+                        <Trash2 className="h-4 w-4" />
+                        <span className="sr-only">Excluir</span>
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Excluir {entityName}?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Tem certeza que deseja excluir? Esta ação não poderá ser desfeita.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                            Sim, excluir
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="h-8 w-8 p-0">

@@ -8,6 +8,7 @@ import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { type TipoQuarto } from "../data-table/quartos-columns";
+import { toast } from "sonner";
 
 interface TipoQuartoFormProps {
     tipoQuarto?: TipoQuarto;
@@ -50,19 +51,21 @@ export function TipoQuartoForm({ tipoQuarto, onSuccess }: TipoQuartoFormProps) {
         if (isEditing) {
             axios.patch(`http://localhost:8080/tipoQuarto/${tipoQuarto.id}/update`, data)
                 .then((response) => {
-                    console.log("Update feito com sucesso!", response.data);
+                    toast.success("Tipo de quarto atualizado com sucesso!");
                     onSuccess();
                 })
                 .catch((error) => {
+                    toast.error("Erro ao atualizar tipo de quarto. Tente novamente.");
                     console.error("Erro ao atualizar", error);
                 });
         } else {
             axios.post(`http://localhost:8080/tipoQuarto/create`, data)
                 .then((response) => {
-                    console.log("Criado com sucesso!", response.data);
+                    toast.success("Tipo de quarto cadastrado com sucesso!");
                     onSuccess();
                 })
                 .catch((error) => {
+                    toast.error("Erro ao cadastrar tipo de quarto. Tente novamente.");
                     console.error("Erro ao criar", error);
                 });
         }

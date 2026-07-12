@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useAuth } from "@/contexts/AuthContext";
 import { Bath, BedDouble, BedSingle, CircleDollarSign, Wind } from "lucide-react";
+import { toast } from "sonner";
 
 interface TipoQuarto {
   id: number;
@@ -96,7 +97,7 @@ export function ClientNewBooking() {
 
   const onSubmit = (data: BookingFormValues) => {
     if (!user?.clienteId) {
-      alert("Erro: Você precisa estar logado como cliente para reservar.");
+      toast.error("Erro: Você precisa estar logado como cliente para reservar.");
       return;
     }
 
@@ -111,13 +112,13 @@ export function ClientNewBooking() {
 
     axios.post("http://localhost:8080/reservas/create", payload)
       .then(response => {
-        console.log("✅ Reserva criada!", response.data);
+        toast.success("Reserva criada com sucesso!");
         setSuccessMessage("Reserva criada com sucesso! Verifique suas reservas.");
         form.reset();
       })
       .catch(error => {
+        toast.error("Erro ao criar reserva. Tente novamente.");
         console.error("❌ Erro ao criar reserva", error.response?.data || error);
-        alert("Erro ao criar reserva. Tente novamente.");
       });
   };
 

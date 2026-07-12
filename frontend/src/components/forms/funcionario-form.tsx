@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { type Funcionario } from "../data-table/funcionario-columns";
 import { DatePickerSimple } from "../date-picker-birthday";
+import { toast } from "sonner";
 
 interface FuncionarioFormProps {
     funcionario?: Funcionario;
@@ -48,24 +49,24 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
     })
 
     const onSubmit = (data: FuncionarioFormValues) => {
-        console.log("🚀 Payload sendo enviado para a API:", data);
-
         if (isEditing) {
             axios.patch(`http://localhost:8080/funcionario/${funcionario.id}/update`, data)
                 .then((response) => {
-                    console.log("✅ Update feito com sucesso!", response.data);
+                    toast.success("Funcionário atualizado com sucesso!");
                     onSuccess();
                 })
                 .catch((error) => {
+                    toast.error("Erro ao atualizar funcionário. Tente novamente.");
                     console.error("❌ Erro ao atualizar. Detalhes:", error.response?.data || error);
                 });
         } else {
             axios.post(`http://localhost:8080/funcionario/create`, data)
                 .then((response) => {
-                    console.log("✅ Criado com sucesso!", response.data);
+                    toast.success("Funcionário cadastrado com sucesso!");
                     onSuccess();
                 })
                 .catch((error) => {
+                    toast.error("Erro ao cadastrar funcionário. Tente novamente.");
                     console.error("❌ Erro ao criar. Detalhes:", error.response?.data || error);
                 });
         }
