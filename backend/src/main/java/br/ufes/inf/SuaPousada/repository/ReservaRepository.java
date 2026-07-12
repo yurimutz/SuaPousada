@@ -47,4 +47,14 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>
     @Query("SELECT r FROM Reserva r WHERE r.dtReservaInicio >= :inicio AND r.dtReservaFim <= :fim")
     List<Reserva> findReservasByPeriodo(@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
 
+    @Query("SELECT r FROM Reserva r WHERE r.dtReservaInicio <= :data AND r.dtReservaFim > :data")
+    List<Reserva> findReservasAtivasNaData(@Param("data") LocalDate data);
+
+    @Query("SELECT r FROM Reserva r WHERE r.dtReservaInicio <= :fim AND r.dtReservaFim >= :inicio")
+    List<Reserva> findReservasOverlappingPeriodo(@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
+
+    @Query("SELECT new br.ufes.inf.SuaPousada.dto.PopularRoomDTO(tq.nome, COUNT(r.id)) " +
+           "FROM Reserva r JOIN r.quarto q JOIN q.tipoQuarto tq " +
+           "GROUP BY tq.nome ORDER BY COUNT(r.id) DESC")
+    List<br.ufes.inf.SuaPousada.dto.PopularRoomDTO> findQuartosMaisPopulares();
 }
