@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Long>
 {
+    UserDetails findByEmail(String email);
     /* Operador OR no metodo realiza apenas uma ida ao banco de dados, ao invés de criar dois métodos separados.
      * DESVANTAGEM: a mensagem de erro fica genérica, pois pode ter sido o CPF ou EMAIL que lançaram a exceção */
     Boolean existsByCpfOrEmail(String cpf, String email);

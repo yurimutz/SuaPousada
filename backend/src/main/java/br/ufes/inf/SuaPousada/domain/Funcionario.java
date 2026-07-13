@@ -16,9 +16,9 @@ public class Funcionario extends Pessoa
 {
 
     @Builder
-    public Funcionario(Long id, String nome, String cpf, LocalDate dtNascimento, Genero genero, String email, String telefone)
+    public Funcionario(Long id, String nome, String cpf, LocalDate dtNascimento, Genero genero, String email, String telefone, String senha, UserRole role)
     {
-        super(id, nome, cpf, dtNascimento, genero, email, telefone);
+        super(id, nome, cpf, dtNascimento, genero, email, telefone, senha, role);
     }
 
     public Funcionario()

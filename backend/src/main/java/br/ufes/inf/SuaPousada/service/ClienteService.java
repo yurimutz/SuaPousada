@@ -10,7 +10,9 @@ import br.ufes.inf.SuaPousada.repository.ClienteRepository;
 import br.ufes.inf.SuaPousada.repository.PessoaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import br.ufes.inf.SuaPousada.domain.UserRole;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -59,6 +61,8 @@ public class ClienteService
                 .genero(request_dto.genero() != null ? request_dto.genero() : cliente.getGenero())
                 .email(request_dto.email() != null ? request_dto.email() : cliente.getEmail())
                 .telefone(request_dto.telefone() != null ? request_dto.telefone() : cliente.getTelefone())
+                .senha(cliente.getSenha())
+                .role(cliente.getRole())
                 .build();
 
         if (!isOfAge(cliente_atualizado.getDtNascimento()))
@@ -107,6 +111,8 @@ public class ClienteService
                 .genero(dto.genero())
                 .email(dto.email())
                 .telefone(dto.telefone())
+                .senha(new BCryptPasswordEncoder().encode(dto.senha()))
+                .role(UserRole.ROLE_CLIENTE)
                 .build();
     }
 
