@@ -3,18 +3,18 @@
 import { Pie, PieChart } from "recharts"
 
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card"
 import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
 } from "@/components/ui/chart"
 
 export const description = "A simple pie chart"
@@ -62,7 +62,7 @@ export function ChartPiePopularRooms({ data }: PieChartProps) {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={dynamicConfig}
-          className="mx-auto aspect-square max-h-[350px]"
+          className="mx-auto aspect-square min-h-[200px] max-h-[350px]"
         >
           <PieChart>
             <ChartTooltip
