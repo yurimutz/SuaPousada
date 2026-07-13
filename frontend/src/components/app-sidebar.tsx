@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext"
-import { BedDouble, Calendar, CalendarDays, Home, LogOut, PlusCircle, Settings, User, Users } from "lucide-react"
+import { BedDouble, Calendar, CalendarDays, Home, LogOut, PlusCircle, User, Users } from "lucide-react"
 import { Link, useLocation } from "react-router"
 
 import {
@@ -55,11 +55,11 @@ const clientItems = [
     url: "/cliente/nova-reserva",
     icon: PlusCircle,
   },
-  {
-    title: "Perfil",
-    url: "/cliente/perfil",
-    icon: Settings,
-  },
+  // {
+  //   title: "Perfil",
+  //   url: "/cliente/perfil",
+  //   icon: Settings,
+  // },
 ]
 
 interface AppSidebarProps {
