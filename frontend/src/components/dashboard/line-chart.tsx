@@ -3,17 +3,17 @@
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card"
 import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
 } from "@/components/ui/chart"
 
 export const description = "A line chart"
@@ -46,7 +46,7 @@ export function ChartLineDefault({ data }: LineChartProps) {
         <CardDescription>Taxa de ocupação da pousada neste ano</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} >
           <LineChart
             accessibilityLayer
             data={formattedData}
