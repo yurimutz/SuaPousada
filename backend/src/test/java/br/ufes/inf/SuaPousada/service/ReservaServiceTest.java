@@ -385,7 +385,7 @@ public class ReservaServiceTest {
         Reserva r1 = Reserva.builder().id(1L).cliente(cliente).quarto(Quarto.builder().build()).build();
         Reserva r2 = Reserva.builder().id(2L).cliente(cliente).quarto(Quarto.builder().build()).build();
 
-        when(reservaRepository.findAllByClienteId(1L)).thenReturn(List.of(r1, r2));
+        when(reservaRepository.findAllByClienteIdOrderByDtReservaInicioAsc(1L)).thenReturn(List.of(r1, r2));
 
         List<ReservaResponseDTO> response = reservaService.findAllReservasFromCliente(1L);
 

@@ -167,7 +167,7 @@ public class ReservaService
 
     public List<ReservaResponseDTO> findAllReservasFromCliente(Long idCliente)
     {
-        return reservaRepository.findAllByClienteId(idCliente)
+        return reservaRepository.findAllByClienteIdOrderByDtReservaInicioAsc(idCliente)
                 .stream()
                 .map(ReservaService::toResponse)
                 .toList();

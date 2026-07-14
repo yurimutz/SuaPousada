@@ -40,7 +40,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long>
                                                @Param("fim") LocalDate fim,
                                                @Param("reservaId") Long reservaId);
 
-    List<Reserva> findAllByClienteId(Long idCliente);
+    List<Reserva> findAllByClienteIdOrderByDtReservaInicioAsc(Long idCliente);
 
     List<Reserva> findAllByQuartoId(Long idQuarto);
 

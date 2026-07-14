@@ -22,8 +22,8 @@ export function ClientBooking() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (user?.clienteId) {
-      api.get(`/reservas/${user.clienteId}/findAllByClientId`)
+    if (user?.id) {
+      api.get(`/reservas/${user.id}/findAllByClientId`)
         .then((response) => {
           setReservas(response.data);
         })
@@ -36,7 +36,7 @@ export function ClientBooking() {
     } else {
       setIsLoading(false);
     }
-  }, [user?.clienteId]);
+  }, [user?.id]);
 
   const formatBookingRange = (startStr: string, endStr: string) => {
     if (!startStr || !endStr) return "";
@@ -94,13 +94,14 @@ export function ClientBooking() {
                     <ItemTitle className="text-lg">
                       {reserva.quarto.tipoQuarto.nome} - Quarto {reserva.quarto.numero}
                     </ItemTitle>
-                    <Badge variant={isPassada ? "secondary" : "default"}>
+                    <Badge variant={isPassada ? "secondary" : "default"}
+                          className={isPassada && "bg-green-400/10 text-green-400"}>
                       {isPassada ? "Concluída" : "Agendada"}
                     </Badge>
                   </ItemHeader>
                   
                   <ItemDescription className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 mt-1">
-                    <span className="flex items-center gap-1.5 font-medium text-foreground">
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
                       <Calendar className="w-4 h-4 text-muted-foreground" />
                       {formatBookingRange(reserva.dtReservaInicio, reserva.dtReservaFim)}
                     </span>
