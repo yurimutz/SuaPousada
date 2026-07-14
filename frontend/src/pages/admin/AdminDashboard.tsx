@@ -3,7 +3,7 @@ import { ChartPiePopularRooms } from "@/components/dashboard/pie-chart";
 import { FuncionariosSection } from "@/components/FuncionariosSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
 
 export function AdminDashboard() {
@@ -11,7 +11,7 @@ export function AdminDashboard() {
 
 
   const fetchDashboardStats = () => {
-    axios.get("http://localhost:8080/dashboard")
+    api.get("/dashboard")
       .then((resposta) => {
         setDashboardStats(resposta.data);
         // O log precisa ser com resposta.data, pois o setState é assíncrono!

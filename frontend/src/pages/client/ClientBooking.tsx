@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { BedDouble, Calendar, Moon } from "lucide-react";
@@ -23,7 +23,7 @@ export function ClientBooking() {
 
   useEffect(() => {
     if (user?.clienteId) {
-      axios.get(`http://localhost:8080/reservas/${user.clienteId}/findAllByClientId`)
+      api.get(`/reservas/${user.clienteId}/findAllByClientId`)
         .then((response) => {
           setReservas(response.data);
         })

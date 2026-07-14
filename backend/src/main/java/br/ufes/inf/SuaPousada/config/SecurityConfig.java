@@ -36,6 +36,8 @@ public class SecurityConfig {
                         .requestMatchers("/funcionario/**").hasAnyRole("ADMIN", "FUNCIONARIO")
                         .requestMatchers(HttpMethod.POST, "/quarto/create").hasAnyRole("ADMIN", "FUNCIONARIO")
                         .requestMatchers(HttpMethod.PATCH, "/quarto/**").hasAnyRole("ADMIN", "FUNCIONARIO")
+                        .requestMatchers(HttpMethod.GET, "/dashboard").hasAnyRole("ADMIN")
+
 
                         .requestMatchers("/h2-console/**").permitAll() // allow h2 console if present
                         .anyRequest().authenticated())

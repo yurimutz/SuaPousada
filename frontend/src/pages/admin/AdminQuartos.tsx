@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { api as axios } from "@/lib/api";
+import { api } from "@/lib/api";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { type Quarto, type TipoQuarto } from "../../components/data-table/quartos-columns";
@@ -23,9 +23,9 @@ export function AdminQuartos() {
   const [tipoQuartos, setTipoQuartos] = useState<TipoQuarto[]>([]);
 
   const fetchquartos = () => {
-    axios.get("/quarto")
+    api.get("/quarto")
       .then((resposta) => {
-        console.log(resposta.data);
+        // console.log(resposta.data);
         setQuartos(resposta.data);
       })
       .catch((error) => {
@@ -34,7 +34,7 @@ export function AdminQuartos() {
   }
 
   const fetchTipoQuartos = () => {
-    axios.get("/tipoQuarto")
+    api.get("/tipoQuarto")
       .then((resposta) => {
         console.log(resposta.data);
         setTipoQuartos(resposta.data);

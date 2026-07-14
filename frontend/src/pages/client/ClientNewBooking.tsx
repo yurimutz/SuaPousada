@@ -1,4 +1,4 @@
-import { api as axios } from "@/lib/api";
+import { api } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
@@ -63,7 +63,7 @@ export function ClientNewBooking() {
       const inicio = format(dateRange.from, "yyyy-MM-dd");
       const fim = format(dateRange.to, "yyyy-MM-dd");
       
-      axios.get(`/reservas/findQuartosDisponiveis?inicio=${inicio}&fim=${fim}`)
+      api.get(`/reservas/findQuartosDisponiveis?inicio=${inicio}&fim=${fim}`)
         .then(response => {
           setQuartosDisponiveis(response.data);
         })
@@ -111,7 +111,7 @@ export function ClientNewBooking() {
 
     console.log("🚀 Payload de Reserva:", payload);
 
-    axios.post("/reservas/create", payload)
+    api.post("/reservas/create", payload)
       .then(response => {
         toast.success("Reserva criada com sucesso!");
         setSuccessMessage("Reserva criada com sucesso! Verifique suas reservas.");
