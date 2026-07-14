@@ -4,7 +4,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { type TipoQuarto } from "../data-table/quartos-columns";
@@ -49,7 +49,7 @@ export function TipoQuartoForm({ tipoQuarto, onSuccess }: TipoQuartoFormProps) {
 
     const onSubmit = (data: TipoQuartoFormValues) => {
         if (isEditing) {
-            axios.patch(`http://localhost:8080/tipoQuarto/${tipoQuarto.id}/update`, data)
+            api.patch(`/tipoQuarto/${tipoQuarto.id}/update`, data)
                 .then((response) => {
                     toast.success("Tipo de quarto atualizado com sucesso!");
                     onSuccess();
@@ -59,7 +59,7 @@ export function TipoQuartoForm({ tipoQuarto, onSuccess }: TipoQuartoFormProps) {
                     console.error("Erro ao atualizar", error);
                 });
         } else {
-            axios.post(`http://localhost:8080/tipoQuarto/create`, data)
+            api.post(`/tipoQuarto/create`, data)
                 .then((response) => {
                     toast.success("Tipo de quarto cadastrado com sucesso!");
                     onSuccess();

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { api as axios } from "@/lib/api";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import type { DateRange } from "react-day-picker";
@@ -63,7 +63,7 @@ export function ClientNewBooking() {
       const inicio = format(dateRange.from, "yyyy-MM-dd");
       const fim = format(dateRange.to, "yyyy-MM-dd");
       
-      axios.get(`http://localhost:8080/reservas/findQuartosDisponiveis?inicio=${inicio}&fim=${fim}`)
+      axios.get(`/reservas/findQuartosDisponiveis?inicio=${inicio}&fim=${fim}`)
         .then(response => {
           setQuartosDisponiveis(response.data);
         })
@@ -110,7 +110,7 @@ export function ClientNewBooking() {
 
     console.log("🚀 Payload de Reserva:", payload);
 
-    axios.post("http://localhost:8080/reservas/create", payload)
+    axios.post("/reservas/create", payload)
       .then(response => {
         toast.success("Reserva criada com sucesso!");
         setSuccessMessage("Reserva criada com sucesso! Verifique suas reservas.");

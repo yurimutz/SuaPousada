@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
-import axios from "axios";
+import { api as axios } from "@/lib/api";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { hospedesColumns, type Hospede } from "../../components/data-table/hospedes-columns";
@@ -17,7 +17,7 @@ export function AdminHospedes() {
   const [hospedes, setHospedes] = useState<Hospede[]>([]);
   
   const fetchHospedes = () => {
-    axios.get("http://localhost:8080/cliente")
+    axios.get("/cliente")
     .then( (resposta) => {
       setHospedes(resposta.data);
     })

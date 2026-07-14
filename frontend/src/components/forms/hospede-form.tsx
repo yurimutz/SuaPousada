@@ -9,7 +9,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { type Hospede } from "../data-table/hospedes-columns";
@@ -29,6 +29,7 @@ const createHospedeFormSchema = z.object({
     dtNascimento: z.string().nonempty("Data de nascimento é obrigatória"),
     genero: z.string().min(1, "Gênero é obrigatório"),
     email: z.email("E-mail inválido"),
+    senha: z.string().min(6, "Senha deve ter no mínimo 6 caracteres").optional(),
 });
 
 type HospedeFormValues = z.infer<typeof createHospedeFormSchema>;
@@ -45,12 +46,13 @@ export function HospedeForm({ hospede, submitLabel, onSuccess }: HospedeFormProp
             dtNascimento: hospede?.dtNascimento || "",
             genero: hospede?.genero || "",
             email: hospede?.email || "",
+            senha: "",
         }
     });
 
     const onSubmit = (data: HospedeFormValues) => {
         if (isEditing) {
-            axios.patch(`http://localhost:8080/cliente/${hospede.id}/update`, data)
+            api.patch(`/cliente/${hospede.id}/update`, data)
                 .then((response) => {
                     toast.success("Hóspede atualizado com sucesso!");
                     onSuccess();
@@ -60,7 +62,7 @@ export function HospedeForm({ hospede, submitLabel, onSuccess }: HospedeFormProp
                     console.error("❌ Erro ao atualizar. Detalhes:", error.response?.data || error);
                 });
         } else {
-            axios.post(`http://localhost:8080/cliente/create`, data)
+            api.post(`/cliente/create`, data)
                 .then((response) => {
                     toast.success("Hóspede cadastrado com sucesso!");
                     onSuccess();
@@ -210,6 +212,25 @@ export function HospedeForm({ hospede, submitLabel, onSuccess }: HospedeFormProp
                         </Field>
                     )}
                 />
+
+                {!isEditing && (
+                    <Controller
+                        name="senha"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`senha-${idPrefix}`}>Senha</FieldLabel>
+                                <Input
+                                    {...field}
+                                    id={`senha-${idPrefix}`}
+                                    type="password"
+                                    aria-invalid={fieldState.invalid}
+                                />
+                                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            </Field>
+                        )}
+                    />
+                )}
             </FieldGroup>
             
             <div className="mt-6 flex flex-col sm:flex-row sm:justify-end">

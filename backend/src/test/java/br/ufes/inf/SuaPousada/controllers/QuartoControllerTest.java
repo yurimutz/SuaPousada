@@ -44,6 +44,12 @@ class QuartoControllerTest {
     @MockitoBean
     private QuartoService quartoService; // Mock da service
 
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.config.TokenService tokenService;
+
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.repository.PessoaRepository pessoaRepository;
+
     private TipoQuarto criarTipoQuarto() {
         return TipoQuarto.builder()
                 .id(1L)

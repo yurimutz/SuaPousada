@@ -3,7 +3,7 @@ import quartoImg2 from "@/assets/point3d-commercial-imaging-ltd-oxeCZrodz78-unsp
 import quartoImg3 from "@/assets/vojtech-bruzek-Yrxr3bsPdS0-unsplash.jpg";
 import { Button } from "@/components/ui/button";
 import { CardImage } from "@/components/ui/card-image";
-import axios from "axios";
+import { api as axios } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
@@ -11,7 +11,7 @@ export function Home() {
   const [tiposQuarto, setTiposQuarto] = useState<any[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/tipoQuarto")
+    axios.get("/tipoQuarto")
       .then((resposta) => {
         setTiposQuarto(resposta.data);
       })

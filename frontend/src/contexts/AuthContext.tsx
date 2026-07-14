@@ -1,17 +1,18 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router";
+import { jwtDecode } from "jwt-decode";
 
-type Role = "admin" | "cliente" | null;
+type Role = "admin" | "cliente" | "funcionario" | null;
 
 interface User {
+  id: number;
   email: string;
   role: Role;
-  clienteId?: number; // Adicionado para simular um cliente real do banco
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (user: User) => void;
+  login: (token: string) => void;
   logout: () => void;
 }
 
@@ -19,26 +20,43 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
-    const savedUser = localStorage.getItem("suapousada_user");
-    return savedUser ? JSON.parse(savedUser) : null;
+    const token = localStorage.getItem("suapousada_token");
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        return {
+          id: decoded.id,
+          email: decoded.sub,
+          role: decoded.role?.replace('ROLE_', '').toLowerCase() as Role,
+        };
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
   });
   const navigate = useNavigate();
 
-  const login = (newUser: User) => {
+  const login = (token: string) => {
+    localStorage.setItem("suapousada_token", token);
+    const decoded: any = jwtDecode(token);
+    const newUser: User = {
+      id: decoded.id,
+      email: decoded.sub,
+      role: decoded.role?.replace('ROLE_', '').toLowerCase() as Role,
+    };
     setUser(newUser);
-    localStorage.setItem("suapousada_user", JSON.stringify(newUser));
     
-    // Redireciona com base no papel
-    if (newUser.role === "admin") {
+    if (newUser.role === "admin" || newUser.role === "funcionario") {
       navigate("/admin");
-    } else if (newUser.role === "cliente") {
+    } else {
       navigate("/cliente");
     }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("suapousada_user");
+    localStorage.removeItem("suapousada_token");
     navigate("/login");
   };
 
@@ -49,7 +67,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Hook customizado para facilitar o uso do contexto
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

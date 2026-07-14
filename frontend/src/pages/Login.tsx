@@ -3,32 +3,45 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
+import { api } from "@/lib/api";
 import { useState } from "react";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 export function Login() {
   const { login } = useAuth();
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    if (email === "admin" && password === "admin") {
-      login({ email, role: "admin" });
-    } else if (email === "cliente" && password === "cliente") {
-      login({ email, role: "cliente", clienteId: 3 });
-    } else {
-      setError("Credenciais inválidas. Tente admin:admin ou cliente:cliente.");
+    try {
+      const response = await api.post("/auth/login", {
+        email,
+        password
+      });
+      
+      const { token } = response.data;
+      if (token) {
+        toast.success("Login efetuado com sucesso!");
+        login(token);
+      }
+    } catch (err: any) {
+      setError("Credenciais inválidas. Verifique seu e-mail e senha.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-1 items-center justify-center px-4 w-full">
+    <div className="flex flex-1 items-center justify-center px-4 w-full h-screen">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold tracking-tight">Acesse sua conta</CardTitle>
@@ -39,14 +52,14 @@ export function Login() {
           <form className="flex flex-col gap-6" onSubmit={handleLogin}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email-address">Email ou Usuário</FieldLabel>
+                <FieldLabel htmlFor="email-address">E-mail</FieldLabel>
                 <Input 
                   id="email-address" 
                   name="email" 
-                  type="text" 
+                  type="email" 
                   autoComplete="email" 
                   required 
-                  placeholder="Digite admin ou cliente" 
+                  placeholder="seu@email.com" 
                 />
               </Field>
               <Field>
@@ -69,8 +82,9 @@ export function Login() {
                 size="lg"
                 type="submit"
                 className="w-full"
+                disabled={isLoading}
               >
-                Entrar
+                {isLoading ? "Entrando..." : "Entrar"}
               </Button>
             </div>
           </form>

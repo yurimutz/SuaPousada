@@ -25,13 +25,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
+                .cors(org.springframework.security.config.Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/clientes").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/cliente/create").permitAll()
+
+                        // Bloqueando rotas administrativas apenas para Admin e Funcionário:
+                        .requestMatchers("/funcionario/**").hasAnyRole("ADMIN", "FUNCIONARIO")
+                        .requestMatchers(HttpMethod.POST, "/quarto/create").hasAnyRole("ADMIN", "FUNCIONARIO")
+                        .requestMatchers(HttpMethod.PATCH, "/quarto/**").hasAnyRole("ADMIN", "FUNCIONARIO")
+
                         .requestMatchers("/h2-console/**").permitAll() // allow h2 console if present
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 // for h2 console
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -39,7 +45,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

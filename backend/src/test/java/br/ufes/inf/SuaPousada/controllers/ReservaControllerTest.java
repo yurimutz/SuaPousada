@@ -46,6 +46,12 @@ class ReservaControllerTest {
     @MockitoBean
     private ReservaService reservaService; // Mock da service
 
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.config.TokenService tokenService;
+
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.repository.PessoaRepository pessoaRepository;
+
     private Cliente criarCliente() {
         return Cliente.builder()
                 .id(1L)

@@ -46,7 +46,7 @@ public class ClienteServiceTest {
     void deveCriarClienteComSucesso() {
         
         LocalDate dataValida = LocalDate.of(1990, 1, 1);
-        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("Yuri", "123", dataValida, Genero.MASCULINO, "yuri@email.com", "999");
+        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("Yuri", "123", dataValida, Genero.MASCULINO, "yuri@email.com", "999", "123456");
         
         Cliente clienteSalvo = Cliente.builder()
                 .id(1L)
@@ -75,7 +75,7 @@ public class ClienteServiceTest {
     void deveLancarExcecaoQuandoCriarClienteMenorDeIdade() {
         
         LocalDate dataInvalida = LocalDate.now().minusYears(10); 
-        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("Yuri Jr", "123", dataInvalida, Genero.MASCULINO, "yuri@email.com", "999");
+        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("Yuri Jr", "123", dataInvalida, Genero.MASCULINO, "yuri@email.com", "999", "123456");
 
         // 2. Act & Assert
         DataViolationException excecao = assertThrows(DataViolationException.class, () -> {
@@ -93,7 +93,7 @@ public class ClienteServiceTest {
     void deveLancarExcecaoQuandoCriarClienteComDuplicidade() {
         
         LocalDate dataValida = LocalDate.of(1990, 1, 1);
-        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("Yuri", "123", dataValida, Genero.MASCULINO, "yuri@email.com", "999");
+        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("Yuri", "123", dataValida, Genero.MASCULINO, "yuri@email.com", "999", "123456");
 
         when(pessoaRepository.existsByCpfOrEmail("123", "yuri@email.com")).thenReturn(true);
 

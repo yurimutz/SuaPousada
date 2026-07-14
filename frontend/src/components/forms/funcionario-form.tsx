@@ -10,7 +10,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { type Funcionario } from "../data-table/funcionario-columns";
@@ -29,6 +29,7 @@ const createFuncionarioFormSchema = z.object({
     dtNascimento: z.string().nonempty("Data de nascimento é obrigatória"),
     genero: z.string().min(1, "Gênero é obrigatório"),
     email: z.email("E-mail inválido"),
+    senha: z.string().min(6, "Senha deve ter no mínimo 6 caracteres").optional(),
 })
 
 type FuncionarioFormValues = z.infer<typeof createFuncionarioFormSchema>;
@@ -45,12 +46,13 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
             dtNascimento: funcionario?.dtNascimento || "",
             genero: funcionario?.genero || "",
             email: funcionario?.email || "",
+            senha: "",
         }
     })
 
     const onSubmit = (data: FuncionarioFormValues) => {
         if (isEditing) {
-            axios.patch(`http://localhost:8080/funcionario/${funcionario.id}/update`, data)
+            api.patch(`/funcionario/${funcionario.id}/update`, data)
                 .then((response) => {
                     toast.success("Funcionário atualizado com sucesso!");
                     onSuccess();
@@ -60,7 +62,7 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                     console.error("❌ Erro ao atualizar. Detalhes:", error.response?.data || error);
                 });
         } else {
-            axios.post(`http://localhost:8080/funcionario/create`, data)
+            api.post(`/funcionario/create`, data)
                 .then((response) => {
                     toast.success("Funcionário cadastrado com sucesso!");
                     onSuccess();
@@ -213,6 +215,25 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
                         </Field>
                     )}
                 />
+
+                {!isEditing && (
+                    <Controller
+                        name="senha"
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`senha-${idPrefix}`}>Senha</FieldLabel>
+                                <Input
+                                    {...field}
+                                    id={`senha-${idPrefix}`}
+                                    type="password"
+                                    aria-invalid={fieldState.invalid}
+                                />
+                                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                            </Field>
+                        )}
+                    />
+                )}
             </FieldGroup>
             <div className="mt-6 flex flex-col sm:flex-row sm:justify-end">
                 <Button type="submit" className="w-full sm:w-auto">
