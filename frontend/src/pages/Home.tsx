@@ -1,9 +1,9 @@
-import quartoImg1 from "@/assets/sasha-kaunas-67-sOi7mVIk-unsplash.jpg";
 import quartoImg2 from "@/assets/point3d-commercial-imaging-ltd-oxeCZrodz78-unsplash.jpg";
+import quartoImg1 from "@/assets/sasha-kaunas-67-sOi7mVIk-unsplash.jpg";
 import quartoImg3 from "@/assets/vojtech-bruzek-Yrxr3bsPdS0-unsplash.jpg";
 import { Button } from "@/components/ui/button";
 import { CardImage } from "@/components/ui/card-image";
-import axios from "axios";
+import { api as axios } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
@@ -11,7 +11,7 @@ export function Home() {
   const [tiposQuarto, setTiposQuarto] = useState<any[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/tipoQuarto")
+    axios.get("/tipoQuarto")
       .then((resposta) => {
         setTiposQuarto(resposta.data);
       })
@@ -41,6 +41,7 @@ export function Home() {
         </div>
       </div>
 
+      {tiposQuarto &&
       <div className="w-full max-w-6xl">
         <h2 className="text-3xl font-bold mb-8 text-left">Nossas Acomodações</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -62,6 +63,7 @@ export function Home() {
           ))}
         </div>
       </div>
+       }
     </div>
   );
 }

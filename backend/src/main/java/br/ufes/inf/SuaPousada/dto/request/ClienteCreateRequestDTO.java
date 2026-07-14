@@ -31,6 +31,10 @@ public record ClienteCreateRequestDTO(
 
         @NotBlank
         @Size(max = 11)
-        String telefone
+        String telefone,
+
+        @NotBlank
+        @Size(min = 6)
+        String senha
 
 ){ }

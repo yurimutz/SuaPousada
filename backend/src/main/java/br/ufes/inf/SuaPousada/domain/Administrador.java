@@ -18,9 +18,9 @@ import java.time.LocalDate;
 public class Administrador extends Funcionario
 {
     @Builder(builderMethodName = "administradorBuilder")
-    public Administrador(Long id, String nome, String cpf, LocalDate dtNascimento, Genero genero, String email, String telefone)
+    public Administrador(Long id, String nome, String cpf, LocalDate dtNascimento, Genero genero, String email, String telefone, String senha, UserRole role)
     {
-        super(id, nome, cpf, dtNascimento, genero, email, telefone);
+        super(id, nome, cpf, dtNascimento, genero, email, telefone, senha, role);
     }
 
     public Administrador()

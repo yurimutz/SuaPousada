@@ -10,7 +10,9 @@ import br.ufes.inf.SuaPousada.repository.FuncionarioRepository;
 import br.ufes.inf.SuaPousada.repository.PessoaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import br.ufes.inf.SuaPousada.domain.UserRole;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -60,6 +62,8 @@ public class FuncionarioService
                 .genero(request_dto.genero() != null ? request_dto.genero() : funcionario.getGenero())
                 .email(request_dto.email() != null ? request_dto.email() : funcionario.getEmail())
                 .telefone(request_dto.telefone() != null ? request_dto.telefone() : funcionario.getTelefone())
+                .senha(funcionario.getSenha())
+                .role(funcionario.getRole())
                 .build();
 
         if (!isOfAge(funcionario_atualizado.getDtNascimento()))
@@ -111,6 +115,8 @@ public class FuncionarioService
                 .genero(dto.genero())
                 .email(dto.email())
                 .telefone(dto.telefone())
+                .senha(new BCryptPasswordEncoder().encode(dto.senha()))
+                .role(UserRole.ROLE_FUNCIONARIO)
                 .build();
     }
 

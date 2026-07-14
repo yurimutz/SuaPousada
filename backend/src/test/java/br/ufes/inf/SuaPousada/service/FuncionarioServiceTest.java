@@ -49,7 +49,7 @@ public class FuncionarioServiceTest {
     void deveCriarFuncionarioComSucesso() {
 
         LocalDate dataValida = LocalDate.of(1990, 1, 1);
-        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("Maria", "123", dataValida, Genero.FEMININO, "maria@email.com", "999");
+        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("Maria", "123", dataValida, Genero.FEMININO, "maria@email.com", "999", "123456");
         
         // Objeto depois de salvar no banco, usado para comparar
         Funcionario funcionarioSalvo = Funcionario.builder()
@@ -79,7 +79,7 @@ public class FuncionarioServiceTest {
     void deveLancarExcecaoQuandoCriarFuncionarioMenorDeIdade() {
 
         LocalDate dataInvalida = LocalDate.now().minusYears(10); // 10 anos de idade
-        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("Maria Jr", "123", dataInvalida, Genero.FEMININO, "maria@email.com", "999");
+        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("Maria Jr", "123", dataInvalida, Genero.FEMININO, "maria@email.com", "999", "123456");
 
         DataViolationException excecao = assertThrows(DataViolationException.class, () -> {
             funcionarioService.create(request);
@@ -95,7 +95,7 @@ public class FuncionarioServiceTest {
     void deveLancarExcecaoQuandoCriarFuncionarioComDuplicidade() {
 
         LocalDate dataValida = LocalDate.of(1990, 1, 1);
-        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("Maria", "123", dataValida, Genero.FEMININO, "maria@email.com", "999");
+        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("Maria", "123", dataValida, Genero.FEMININO, "maria@email.com", "999", "123456");
 
         when(pessoaRepository.existsByCpfOrEmail("123", "maria@email.com")).thenReturn(true);
 

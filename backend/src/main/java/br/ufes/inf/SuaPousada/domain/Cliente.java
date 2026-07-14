@@ -14,9 +14,9 @@ public class Cliente extends Pessoa
     outra alternativa seria @SuperBuilder definido na classe pai e todas suas subclasses. Optei pelo
     construtor.*/
     @Builder
-    public Cliente(Long id, String nome, String cpf, LocalDate dtNascimento, Genero genero, String email, String telefone)
+    public Cliente(Long id, String nome, String cpf, LocalDate dtNascimento, Genero genero, String email, String telefone, String senha, UserRole role)
     {
-        super(id, nome, cpf, dtNascimento, genero, email, telefone);
+        super(id, nome, cpf, dtNascimento, genero, email, telefone, senha, role);
     }
 
     public Cliente()

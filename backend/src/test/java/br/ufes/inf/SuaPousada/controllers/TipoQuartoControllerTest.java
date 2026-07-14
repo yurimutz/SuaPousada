@@ -42,6 +42,12 @@ class TipoQuartoControllerTest {
     @MockitoBean
     private TipoQuartoService tipoQuartoService; // Mock da service
 
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.config.TokenService tokenService;
+
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.repository.PessoaRepository pessoaRepository;
+
     @Test
     void deveCriarTipoQuartoComSucesso() throws Exception {
         TipoQuartoCreateRequestDTO request = new TipoQuartoCreateRequestDTO("Luxo", 0, 1, 1, 250.0, true);

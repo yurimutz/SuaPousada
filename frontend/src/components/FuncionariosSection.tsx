@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
-import axios from "axios";
+import { api as axios } from "@/lib/api";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DataTable } from "./data-table/data-table";
@@ -15,7 +15,7 @@ export function FuncionariosSection() {
     const isMobile = useIsMobile();
 
     const fetchFuncionarios = () => {
-        axios.get("http://localhost:8080/funcionario/getAll")
+        axios.get("/funcionario/getAll")
             .then((response) => setFuncionarios(response.data))
             .catch((error) => console.error("Erro ao buscar funcionários:", error));
     };
