@@ -29,6 +29,7 @@ const createHospedeFormSchema = z.object({
     dtNascimento: z.string().nonempty("Data de nascimento é obrigatória"),
     genero: z.string().min(1, "Gênero é obrigatório"),
     email: z.email("E-mail inválido"),
+    senha: z.string().min(6, "Senha deve ter no mínimo 6 caracteres").optional().or(z.literal('')),
 });
 
 type HospedeFormValues = z.infer<typeof createHospedeFormSchema>;
@@ -50,7 +51,8 @@ export function HospedeForm({ hospede, submitLabel, onSuccess }: HospedeFormProp
 
     const onSubmit = (data: HospedeFormValues) => {
         if (isEditing) {
-            axios.patch(`http://localhost:8080/cliente/${hospede.id}/update`, data)
+            const { senha, ...updateData } = data;
+            axios.patch(`http://localhost:8080/cliente/${hospede.id}/update`, updateData)
                 .then((response) => {
                     toast.success("Hóspede atualizado com sucesso!");
                     onSuccess();
