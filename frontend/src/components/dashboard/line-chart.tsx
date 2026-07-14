@@ -1,6 +1,6 @@
 "use client"
 
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -46,16 +46,25 @@ export function ChartLineDefault({ data }: LineChartProps) {
         <CardDescription>Taxa de ocupação da pousada neste ano</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} >
+        <ChartContainer config={chartConfig} className="min-h-[200px]">
           <LineChart
             accessibilityLayer
             data={formattedData}
             margin={{
+              top: 24,
               left: 12,
               right: 12,
+              bottom: 12,
             }}
           >
             <CartesianGrid vertical={false} />
+            <YAxis 
+              domain={[0, 100]}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => `${value}%`}
+            />
             <XAxis
               dataKey="month"
               tickLine={false}
