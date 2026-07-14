@@ -29,7 +29,7 @@ const createFuncionarioFormSchema = z.object({
     dtNascimento: z.string().nonempty("Data de nascimento é obrigatória"),
     genero: z.string().min(1, "Gênero é obrigatório"),
     email: z.email("E-mail inválido"),
-    senha: z.string().min(6, "Senha deve ter no mínimo 6 caracteres").optional(),
+    senha: z.string().min(6, "Senha deve ter no mínimo 6 caracteres").optional().or(z.literal('')),
 })
 
 type FuncionarioFormValues = z.infer<typeof createFuncionarioFormSchema>;
@@ -52,7 +52,8 @@ export function FuncionarioForm({ funcionario, onSuccess }: FuncionarioFormProps
 
     const onSubmit = (data: FuncionarioFormValues) => {
         if (isEditing) {
-            api.patch(`/funcionario/${funcionario.id}/update`, data)
+            const { senha, ...updateData } = data;
+            api.patch(`/funcionario/${funcionario.id}/update`, updateData)
                 .then((response) => {
                     toast.success("Funcionário atualizado com sucesso!");
                     onSuccess();
