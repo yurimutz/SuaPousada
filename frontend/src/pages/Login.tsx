@@ -56,10 +56,10 @@ export function Login() {
                 <Input 
                   id="email-address" 
                   name="email" 
-                  type="email" 
+                  type="text" 
                   autoComplete="email" 
                   required 
-                  placeholder="seu@email.com" 
+                  placeholder="Digite seu email" 
                 />
               </Field>
               <Field>

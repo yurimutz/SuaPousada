@@ -1,5 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { api as axios } from "@/lib/api";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import type { DateRange } from "react-day-picker";
@@ -96,7 +96,8 @@ export function ClientNewBooking() {
   const tiposDisponiveis = Object.values(quartosPorTipo);
 
   const onSubmit = (data: BookingFormValues) => {
-    if (!user?.clienteId) {
+    // console.log(user?.id)
+    if (!user?.id) {
       toast.error("Erro: Você precisa estar logado como cliente para reservar.");
       return;
     }
@@ -105,7 +106,7 @@ export function ClientNewBooking() {
       dtReservaInicio: format(data.dateRange.from, "yyyy-MM-dd"),
       dtReservaFim: format(data.dateRange.to, "yyyy-MM-dd"),
       quartoId: Number(data.quartoId),
-      clienteId: user.clienteId
+      clienteId: user.id
     };
 
     console.log("🚀 Payload de Reserva:", payload);
