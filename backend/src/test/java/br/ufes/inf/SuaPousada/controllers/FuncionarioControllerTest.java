@@ -47,11 +47,17 @@ public class FuncionarioControllerTest
     @MockitoBean
     private FuncionarioService funcionarioService; // Mock da service
 
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.config.TokenService tokenService;
+
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.repository.PessoaRepository pessoaRepository;
+
     @Test
     void deveCriarFuncionarioComSucesso() throws Exception
     {
 
-        FuncionarioCreateRequestDTO cliente = new FuncionarioCreateRequestDTO("yuri", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873");
+        FuncionarioCreateRequestDTO cliente = new FuncionarioCreateRequestDTO("yuri", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873", "123456");
 
         FuncionarioResponseDTO responseDTO = new FuncionarioResponseDTO(1L, "yuri", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873");
 
@@ -74,7 +80,7 @@ public class FuncionarioControllerTest
     void deveRetornarErro409QuandoCriarFuncionarioMenorDeIdade() throws Exception
     {
 
-        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("yuri", "123", LocalDate.of(2015, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999");
+        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("yuri", "123", LocalDate.of(2015, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999", "123456");
 
         // Prepara o mock pra receber coisa errada
         when(funcionarioService.create(any(FuncionarioCreateRequestDTO.class)))
@@ -93,7 +99,7 @@ public class FuncionarioControllerTest
     void deveRetornarErro409QuandoCriarFuncionarioRepetindoCpf() throws Exception
     {
 
-        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("yuri", "123", LocalDate.of(2002, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999");
+        FuncionarioCreateRequestDTO request = new FuncionarioCreateRequestDTO("yuri", "123", LocalDate.of(2002, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999", "123456");
 
         when(funcionarioService.create(any(FuncionarioCreateRequestDTO.class)))
                 .thenThrow(new DataViolationException("Já existe um funcionário com esse email ou CPF cadastrado"));

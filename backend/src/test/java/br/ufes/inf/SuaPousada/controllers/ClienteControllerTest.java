@@ -15,6 +15,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,6 +33,7 @@ import tools.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ClienteController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class ClienteControllerTest{
 
     @Autowired
@@ -43,10 +45,16 @@ class ClienteControllerTest{
     @MockitoBean
     private ClienteService clienteService; // Mock da service
 
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.config.TokenService tokenService;
+
+    @MockitoBean
+    private br.ufes.inf.SuaPousada.repository.PessoaRepository pessoaRepository;
+
     @Test
     void deveCriarClienteComSucesso() throws Exception{
 
-        ClienteCreateRequestDTO cliente = new ClienteCreateRequestDTO("yuri", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873");
+        ClienteCreateRequestDTO cliente = new ClienteCreateRequestDTO("yuri", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873", "123456");
 
         ClienteResponseDTO responseDTO = new ClienteResponseDTO(1L, "yuri", "18871809742", LocalDate.of(2002, 7, 19), Genero.MASCULINO, "oi@gmail.com", "990892873");
 
@@ -68,7 +76,7 @@ class ClienteControllerTest{
     @Test
     void deveRetornarErro409QuandoCriarMenorDeIdade() throws Exception {
         
-        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("yuri", "18871809742", LocalDate.of(2015, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999");
+        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("yuri", "18871809742", LocalDate.of(2015, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999", "123456");
 
         // Prepara o mock pra receber coisa errada
         when(clienteService.create(any(ClienteCreateRequestDTO.class)))
@@ -86,7 +94,7 @@ class ClienteControllerTest{
     @Test
     void deveRetornarErro409QuandoCriarRepetindoCpf() throws Exception{
 
-        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("yuri", "123", LocalDate.of(2002, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999");
+        ClienteCreateRequestDTO request = new ClienteCreateRequestDTO("yuri", "123", LocalDate.of(2002, 1, 1), Genero.MASCULINO, "oi@gmail.com", "999", "123456");
 
         when(clienteService.create(any(ClienteCreateRequestDTO.class)))
                 .thenThrow(new DataViolationException("Já existe um usuário com esse email ou CPF cadastrado"));

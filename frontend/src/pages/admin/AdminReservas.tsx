@@ -1,8 +1,8 @@
 
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 import type { DateRange } from "react-day-picker";
 
 import { DataTable } from "@/components/data-table/data-table";
@@ -20,8 +20,8 @@ export function AdminReservas() {
     if (date?.from && date?.to) {
       const inicio = format(date.from, "yyyy-MM-dd");
       const fim = format(date.to, "yyyy-MM-dd");
-      axios
-        .get(`http://localhost:8080/reservas/findAllByPeriodo?inicio=${inicio}&fim=${fim}`)
+      api
+        .get(`/reservas/findAllByPeriodo?inicio=${inicio}&fim=${fim}`)
         .then((response) => setReservas(response.data))
         .catch((error) => console.error("Erro ao buscar reservas:", error));
     }

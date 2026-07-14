@@ -1,5 +1,5 @@
+import { api } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import type { DateRange } from "react-day-picker";
@@ -63,7 +63,7 @@ export function ClientNewBooking() {
       const inicio = format(dateRange.from, "yyyy-MM-dd");
       const fim = format(dateRange.to, "yyyy-MM-dd");
       
-      axios.get(`http://localhost:8080/reservas/findQuartosDisponiveis?inicio=${inicio}&fim=${fim}`)
+      api.get(`/reservas/findQuartosDisponiveis?inicio=${inicio}&fim=${fim}`)
         .then(response => {
           setQuartosDisponiveis(response.data);
         })
@@ -96,7 +96,8 @@ export function ClientNewBooking() {
   const tiposDisponiveis = Object.values(quartosPorTipo);
 
   const onSubmit = (data: BookingFormValues) => {
-    if (!user?.clienteId) {
+    // console.log(user?.id)
+    if (!user?.id) {
       toast.error("Erro: Você precisa estar logado como cliente para reservar.");
       return;
     }
@@ -105,12 +106,12 @@ export function ClientNewBooking() {
       dtReservaInicio: format(data.dateRange.from, "yyyy-MM-dd"),
       dtReservaFim: format(data.dateRange.to, "yyyy-MM-dd"),
       quartoId: Number(data.quartoId),
-      clienteId: user.clienteId
+      clienteId: user.id
     };
 
     console.log("🚀 Payload de Reserva:", payload);
 
-    axios.post("http://localhost:8080/reservas/create", payload)
+    api.post("/reservas/create", payload)
       .then(response => {
         toast.success("Reserva criada com sucesso!");
         setSuccessMessage("Reserva criada com sucesso! Verifique suas reservas.");

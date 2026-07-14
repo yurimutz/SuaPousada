@@ -4,7 +4,7 @@ import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/compo
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -44,9 +44,8 @@ export function QuartoForm({ quarto, onSuccess }: QuartoFormProps) {
     });
 
     useEffect(() => {
-        // Busca a lista atualizada de Tipos de Quarto sempre que o formulário abrir
-        axios.get("http://localhost:8080/tipoQuarto")
-            .then((response) => {
+        api.get("/tipoQuarto")
+            .then(response => {
                 setTiposQuarto(response.data);
             })
             .catch((error) => console.error("Erro ao buscar tipos de quarto:", error));
@@ -54,7 +53,7 @@ export function QuartoForm({ quarto, onSuccess }: QuartoFormProps) {
 
     const onSubmit = (data: QuartoFormValues) => {
         if (isEditing) {
-            axios.patch(`http://localhost:8080/quarto/${quarto.id}/update`, data)
+            api.patch(`/quarto/${quarto.id}/update`, data)
                 .then((response) => {
                     toast.success("Quarto atualizado com sucesso!");
                     onSuccess();
@@ -64,7 +63,7 @@ export function QuartoForm({ quarto, onSuccess }: QuartoFormProps) {
                     console.error("Erro ao atualizar", error);
                 });
         } else {
-            axios.post(`http://localhost:8080/quarto/create`, data)
+            api.post(`/quarto/create`, data)
                 .then((response) => {
                     toast.success("Quarto cadastrado com sucesso!");
                     onSuccess();
