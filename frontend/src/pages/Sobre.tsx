@@ -34,7 +34,7 @@ export function Sobre() {
         <ItemGroup className="flex-col sm:flex-row justify-center gap-6">
           <Item className="flex-1 max-w-xs mx-auto p-4 bg-card shadow-sm hover:shadow-md transition-shadow">
             <ItemMedia variant="image" className="w-24 h-24 sm:w-24 sm:h-24 rounded-full border-2 border-muted overflow-hidden shrink-0">
-              <img src="/bruno.png" alt="Bruno Vale" />
+              <img src="/bruno.jpeg" alt="Bruno Vale" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle className="text-lg">Bruno Vale</ItemTitle>
@@ -55,7 +55,7 @@ export function Sobre() {
 
           <Item className="flex-1 max-w-xs mx-auto p-4 bg-card shadow-sm hover:shadow-md transition-shadow">
             <ItemMedia variant="image" className="w-24 h-24 sm:w-24 sm:h-24 rounded-full border-2 border-muted overflow-hidden shrink-0">
-              <img src="/yuri.png" alt="Yuri Mutz" />
+              <img src="/yuri.jpeg" alt="Yuri Mutz" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle className="text-lg">Yuri Mutz</ItemTitle>
