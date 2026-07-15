@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Button } from "./button";
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
 
@@ -45,7 +46,9 @@ export function CardImage({
 
       {/* Botão de ver mais dentro do CardFooter */}
       <CardFooter>
-        <Button className="w-full">Ver mais</Button>
+        <Button asChild className="w-full">
+          <Link to={`/quarto/${quarto.numero}`}>Ver mais</Link>
+        </Button>
       </CardFooter>
     </Card>
   )
