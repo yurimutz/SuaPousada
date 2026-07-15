@@ -12,7 +12,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (token: string) => void;
+  login: (token: string, redirectUrl?: string, routeState?: any) => void;
   logout: () => void;
 }
 
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
   const navigate = useNavigate();
 
-  const login = (token: string) => {
+  const login = (token: string, redirectUrl?: string, routeState?: any) => {
     localStorage.setItem("suapousada_token", token);
     const decoded: any = jwtDecode(token);
     const newUser: User = {
@@ -50,7 +50,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (newUser.role === "admin" || newUser.role === "funcionario") {
       navigate("/admin");
     } else {
-      navigate("/cliente");
+      if (redirectUrl) {
+        navigate(redirectUrl, { state: routeState });
+      } else {
+        navigate("/cliente");
+      }
     }
   };
 

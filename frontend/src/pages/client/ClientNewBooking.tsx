@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useAuth } from "@/contexts/AuthContext";
 import { Bath, BedDouble, BedSingle, CircleDollarSign, Wind } from "lucide-react";
+import { useLocation } from "react-router";
 import { toast } from "sonner";
 
 interface TipoQuarto {
@@ -43,14 +44,22 @@ type BookingFormValues = z.infer<typeof bookingSchema>;
 
 export function ClientNewBooking() {
   const { user } = useAuth();
+  const { state } = useLocation();
+  const bookingState = state?.bookingState;
+  
   const [quartosDisponiveis, setQuartosDisponiveis] = useState<Quarto[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [autoSelected, setAutoSelected] = useState(false);
 
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      quartoId: ""
+      quartoId: "",
+      dateRange: bookingState ? {
+        from: new Date(bookingState.from),
+        to: new Date(bookingState.to)
+      } : undefined
     }
   });
 
@@ -94,6 +103,16 @@ export function ClientNewBooking() {
   }, {} as Record<number, { tipo: TipoQuarto; quartos: Quarto[] }>);
 
   const tiposDisponiveis = Object.values(quartosPorTipo);
+
+  useEffect(() => {
+    if (bookingState?.tipoQuartoId && !autoSelected && tiposDisponiveis.length > 0) {
+      const selectedType = tiposDisponiveis.find(t => String(t.tipo.id) === String(bookingState.tipoQuartoId));
+      if (selectedType && selectedType.quartos.length > 0) {
+        form.setValue("quartoId", selectedType.quartos[0].id.toString());
+        setAutoSelected(true);
+      }
+    }
+  }, [tiposDisponiveis, bookingState, autoSelected, form]);
 
   const onSubmit = (data: BookingFormValues) => {
     // console.log(user?.id)
