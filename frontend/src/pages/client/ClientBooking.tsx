@@ -22,8 +22,8 @@ export function ClientBooking() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (user?.clienteId) {
-      api.get(`/reservas/${user.clienteId}/findAllByClientId`)
+    if (user?.id) {
+      api.get(`/reservas/${user.id}/findAllByClientId`)
         .then((response) => {
           setReservas(response.data);
         })
@@ -36,7 +36,7 @@ export function ClientBooking() {
     } else {
       setIsLoading(false);
     }
-  }, [user?.clienteId]);
+  }, [user?.id]);
 
   const formatBookingRange = (startStr: string, endStr: string) => {
     if (!startStr || !endStr) return "";

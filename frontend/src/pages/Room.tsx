@@ -185,7 +185,14 @@ export function Room() {
               }`}>
                 <p className="font-medium">{availabilityMessage.message}</p>
                 {availabilityMessage.type === 'success' && (
-                    <Link to="/login">Clique aqui para fazer login/cadastro</Link>
+                  <Button asChild variant="outline" className="shrink-0 bg-background/50 hover:bg-background text-foreground">
+                    <Link to="/login" state={{ 
+                      redirect: '/cliente/nova-reserva', 
+                      bookingState: { tipoQuartoId: id, from: date?.from, to: date?.to } 
+                    }}>
+                      Clique aqui para fazer login/cadastro
+                    </Link>
+                  </Button>
                 )}
               </div>
             )}

@@ -5,13 +5,17 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { api } from "@/lib/api";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { toast } from "sonner";
 
 export function Login() {
   const { login } = useAuth();
+  const location = useLocation();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  
+  const redirectUrl = location.state?.redirect;
+  const bookingState = location.state?.bookingState;
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +35,7 @@ export function Login() {
       const { token } = response.data;
       if (token) {
         toast.success("Login efetuado com sucesso!");
-        login(token);
+        login(token, redirectUrl, { bookingState });
       }
     } catch (err: any) {
       setError("Credenciais inválidas. Verifique seu e-mail e senha.");
