@@ -14,6 +14,7 @@ import { ClientDashboard } from "./pages/client/ClientDashboard";
 import { ClientNewBooking } from "./pages/client/ClientNewBooking";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
+import { Room } from "./pages/Room";
 
 import { Register } from "./pages/Register";
 import { Sobre } from "./pages/Sobre";
@@ -27,6 +28,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="quarto/:id" element={<Room />} />
           <Route path="sobre" element={<Sobre />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

@@ -30,7 +30,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/cliente/create").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/tipoQuarto").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/tipoQuarto/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/reservas/findQuartosDisponiveis").permitAll()
 
                         // Bloqueando rotas administrativas apenas para Admin e Funcionário:
                         .requestMatchers("/funcionario/**").hasAnyRole("ADMIN", "FUNCIONARIO")
